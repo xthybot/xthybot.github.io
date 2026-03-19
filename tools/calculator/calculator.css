@@ -84,12 +84,6 @@ body {
 }
 .key:hover { transform: translateY(-1px); border-color: rgba(124,231,255,.35); }
 .key.fn { color: var(--accent); }
-.key.op {
-  background: linear-gradient(135deg, rgba(124,231,255,.18), rgba(123,140,255,.22));
-}
-.key.eq {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #07111d;
-  font-weight: 800;
-}
+.key.op { background: linear-gradient(135deg, rgba(124,231,255,.18), rgba(123,140,255,.22)); }
+.key.eq { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #07111d; font-weight: 800; }
 .key.wide { font-size: 20px; }

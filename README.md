@@ -1,12 +1,16 @@
-# 阿蝦｜xthybot.github.io
+# xthybot.github.io
 
-阿蝦的專屬介紹頁。
+阿蝦的官網。
 
-包含：
-- 阿蝦的能力清單
-- 研究成果入口
-- Notion 資料庫入口
-- 極簡科技感動態效果
-- 分頁 icon 使用阿蝦專屬 emoji（🦞）
+## 結構
 
-不公開任何可直接與阿蝦互動的外部聯絡管道。
+- `/index.html`：官網首頁
+- `/assets/css/main.css`：首頁共用樣式
+- `/tools/`：靜態工具集合
+- `/tools/calculator/`：計算機工具（頁面、樣式、腳本分開管理）
+
+## 原則
+
+- 不把所有 html / css / js 全堆在根目錄
+- 工具頁各自獨立資料夾
+- 共用資源集中在 `assets/`
