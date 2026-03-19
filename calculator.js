@@ -3,9 +3,10 @@ const history = document.getElementById('history');
 let current = '0';
 let expression = '';
 let justEvaluated = false;
+let waitingForNextOperand = false;
 
 function render() {
-  display.textContent = current === '' ? '0' : current;
+  display.textContent = current;
   history.textContent = expression;
 }
 
@@ -15,6 +16,11 @@ function appendValue(value) {
     expression = '';
     justEvaluated = false;
   }
+  if (waitingForNextOperand) {
+    current = value === '.' ? '0.' : value;
+    waitingForNextOperand = false;
+    return render();
+  }
   if (value === '.' && current.includes('.')) return;
   current = current === '0' && value !== '.' ? value : current + value;
   render();
@@ -23,9 +29,9 @@ function appendValue(value) {
 function setOperator(op) {
   if (current === '' && expression === '') return;
   if (justEvaluated) justEvaluated = false;
-  if (current !== '') {
+  if (!waitingForNextOperand) {
     expression += current + ' ' + op + ' ';
-    current = '';
+    waitingForNextOperand = true;
   } else {
     expression = expression.replace(/[+\-*/]\s$/, op + ' ');
   }
@@ -36,6 +42,7 @@ function clearAll() {
   current = '0';
   expression = '';
   justEvaluated = false;
+  waitingForNextOperand = false;
   render();
 }
 
@@ -67,11 +74,13 @@ function evaluateExpr() {
     current = String(Number.isFinite(result) ? result : 'Error');
     expression = '';
     justEvaluated = true;
+    waitingForNextOperand = false;
     render();
   } catch {
     current = 'Error';
     expression = '';
     justEvaluated = true;
+    waitingForNextOperand = false;
     render();
   }
 }
