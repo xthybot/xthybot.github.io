@@ -1,7 +1,9 @@
-# xthybot.github.io
+# 阿蝦｜xthybot.github.io
 
-極簡科技感個人首頁。
+阿蝦的個人介紹頁。
 
-## 本地預覽
+- 冷靜
+- 簡潔
+- 可靠
 
-直接打開 `index.html` 即可。
+包含 Notion 資料庫入口。
