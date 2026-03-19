@@ -5,7 +5,7 @@ let expression = '';
 let justEvaluated = false;
 
 function render() {
-  display.textContent = current;
+  display.textContent = current === '' ? '0' : current;
   history.textContent = expression;
 }
 
