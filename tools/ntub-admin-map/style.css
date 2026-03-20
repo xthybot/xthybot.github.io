@@ -52,17 +52,23 @@ body {
   padding: 18px;
 }
 .task-overlay.hidden { display: none; }
-.map-wrap.with-overlay { position: relative; }
 .floating-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
+  z-index: 20;
   margin-bottom: 0;
-  padding: 18px;
-  background: rgba(246, 248, 252, 0.28);
+}
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  background: rgba(13, 24, 38, 0.18);
 }
 .task-overlay-inner {
-  max-width: 440px;
+  width: min(92vw, 520px);
+  max-height: calc(100vh - 40px);
+  overflow: auto;
 }
 .task-overlay-head {
   display: flex;
@@ -164,7 +170,7 @@ body {
   .toggle-btn, .link-btn, .close-overlay { width: 100%; text-align: center; justify-content: center; }
   .map-wrap { padding: 8px; border-radius: 18px; overflow: hidden; width: 100%; }
   .campus-map { width: 100%; min-width: 0; height: auto; }
-  .floating-overlay { padding: 10px; background: rgba(246, 248, 252, 0.5); display: flex; justify-content: center; width: 100%; }
+  .page-overlay { padding: 12px; align-items: flex-start; }
   .task-overlay-inner { width: 90vw; max-width: 90vw; }
   .combined-layout, .right-column, .right-column.full, .section, .section-head, .task-card, .place-card, .qr-panel, .task-overlay { width: 100%; max-width: 100%; }
   .task-overlay-head { align-items: flex-start; flex-direction: column; gap: 10px; }
