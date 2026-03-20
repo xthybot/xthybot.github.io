@@ -141,10 +141,16 @@ document.addEventListener('click', (e) => {
   }
 });
 
-closeOverlay?.addEventListener('click', () => {
+function closeTaskOverlay() {
   taskOverlay.classList.add('hidden');
   document.querySelectorAll('.task-card').forEach(el => {
     el.style.display = 'block';
     el.classList.remove('highlight');
   });
+}
+
+closeOverlay?.addEventListener('click', closeTaskOverlay);
+
+taskOverlay?.addEventListener('click', (e) => {
+  if (e.target === taskOverlay) closeTaskOverlay();
 });
