@@ -164,8 +164,8 @@ body {
   .toggle-btn, .link-btn, .close-overlay { width: 100%; text-align: center; justify-content: center; }
   .map-wrap { padding: 8px; border-radius: 18px; overflow-x: auto; }
   .campus-map { min-width: 760px; }
-  .floating-overlay { padding: 10px; background: rgba(246, 248, 252, 0.5); }
-  .task-overlay-inner { max-width: 100%; }
+  .floating-overlay { padding: 10px; background: rgba(246, 248, 252, 0.5); display: flex; justify-content: center; }
+  .task-overlay-inner { width: 90vw; max-width: 90vw; }
   .task-overlay-head { align-items: flex-start; flex-direction: column; gap: 10px; }
   .task-overlay-head h3 { font-size: 18px; }
   .qr-panel img { width: 120px; height: 120px; }
