@@ -43,8 +43,8 @@ const taskItems = [
     id: 'task-life',
     type: '生活設施',
     title: '圖書館、學餐、影印與日常動線',
-    desc: '除了行政辦公室，新生日常最常找的就是圖書館、學餐、影印與金融設施。',
-    place: '圖書館｜圖書館；學餐 / 影印部｜五育樓 B1｜已確認',
+    desc: '除了行政辦公室，新生日常最常找的就是圖書館、學餐與影印部。',
+    place: '圖書館｜圖書館；學餐 / 影印部｜五育樓 B1',
     url: 'https://library.ntub.edu.tw/'
   }
 ];
@@ -57,7 +57,7 @@ const places = [
   { name:'資訊管理系系辦', category:'系上窗口', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 4 樓 401', use:'資管系課程、系務、系上行政', url:'https://imd.ntub.edu.tw/' },
   { name:'圖書館', category:'常用設施', status:'已確認', statusClass:'ok', location:'臺北校區 圖書館', use:'這一區主要是圖書館；進入通常需要刷學生證，或以身分證辦理入館。', url:'https://library.ntub.edu.tw/' },
   { name:'學務處', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 六藝樓 1 樓', use:'獎助學金、就學貸款、請假、住宿與生活輔導', url:'https://stud.ntub.edu.tw/' },
-  { name:'學餐 / 影印部', category:'生活設施', status:'已確認', statusClass:'ok', location:'臺北校區 五育樓 B1', use:'日常飲食與列印影印常用動線', url:'https://www.ntub.edu.tw/' }
+  { name:'學餐 / 影印部', category:'生活設施', location:'臺北校區 五育樓 B1', use:'日常飲食與列印影印常用動線', url:'https://www.ntub.edu.tw/' }
 ];
 
 function makeQrPanel(url, name) {
@@ -97,7 +97,7 @@ places.forEach(item => {
   el.innerHTML = `
     <span class="tag">${item.category}</span>
     <h3>${item.name}</h3>
-    <div class="meta"><span class="status ${item.statusClass}">${item.status}</span><br>${item.location}</div>
+    <div class="meta">${item.location}</div>
     <p>${item.use}</p>
     <div class="action-row">
       <button class="toggle-btn">點擊檢視 QR Code</button>
@@ -155,4 +155,6 @@ taskOverlay?.addEventListener('click', (e) => {
 
 document.querySelector('#taskOverlay .task-overlay-inner')?.addEventListener('click', (e) => {
   e.stopPropagation();
+});
+tion();
 });
