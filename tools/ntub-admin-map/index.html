@@ -27,82 +27,75 @@
   </header>
 
   <main class="container">
-    <section class="section">
+    <section class="section combined-section">
       <div class="section-head">
-        <h2>新生常見必辦行政事務</h2>
-        <p>先知道什麼事情通常要去哪個單位，找路會快很多。</p>
+        <h2>新生常見必辦行政事務與校園行政辦公處示意地圖</h2>
+        <p>把「要辦什麼事」和「應該去哪裡」放在一起看，對新生比較直覺。每個卡片都能點開 QR Code，直接查該處室網站。</p>
       </div>
-      <div id="taskGrid" class="task-grid"></div>
-    </section>
 
-    <section class="section map-section">
-      <div class="section-head">
-        <h2>校園行政辦公處示意地圖</h2>
-        <p>這是給新生看的簡化版示意圖，不是正式比例地圖；用途是讓你先建立方向感。</p>
-      </div>
-      <div class="map-wrap">
-        <svg viewBox="0 0 1100 680" class="campus-map" aria-label="北商台北校區行政示意圖">
-          <rect x="40" y="40" width="1020" height="600" rx="28" class="campus-border"/>
-          <text x="70" y="90" class="map-title">北商台北校區行政示意圖（新生版）</text>
+      <div class="combined-layout">
+        <div class="left-column">
+          <div id="taskGrid" class="task-grid single"></div>
+        </div>
 
-          <rect x="120" y="160" width="180" height="110" rx="20" class="building building-admin"/>
-          <text x="150" y="205" class="b-name">行政大樓</text>
-          <text x="150" y="238" class="b-sub">教務處 3F</text>
-          <text x="150" y="266" class="b-sub">總務處 1F</text>
+        <div class="right-column">
+          <div class="map-wrap">
+            <svg viewBox="0 0 1100 680" class="campus-map" aria-label="北商台北校區行政示意圖">
+              <rect x="40" y="40" width="1020" height="600" rx="28" class="campus-border"/>
+              <text x="70" y="90" class="map-title">北商台北校區行政示意圖（新生版）</text>
 
-          <rect x="360" y="120" width="180" height="110" rx="20" class="building building-wuyu"/>
-          <text x="405" y="165" class="b-name">五育樓</text>
-          <text x="395" y="198" class="b-sub">軍訓室 1F</text>
+              <rect x="120" y="160" width="180" height="110" rx="20" class="building building-admin"/>
+              <text x="150" y="205" class="b-name">行政大樓</text>
+              <text x="150" y="238" class="b-sub">教務處 3F</text>
+              <text x="150" y="266" class="b-sub">總務處 1F</text>
 
-          <rect x="610" y="120" width="180" height="110" rx="20" class="building building-liuyi"/>
-          <text x="655" y="165" class="b-name">六藝樓</text>
-          <text x="635" y="198" class="b-sub">待校內地圖校正</text>
+              <rect x="360" y="120" width="180" height="110" rx="20" class="building building-wuyu"/>
+              <text x="405" y="165" class="b-name">五育樓</text>
+              <text x="395" y="198" class="b-sub">軍訓室 1F</text>
 
-          <rect x="835" y="150" width="170" height="120" rx="20" class="building building-chengxi"/>
-          <text x="873" y="198" class="b-name">承曦樓</text>
-          <text x="857" y="232" class="b-sub">資訊與網路中心 7F</text>
+              <rect x="610" y="120" width="180" height="110" rx="20" class="building building-liuyi"/>
+              <text x="655" y="165" class="b-name">六藝樓</text>
+              <text x="635" y="198" class="b-sub">待校內地圖校正</text>
 
-          <rect x="170" y="360" width="220" height="130" rx="22" class="building building-library"/>
-          <text x="236" y="412" class="b-name">圖書館</text>
-          <text x="208" y="445" class="b-sub">借書、自習、影印資訊</text>
+              <rect x="835" y="150" width="170" height="120" rx="20" class="building building-chengxi"/>
+              <text x="873" y="198" class="b-name">承曦樓</text>
+              <text x="857" y="232" class="b-sub">資訊與網路中心 7F</text>
 
-          <rect x="460" y="360" width="220" height="130" rx="22" class="building building-gym"/>
-          <text x="535" y="412" class="b-name">體育館</text>
-          <text x="500" y="445" class="b-sub">周邊設施待校正</text>
+              <rect x="170" y="360" width="220" height="130" rx="22" class="building building-library"/>
+              <text x="236" y="412" class="b-name">圖書館</text>
+              <text x="208" y="445" class="b-sub">借書、自習、影印資訊</text>
 
-          <rect x="760" y="360" width="220" height="130" rx="22" class="building building-unknown dashed"/>
-          <text x="810" y="412" class="b-name">生活設施區</text>
-          <text x="790" y="445" class="b-sub">學餐 / ATM / 影印 / 便利性設施</text>
-          <text x="820" y="470" class="b-sub">待校內地圖校正</text>
+              <rect x="460" y="360" width="220" height="130" rx="22" class="building building-gym"/>
+              <text x="535" y="412" class="b-name">體育館</text>
+              <text x="500" y="445" class="b-sub">周邊設施待校正</text>
 
-          <line x1="300" y1="215" x2="360" y2="175" class="path"/>
-          <line x1="540" y1="175" x2="610" y2="175" class="path"/>
-          <line x1="790" y1="175" x2="835" y2="210" class="path"/>
-          <line x1="250" y1="270" x2="250" y2="360" class="path"/>
-          <line x1="570" y1="230" x2="570" y2="360" class="path"/>
-          <line x1="920" y1="270" x2="870" y2="360" class="path"/>
-        </svg>
-      </div>
-      <div class="legend">
-        <span><i class="dot confirmed"></i> 已確認（官方頁面可查）</span>
-        <span><i class="dot pending"></i> 待校內地圖校正</span>
+              <rect x="760" y="360" width="220" height="130" rx="22" class="building building-unknown dashed"/>
+              <text x="810" y="412" class="b-name">生活設施區</text>
+              <text x="790" y="445" class="b-sub">學餐 / ATM / 影印 / 常用設施</text>
+              <text x="820" y="470" class="b-sub">待校內地圖校正</text>
+
+              <line x1="300" y1="215" x2="360" y2="175" class="path"/>
+              <line x1="540" y1="175" x2="610" y2="175" class="path"/>
+              <line x1="790" y1="175" x2="835" y2="210" class="path"/>
+              <line x1="250" y1="270" x2="250" y2="360" class="path"/>
+              <line x1="570" y1="230" x2="570" y2="360" class="path"/>
+              <line x1="920" y1="270" x2="870" y2="360" class="path"/>
+            </svg>
+          </div>
+          <div class="legend">
+            <span><i class="dot confirmed"></i> 已確認（官方頁面可查）</span>
+            <span><i class="dot pending"></i> 待校內地圖校正</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-head">
         <h2>行政單位與生活設施</h2>
-        <p>把新生最常需要的點位整理成一張卡片牆。</p>
+        <p>每個 block 都可以點開 QR Code，掃描後快速進入官方網站。</p>
       </div>
       <div id="placeGrid" class="place-grid"></div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>官方網站 QR Code</h2>
-        <p>掃描後可直接進入各處室官網，查詢公告、聯絡方式與最新資訊。</p>
-      </div>
-      <div id="qrGrid" class="qr-grid"></div>
     </section>
   </main>
 
