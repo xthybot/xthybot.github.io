@@ -61,7 +61,7 @@ body {
   inset: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 20px;
   background: rgba(13, 24, 38, 0.18);
 }
@@ -211,5 +211,8 @@ body {
   .task-card, .place-card, .task-overlay { padding: 14px; }
   .tag { font-size: 11px; }
   .campus-map { width: 100%; min-width: 0; }
+  .qr-panel img { width: 108px; height: 108px; }
+}
+-map { width: 100%; min-width: 0; }
   .qr-panel img { width: 108px; height: 108px; }
 }
