@@ -1,5 +1,6 @@
 const taskItems = [
   {
+    id: 'task-acad',
     type: '註冊 / 學籍',
     title: '註冊、學籍、選課、成績、學生證',
     desc: '大一新生最常接觸的核心行政事務。若是課表、學分、學生證、成績或學籍問題，通常先找教務處。',
@@ -35,6 +36,7 @@ const taskItems = [
     url: 'https://imd.ntub.edu.tw/'
   },
   {
+    id: 'task-life',
     type: '生活設施',
     title: '圖書館、學餐、ATM、影印與日常動線',
     desc: '除了行政辦公室，新生日常最常找的就是圖書館、學餐、影印與金融設施。',
@@ -106,4 +108,23 @@ document.addEventListener('click', (e) => {
   const panel = e.target.closest('.task-card, .place-card').querySelector('.qr-panel');
   panel.classList.toggle('open');
   e.target.textContent = panel.classList.contains('open') ? '收合 QR Code' : '點擊檢視 QR Code';
+});
+});
+ing = e.target.closest('.clickable-building');
+  if (!building) return;
+  const targetId = building.dataset.target;
+  const card = document.getElementById(targetId);
+  if (!card) return;
+
+  document.querySelectorAll('.task-card.highlight').forEach(el => el.classList.remove('highlight'));
+  card.classList.add('highlight');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  const panel = card.querySelector('.qr-panel');
+  const btn = card.querySelector('.toggle-btn');
+  if (panel && !panel.classList.contains('open')) {
+    panel.classList.add('open');
+    if (btn) btn.textContent = '收合 QR Code';
+  }
+});
 });

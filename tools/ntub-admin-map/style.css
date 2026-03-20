@@ -73,6 +73,9 @@ body {
 .campus-border { fill: #fff; stroke: #dbe6f4; stroke-width: 3; }
 .map-title { fill: var(--primary); font-size: 26px; font-weight: 800; }
 .building { stroke-width: 3; }
+.clickable-building { cursor: pointer; transition: transform .2s ease, filter .2s ease; }
+.clickable-building:hover { filter: brightness(1.03); }
+.task-card.highlight { outline: 3px solid rgba(93,135,199,.28); box-shadow: 0 0 0 6px rgba(93,135,199,.10), var(--shadow); }
 .building-admin { fill: #eaf2ff; stroke: #5d87c7; }
 .building-wuyu { fill: #eef7f1; stroke: #63a27e; }
 .building-liuyi { fill: #f7f0ff; stroke: #9679c7; }
