@@ -85,10 +85,8 @@ taskItems.forEach(item => {
     <p>${item.desc}</p>
     <div class="meta">${item.place}</div>
     <div class="action-row">
-      <button class="toggle-btn">點擊檢視 QR Code</button>
       <a class="link-btn" href="${item.url}" target="_blank" rel="noopener noreferrer">前往官網</a>
     </div>
-    ${makeQrPanel(item.url, item.title)}
   `;
   taskGrid.appendChild(el);
 });
