@@ -117,6 +117,12 @@ body {
 .qr-panel.open { display: block; }
 .qr-panel img { width: 132px; height: 132px; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
 .qr-panel .small { margin-top: 10px; font-size: 13px; color: var(--muted); word-break: break-all; }
+.map-title-outside {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+}
 .map-wrap {
   background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 12px; box-shadow: var(--shadow); overflow: auto;
 }
