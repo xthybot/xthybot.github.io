@@ -11,8 +11,8 @@ const taskItems = [
     id: 'task-stud',
     type: '學務 / 輔導',
     title: '獎助學金、就學貸款、請假、住宿與生活輔導',
-    desc: '和學生生活最相關的行政窗口。若是助學、生活輔導、住宿、請假等，多數資訊從學務處開始查；你提到體育館一樓有辦理學貸的學生事務組，也一併標進示意地圖。',
-    place: '學生事務組／學貸窗口｜體育館 1 樓（依目前使用需求標示）',
+    desc: '和學生生活最相關的行政窗口。若是助學、生活輔導、住宿、請假等，多數資訊從學務處開始查。',
+    place: '學務處｜六藝樓 1 樓｜已確認',
     url: 'https://stud.ntub.edu.tw/'
   },
   {
@@ -28,7 +28,7 @@ const taskItems = [
     type: '校園帳號',
     title: '校園網路、系統登入、帳號密碼',
     desc: '新生需要登入校內系統、無線網路或資訊服務時，資訊與網路中心是重點單位。',
-    place: '資訊與網路中心｜承曦樓 7 樓｜已確認',
+    place: '資訊與網路中心｜承曦樓 7 樓 704｜已確認',
     url: 'https://inc.ntub.edu.tw/'
   },
   {
@@ -36,15 +36,15 @@ const taskItems = [
     type: '系上窗口',
     title: '資管系課程、系務與系辦協助',
     desc: '遇到系上課程安排、導師、系務通知與資管系相關問題，可先找系辦。',
-    place: '資訊管理系系辦｜行政大樓 4 樓｜已確認',
+    place: '資訊管理系系辦｜行政大樓 4 樓 401｜已確認',
     url: 'https://imd.ntub.edu.tw/'
   },
   {
     id: 'task-life',
     type: '生活設施',
-    title: '圖書館、學餐、ATM、影印與日常動線',
+    title: '圖書館、學餐、影印與日常動線',
     desc: '除了行政辦公室，新生日常最常找的就是圖書館、學餐、影印與金融設施。',
-    place: '圖書館已確認，其餘生活設施多數待校內地圖校正',
+    place: '圖書館｜圖書館；學餐 / 影印部｜五育樓 B1｜已確認',
     url: 'https://library.ntub.edu.tw/'
   }
 ];
@@ -52,12 +52,12 @@ const taskItems = [
 const places = [
   { name:'教務處', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 3 樓', use:'註冊、學籍、選課、成績、學生證', url:'https://acad.ntub.edu.tw/' },
   { name:'總務處', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 1 樓', use:'校務行政、場地與部分庶務資訊', url:'https://gen.ntub.edu.tw/' },
-  { name:'資訊與網路中心', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 承曦樓 7 樓', use:'校園網路、系統帳號、資訊服務', url:'https://inc.ntub.edu.tw/' },
+  { name:'資訊與網路中心', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 承曦樓 7 樓 704', use:'校園網路、系統帳號、資訊服務', url:'https://inc.ntub.edu.tw/' },
   { name:'軍訓室', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 五育樓 1 樓', use:'兵役、校安、緊急協助', url:'https://meo.ntub.edu.tw/' },
-  { name:'資訊管理系系辦', category:'系上窗口', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 4 樓', use:'資管系課程、系務、系上行政', url:'https://imd.ntub.edu.tw/' },
-  { name:'圖書館', category:'常用設施', status:'已確認', statusClass:'ok', location:'臺北校區 圖書館', use:'這一區主要是圖書館與影印的地方；進入通常需要刷學生證，或以身分證辦理入館。', url:'https://library.ntub.edu.tw/' },
-  { name:'學務處', category:'行政單位', status:'待校內地圖校正', statusClass:'pending', location:'官方頁面可查處室，但臺北校區精確位置待校正', use:'獎助學金、就學貸款、請假、住宿與生活輔導', url:'https://stud.ntub.edu.tw/' },
-  { name:'學餐 / ATM / 影印', category:'生活設施', status:'待校內地圖校正', statusClass:'pending', location:'需依校內平面圖或到校後現場確認', use:'日常飲食、列印、提款等生活動線', url:'https://www.ntub.edu.tw/' }
+  { name:'資訊管理系系辦', category:'系上窗口', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 4 樓 401', use:'資管系課程、系務、系上行政', url:'https://imd.ntub.edu.tw/' },
+  { name:'圖書館', category:'常用設施', status:'已確認', statusClass:'ok', location:'臺北校區 圖書館', use:'這一區主要是圖書館；進入通常需要刷學生證，或以身分證辦理入館。', url:'https://library.ntub.edu.tw/' },
+  { name:'學務處', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 六藝樓 1 樓', use:'獎助學金、就學貸款、請假、住宿與生活輔導', url:'https://stud.ntub.edu.tw/' },
+  { name:'學餐 / 影印部', category:'生活設施', status:'已確認', statusClass:'ok', location:'臺北校區 五育樓 B1', use:'日常飲食與列印影印常用動線', url:'https://www.ntub.edu.tw/' }
 ];
 
 function makeQrPanel(url, name) {
