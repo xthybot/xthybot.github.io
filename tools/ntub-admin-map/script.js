@@ -134,3 +134,11 @@ document.addEventListener('click', (e) => {
     if (btn) btn.textContent = '收合 QR Code';
   }
 });
+
+closeOverlay?.addEventListener('click', () => {
+  taskOverlay.classList.add('hidden');
+  document.querySelectorAll('.task-card').forEach(el => {
+    el.style.display = 'block';
+    el.classList.remove('highlight');
+  });
+});
