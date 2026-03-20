@@ -156,5 +156,3 @@ taskOverlay?.addEventListener('click', (e) => {
 document.querySelector('#taskOverlay .task-overlay-inner')?.addEventListener('click', (e) => {
   e.stopPropagation();
 });
-tion();
-});
