@@ -162,10 +162,11 @@ body {
   .task-card p, .place-card p, .meta { font-size: 14px; line-height: 1.7; }
   .action-row { gap: 8px; }
   .toggle-btn, .link-btn, .close-overlay { width: 100%; text-align: center; justify-content: center; }
-  .map-wrap { padding: 8px; border-radius: 18px; overflow-x: auto; }
-  .campus-map { min-width: 760px; }
-  .floating-overlay { padding: 10px; background: rgba(246, 248, 252, 0.5); display: flex; justify-content: center; }
+  .map-wrap { padding: 8px; border-radius: 18px; overflow: hidden; width: 100%; }
+  .campus-map { width: 100%; min-width: 0; height: auto; }
+  .floating-overlay { padding: 10px; background: rgba(246, 248, 252, 0.5); display: flex; justify-content: center; width: 100%; }
   .task-overlay-inner { width: 90vw; max-width: 90vw; }
+  .combined-layout, .right-column, .right-column.full, .section, .section-head, .task-card, .place-card, .qr-panel, .task-overlay { width: 100%; max-width: 100%; }
   .task-overlay-head { align-items: flex-start; flex-direction: column; gap: 10px; }
   .task-overlay-head h3 { font-size: 18px; }
   .qr-panel img { width: 120px; height: 120px; }
@@ -182,6 +183,6 @@ body {
   .container { padding: 20px 14px 34px; }
   .task-card, .place-card, .task-overlay { padding: 14px; }
   .tag { font-size: 11px; }
-  .campus-map { min-width: 680px; }
+  .campus-map { width: 100%; min-width: 0; }
   .qr-panel img { width: 108px; height: 108px; }
 }
