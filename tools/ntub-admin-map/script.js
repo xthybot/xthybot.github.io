@@ -72,6 +72,8 @@ function makeQrPanel(url, name) {
 
 const taskGrid = document.getElementById('taskGrid');
 const placeGrid = document.getElementById('placeGrid');
+const taskOverlay = document.getElementById('taskOverlay');
+const closeOverlay = document.getElementById('closeOverlay');
 
 taskItems.forEach(item => {
   const el = document.createElement('article');
@@ -123,9 +125,13 @@ document.addEventListener('click', (e) => {
   const card = document.getElementById(targetId);
   if (!card) return;
 
-  document.querySelectorAll('.task-card.highlight').forEach(el => el.classList.remove('highlight'));
+  taskOverlay.classList.remove('hidden');
+  document.querySelectorAll('.task-card').forEach(el => {
+    el.style.display = el.id === targetId ? 'block' : 'none';
+    el.classList.remove('highlight');
+  });
   card.classList.add('highlight');
-  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  taskOverlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const panel = card.querySelector('.qr-panel');
   const btn = card.querySelector('.toggle-btn');
