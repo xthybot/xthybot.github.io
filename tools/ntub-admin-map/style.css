@@ -191,10 +191,12 @@ body {
   .toggle-btn, .link-btn, .close-overlay { width: 100%; text-align: center; justify-content: center; }
   .map-wrap { padding: 8px; border-radius: 18px; overflow: hidden; width: 100%; }
   .campus-map { width: 100%; min-width: 0; height: auto; }
-  .page-overlay { padding: 12px; align-items: flex-start; }
-  .task-overlay-inner { width: 90vw; max-width: 90vw; }
+  .page-overlay { padding: 12px; align-items: center; }
+  .task-overlay-inner { width: 90vw; max-width: 90vw; display: flex; flex-direction: column; }
   .combined-layout, .right-column, .right-column.full, .section, .section-head, .task-card, .place-card, .qr-panel, .task-overlay { width: 100%; max-width: 100%; }
-  .task-overlay-head { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .task-overlay-head { order: 2; margin-top: 12px; margin-bottom: 0; }
+  .task-overlay-head.no-title { justify-content: stretch; }
+  .task-grid.single { order: 1; }
   .task-overlay-head h3 { font-size: 18px; }
   .qr-panel img { width: 120px; height: 120px; }
   .legend { font-size: 13px; gap: 10px; }
