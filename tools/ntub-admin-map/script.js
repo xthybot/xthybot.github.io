@@ -131,7 +131,7 @@ document.addEventListener('click', (e) => {
     el.classList.remove('highlight');
   });
   card.classList.add('highlight');
-  taskOverlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // keep overlay in-place above the map without scrolling the page
 
   const panel = card.querySelector('.qr-panel');
   const btn = card.querySelector('.toggle-btn');

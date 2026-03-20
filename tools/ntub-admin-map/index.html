@@ -33,19 +33,18 @@
         <p>把「要辦什麼事」和「應該去哪裡」放在一起看，對新生比較直覺。每個卡片都能點開 QR Code，直接查該處室網站。</p>
       </div>
 
-      <div id="taskOverlay" class="task-overlay hidden">
-        <div class="task-overlay-inner">
-          <div class="task-overlay-head">
-            <h3>新生常見必辦行政事務</h3>
-            <button id="closeOverlay" class="close-overlay" type="button">關閉</button>
-          </div>
-          <div id="taskGrid" class="task-grid single"></div>
-        </div>
-      </div>
-
       <div class="combined-layout map-only">
         <div class="right-column full">
-          <div class="map-wrap">
+          <div class="map-wrap with-overlay">
+            <div id="taskOverlay" class="task-overlay hidden floating-overlay">
+              <div class="task-overlay-inner">
+                <div class="task-overlay-head">
+                  <h3>新生常見必辦行政事務</h3>
+                  <button id="closeOverlay" class="close-overlay" type="button">關閉</button>
+                </div>
+                <div id="taskGrid" class="task-grid single"></div>
+              </div>
+            </div>
             <svg viewBox="0 0 1100 680" class="campus-map" aria-label="北商台北校區行政示意圖">
               <rect x="40" y="40" width="1020" height="600" rx="28" class="campus-border"/>
               <text x="70" y="90" class="map-title">北商台北校區行政示意圖（新生版）</text>
