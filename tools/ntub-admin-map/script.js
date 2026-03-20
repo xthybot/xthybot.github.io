@@ -55,7 +55,7 @@ const places = [
   { name:'資訊與網路中心', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 承曦樓 7 樓', use:'校園網路、系統帳號、資訊服務', url:'https://inc.ntub.edu.tw/' },
   { name:'軍訓室', category:'行政單位', status:'已確認', statusClass:'ok', location:'臺北校區 五育樓 1 樓', use:'兵役、校安、緊急協助', url:'https://meo.ntub.edu.tw/' },
   { name:'資訊管理系系辦', category:'系上窗口', status:'已確認', statusClass:'ok', location:'臺北校區 行政大樓 4 樓', use:'資管系課程、系務、系上行政', url:'https://imd.ntub.edu.tw/' },
-  { name:'圖書館', category:'常用設施', status:'已確認', statusClass:'ok', location:'臺北校區 圖書館', use:'借書、自習、查資料、常用學習設施', url:'https://library.ntub.edu.tw/' },
+  { name:'圖書館', category:'常用設施', status:'已確認', statusClass:'ok', location:'臺北校區 圖書館', use:'這一區主要是圖書館與影印的地方；進入通常需要刷學生證，或以身分證辦理入館。', url:'https://library.ntub.edu.tw/' },
   { name:'學務處', category:'行政單位', status:'待校內地圖校正', statusClass:'pending', location:'官方頁面可查處室，但臺北校區精確位置待校正', use:'獎助學金、就學貸款、請假、住宿與生活輔導', url:'https://stud.ntub.edu.tw/' },
   { name:'學餐 / ATM / 影印', category:'生活設施', status:'待校內地圖校正', statusClass:'pending', location:'需依校內平面圖或到校後現場確認', use:'日常飲食、列印、提款等生活動線', url:'https://www.ntub.edu.tw/' }
 ];
