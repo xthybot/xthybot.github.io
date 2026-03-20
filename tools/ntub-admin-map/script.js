@@ -154,3 +154,7 @@ closeOverlay?.addEventListener('click', closeTaskOverlay);
 taskOverlay?.addEventListener('click', (e) => {
   if (e.target === taskOverlay) closeTaskOverlay();
 });
+
+document.querySelector('#taskOverlay .task-overlay-inner')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
