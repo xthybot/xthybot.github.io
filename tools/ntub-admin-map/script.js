@@ -8,6 +8,7 @@ const taskItems = [
     url: 'https://acad.ntub.edu.tw/'
   },
   {
+    id: 'task-stud',
     type: '學務 / 輔導',
     title: '獎助學金、就學貸款、請假、住宿與生活輔導',
     desc: '和學生生活最相關的行政窗口。若是助學、生活輔導、住宿、請假等，多數資訊從學務處開始查。',
@@ -15,6 +16,7 @@ const taskItems = [
     url: 'https://stud.ntub.edu.tw/'
   },
   {
+    id: 'task-military',
     type: '兵役 / 校安',
     title: '兵役、緩徵、校安與緊急協助',
     desc: '男同學常會碰到兵役折抵、緩徵等文件需求，也包含校安與緊急支援。',
@@ -22,6 +24,7 @@ const taskItems = [
     url: 'https://meo.ntub.edu.tw/'
   },
   {
+    id: 'task-inc',
     type: '校園帳號',
     title: '校園網路、系統登入、帳號密碼',
     desc: '新生需要登入校內系統、無線網路或資訊服務時，資訊與網路中心是重點單位。',
@@ -29,6 +32,7 @@ const taskItems = [
     url: 'https://inc.ntub.edu.tw/'
   },
   {
+    id: 'task-imd',
     type: '系上窗口',
     title: '資管系課程、系務與系辦協助',
     desc: '遇到系上課程安排、導師、系務通知與資管系相關問題，可先找系辦。',
@@ -72,6 +76,7 @@ const placeGrid = document.getElementById('placeGrid');
 taskItems.forEach(item => {
   const el = document.createElement('article');
   el.className = 'task-card';
+  el.id = item.id;
   el.innerHTML = `
     <span class="tag">${item.type}</span>
     <h3>${item.title}</h3>
@@ -104,14 +109,16 @@ places.forEach(item => {
 });
 
 document.addEventListener('click', (e) => {
-  if (!e.target.classList.contains('toggle-btn')) return;
-  const panel = e.target.closest('.task-card, .place-card').querySelector('.qr-panel');
-  panel.classList.toggle('open');
-  e.target.textContent = panel.classList.contains('open') ? '收合 QR Code' : '點擊檢視 QR Code';
-});
-});
-ing = e.target.closest('.clickable-building');
+  if (e.target.classList.contains('toggle-btn')) {
+    const panel = e.target.closest('.task-card, .place-card').querySelector('.qr-panel');
+    panel.classList.toggle('open');
+    e.target.textContent = panel.classList.contains('open') ? '收合 QR Code' : '點擊檢視 QR Code';
+    return;
+  }
+
+  const building = e.target.closest('.clickable-building');
   if (!building) return;
+
   const targetId = building.dataset.target;
   const card = document.getElementById(targetId);
   if (!card) return;
@@ -126,5 +133,4 @@ ing = e.target.closest('.clickable-building');
     panel.classList.add('open');
     if (btn) btn.textContent = '收合 QR Code';
   }
-});
 });
