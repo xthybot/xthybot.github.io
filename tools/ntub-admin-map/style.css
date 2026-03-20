@@ -99,11 +99,26 @@ body {
 .task-card, .place-card {
   background: var(--card); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); padding: 20px;
 }
+.floating-overlay .task-card {
+  background: #ffffff;
+  opacity: 1;
+}
+.floating-overlay .task-card h3,
+.floating-overlay .task-card .tag,
+.floating-overlay .task-card .meta,
+.floating-overlay .task-card p {
+  position: relative;
+  z-index: 1;
+}
 .tag {
   display: inline-block; margin-bottom: 10px; padding: 6px 10px; border-radius: 999px;
   background: var(--soft); color: var(--accent); font-size: 12px; font-weight: 700;
 }
 .task-card h3, .place-card h3 { margin: 0 0 10px; font-size: 20px; color: var(--primary); }
+.floating-overlay .task-card h3 {
+  color: var(--primary);
+  font-weight: 800;
+}
 .task-card p, .place-card p { margin: 0; color: var(--muted); line-height: 1.75; }
 .action-row { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
 .toggle-btn, .link-btn {
