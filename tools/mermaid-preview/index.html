@@ -29,8 +29,8 @@
       <div class="chips">
         <span>即時預覽</span>
         <span>錯誤提示</span>
-        <span>範例模板</span>
-        <span>一鍵複製</span>
+        <span>PNG / SVG 匯出</span>
+        <span>自訂主題顏色</span>
       </div>
     </section>
 
@@ -57,8 +57,44 @@ flowchart TD
       <section class="panel preview-card">
         <div class="card-head">
           <h2>即時預覽</h2>
-          <button class="mini-btn" id="downloadSvgBtn">下載 SVG</button>
+          <div class="head-actions">
+            <button class="mini-btn" id="downloadSvgBtn">下載 SVG</button>
+            <button class="mini-btn" id="downloadPngBtn">下載 PNG</button>
+          </div>
         </div>
+
+        <section class="theme-panel">
+          <div class="theme-head">
+            <h3>主題設定</h3>
+            <label class="theme-mode-label">模式
+              <select id="themeMode">
+                <option value="dark">深色</option>
+                <option value="default">淺色</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="theme-grid">
+            <label>主色
+              <input type="color" id="primaryColor" value="#7c8cff" />
+            </label>
+            <label>線條色
+              <input type="color" id="lineColor" value="#73e0ff" />
+            </label>
+            <label>文字色
+              <input type="color" id="textColor" value="#e8f0ff" />
+            </label>
+            <label>背景色
+              <input type="color" id="backgroundColor" value="#0b1220" />
+            </label>
+          </div>
+
+          <div class="theme-actions">
+            <button class="mini-btn" id="applyThemeBtn">套用主題</button>
+            <button class="mini-btn" id="resetThemeBtn">重設主題</button>
+          </div>
+        </section>
+
         <div id="errorBox" class="error-box" hidden></div>
         <div id="preview" class="preview-area">
           <div class="empty-state">圖會顯示在這裡</div>

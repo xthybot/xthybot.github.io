@@ -24,7 +24,7 @@ body {
   position: relative;
 }
 a { color: inherit; text-decoration: none; }
-textarea, button { font: inherit; }
+textarea, button, select, input { font: inherit; }
 .bg-grid {
   position: fixed;
   inset: 0;
@@ -132,10 +132,10 @@ h1 {
   gap: 12px;
   margin-bottom: 14px;
 }
-.card-head h2 {
+.card-head h2, .theme-head h3 {
   margin: 0;
 }
-.head-actions {
+.head-actions, .theme-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -178,6 +178,46 @@ textarea::placeholder {
   margin-top: 12px;
   color: var(--muted);
   font-size: 14px;
+}
+.theme-panel {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.02);
+}
+.theme-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.theme-mode-label, .theme-grid label {
+  color: var(--muted);
+  font-size: 14px;
+}
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.theme-grid label {
+  display: grid;
+  gap: 8px;
+}
+select, input[type="color"] {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(4, 10, 20, 0.72);
+  color: var(--text);
+  min-height: 42px;
+  padding: 8px 10px;
+}
+input[type="color"] {
+  padding: 4px;
 }
 .error-box {
   border: 1px solid rgba(255, 140, 161, 0.26);
@@ -224,7 +264,7 @@ textarea::placeholder {
   body {
     padding: 16px;
   }
-  .topbar {
+  .topbar, .theme-head, .card-head {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
@@ -232,8 +272,7 @@ textarea::placeholder {
   .hero, .editor-card, .preview-card {
     padding: 20px;
   }
-  .card-head {
-    flex-direction: column;
-    align-items: flex-start;
+  .theme-grid {
+    grid-template-columns: 1fr;
   }
 }
