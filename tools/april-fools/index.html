@@ -3,143 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Slipstream™｜人生效率升級發表會</title>
-  <meta name="description" content="一個看起來很像真的產品發表頁，但越看越不對勁的愚人節網站。" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🫠%3C/text%3E%3C/svg%3E">
+  <title>Pulseboard｜Personal Presence Infrastructure</title>
+  <meta name="description" content="A presence infrastructure layer for modern professionals. Coordinate signals, consistency, and visible momentum across distributed work." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='8' y='8' width='48' height='48' rx='14' fill='%23091020'/%3E%3Cpath d='M20 38c6-14 10-18 14-18 5 0 7 7 10 7 2 0 4-2 6-5' stroke='%238bb6ff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="ambient ambient-a"></div>
-  <div class="ambient ambient-b"></div>
-  <div class="grid"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-a"></div>
+  <div class="bg-glow glow-b"></div>
 
-  <header class="topbar">
-    <div class="brand">Slipstream<span>™</span></div>
-    <nav>
-      <a href="#features">功能</a>
-      <a href="#demo">即時體驗</a>
-      <a href="#pricing">方案</a>
+  <header class="site-header">
+    <div class="brand">Pulseboard</div>
+    <nav class="nav">
+      <a href="#platform">Platform</a>
+      <a href="#signals">Signals</a>
+      <a href="#simulator">Simulator</a>
+      <a href="#plans">Plans</a>
     </nav>
   </header>
 
-  <main class="shell">
-    <section class="hero card">
-      <div class="hero-copy">
-        <p class="eyebrow">APRIL 1 · KEYNOTE ANNOUNCEMENT</p>
-        <h1>讓 AI 幫你維持<br>「看起來有在努力」</h1>
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy panel">
+        <p class="eyebrow">PERSONAL PRESENCE INFRASTRUCTURE</p>
+        <h1>Stay visible.<br>Even when you're barely holding it together.</h1>
         <p class="lede">
-          Slipstream™ 是新一代人生效率增幅平台，專為「其實很累、但還是想維持體面」的人設計。
-          它能自動生成忙碌感、專業感，以及一點點你自己都不太相信的進步幻覺。
+          Pulseboard helps knowledge workers maintain coherent external momentum across chat, meetings, async updates, and ambient professional presence.
+          Build a more stable impression layer without increasing actual energy expenditure.
         </p>
         <div class="hero-actions">
-          <button class="btn primary" id="launchDemo">立即體驗</button>
-          <a class="btn ghost" href="#features">先看功能</a>
+          <a class="btn primary" href="#simulator">Open simulator</a>
+          <a class="btn secondary" href="#platform">Explore platform</a>
         </div>
-        <div class="signal-row">
-          <span>97.4% 使用者表示：<strong>別人真的以為我最近很上軌道</strong></span>
+        <div class="hero-proof">
+          <span>Trusted by teams that are technically functioning.</span>
+          <strong>4,200+</strong>
         </div>
       </div>
-      <div class="hero-panel">
-        <div class="metric-card">
-          <p>即時人格同步率</p>
-          <strong id="syncRate">71%</strong>
-          <span>系統判定你目前處於「還想撐一下」模式</span>
+
+      <aside class="hero-stats panel">
+        <div class="stat-card">
+          <span>Signal continuity</span>
+          <strong id="signalRate">94.2%</strong>
+          <p>Maintains an externally believable rhythm across fragmented attention cycles.</p>
         </div>
-        <div class="metric-card muted">
-          <p>今日自我感覺良好指數</p>
-          <strong id="copingRate">42%</strong>
-          <span>仍可透過科技營造未來可期的錯覺</span>
+        <div class="stat-card">
+          <span>Perceived momentum</span>
+          <strong id="momentumRate">81.7%</strong>
+          <p>Creates a durable impression that things are moving forward in a measured way.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section id="platform" class="platform-grid">
+      <article class="panel feature-card">
+        <span class="feature-tag">Layer 01</span>
+        <h2>Status shaping</h2>
+        <p>Transform low-energy output into legible professional activity with calibrated tone, pacing, and timing cues.</p>
+      </article>
+      <article class="panel feature-card">
+        <span class="feature-tag">Layer 02</span>
+        <h2>Expectation buffering</h2>
+        <p>Reduce inbound urgency by projecting controlled movement, partial clarity, and responsible ambiguity.</p>
+      </article>
+      <article class="panel feature-card">
+        <span class="feature-tag">Layer 03</span>
+        <h2>Reputation smoothing</h2>
+        <p>Bridge the gap between internal chaos and external consistency without sounding robotic or alarmed.</p>
+      </article>
+    </section>
+
+    <section id="signals" class="signals panel">
+      <div>
+        <p class="eyebrow">SIGNALS ENGINE</p>
+        <h2>Designed for high-noise, low-battery work lives.</h2>
+      </div>
+      <div class="signal-list">
+        <div class="signal-item">
+          <strong>Async plausibility</strong>
+          <p>Converts "I haven't touched this" into a socially acceptable progress contour.</p>
+        </div>
+        <div class="signal-item">
+          <strong>Meeting residue</strong>
+          <p>Generates subtle traces suggesting you emerged from something operationally important.</p>
+        </div>
+        <div class="signal-item">
+          <strong>Controlled responsiveness</strong>
+          <p>Prevents both suspicious silence and emotionally revealing over-replying.</p>
         </div>
       </div>
     </section>
 
-    <section id="features" class="feature-grid">
-      <article class="card feature">
-        <span>Feature 01</span>
-        <h2>自動產生忙碌痕跡</h2>
-        <p>幫你模擬深夜上線、快速切換視窗、以及「剛剛在整理」的微妙可信感。</p>
-      </article>
-      <article class="card feature">
-        <span>Feature 02</span>
-        <h2>智慧敷衍生成器</h2>
-        <p>把「我還沒開始」包裝成「我正在整體評估方向」，文明又不失逃生空間。</p>
-      </article>
-      <article class="card feature">
-        <span>Feature 03</span>
-        <h2>延後焦慮排程</h2>
-        <p>不是解決問題，只是把問題排到你今天心情比較好的時候再面對。</p>
-      </article>
-    </section>
-
-    <section id="demo" class="card demo">
-      <div class="demo-copy">
-        <p class="eyebrow">LIVE DEMO</p>
-        <h2>測試你的「體面續航力」</h2>
+    <section id="simulator" class="simulator panel">
+      <div class="sim-copy">
+        <p class="eyebrow">LIVE PRESENCE SIMULATOR</p>
+        <h2>Run a personal signal audit</h2>
         <p>
-          輸入你的名字，系統會根據極度可疑的先進模型，分析你今天到底是穩定前進，還是單靠意志力在拖著靈魂移動。
+          Enter a name to simulate external professional coherence under current emotional and operational load.
+          The system will assess visible steadiness, perceived control, and likely observer interpretation.
         </p>
       </div>
 
-      <div class="demo-console">
+      <div class="sim-ui">
         <label class="input-wrap">
-          <span>你的名字</span>
-          <input id="nameInput" type="text" maxlength="18" placeholder="例如：阿明、Kevin、今天很想下班的人" />
+          <span>Name</span>
+          <input id="nameInput" type="text" maxlength="24" placeholder="e.g. Alex, Cathy, Product Team Lead" />
         </label>
-        <div class="action-row">
-          <button class="btn primary" id="analyzeBtn">開始分析</button>
-          <button class="btn ghost" id="luckyBtn" type="button">我懶得打，直接亂算</button>
+        <div class="button-row">
+          <button id="analyzeBtn" class="btn primary" type="button">Run audit</button>
+          <button id="sampleBtn" class="btn secondary" type="button">Load sample profile</button>
         </div>
 
-        <div class="terminal" id="terminal" aria-live="polite">
-          <div class="terminal-head">
+        <div class="console">
+          <div class="console-head">
             <span class="dot red"></span>
             <span class="dot yellow"></span>
             <span class="dot green"></span>
-            <strong>Slipstream Live Diagnostics</strong>
+            <strong>Presence Audit Console</strong>
           </div>
-          <div class="terminal-body" id="terminalBody">
-            <p>> 系統待命中，準備分析你的社會生存狀態。</p>
+          <div class="console-body" id="consoleBody">
+            <p>> Waiting for profile input.</p>
+            <p class="muted">> No anomalies detected yet.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="card reveal" id="resultCard" hidden>
-      <p class="eyebrow">RESULT</p>
-      <h2 id="resultTitle">分析完成</h2>
-      <p class="score" id="resultScore"></p>
+    <section id="resultPanel" class="result panel" hidden>
+      <p class="eyebrow">AUDIT OUTPUT</p>
+      <h2 id="resultTitle">Profile ready</h2>
+      <p class="result-score" id="resultScore"></p>
       <p class="result-text" id="resultText"></p>
-      <div class="chips" id="chipRow"></div>
-      <div class="result-actions">
-        <button class="btn primary" id="rerunBtn">再分析一次</button>
-        <button class="btn ghost" id="truthBtn">揭露真相</button>
-      </div>
-      <div class="truth-panel" id="truthPanel" hidden>
-        <p>
-          真相很簡單：這不是什麼效率平台，這是一個愚人節頁面。
-          但說真的，能撐到現在的你，多少還是值得一個升級版本的人生介面。
-        </p>
-      </div>
+      <div class="chip-row" id="chipRow"></div>
+      <div class="meta-note" id="metaNote"></div>
     </section>
 
-    <section id="pricing" class="pricing-grid">
-      <article class="card plan">
+    <section id="plans" class="plans-grid">
+      <article class="panel plan-card">
         <span>Starter</span>
-        <h3>看起來還行版</h3>
-        <p>適合偶爾需要在人群中維持「最近有在調整自己」形象的人。</p>
+        <h3>Quietly competent</h3>
+        <p>For individuals who only need a little structure between fatigue and public perception.</p>
       </article>
-      <article class="card plan featured">
+      <article class="panel plan-card featured">
         <span>Pro</span>
-        <h3>彷彿真的很自律版</h3>
-        <p>附贈高級語氣包：<br>「我最近在重新校準節奏。」</p>
+        <h3>Operationally reassuring</h3>
+        <p>For people who want to sound like they have a framework, not a survival tactic.</p>
       </article>
-      <article class="card plan">
-        <span>Enterprise</span>
-        <h3>整個人像有計畫版</h3>
-        <p>適合需要讓全世界相信你一切都在掌控中的高壓族群。</p>
+      <article class="panel plan-card">
+        <span>Scale</span>
+        <h3>Strategically composed</h3>
+        <p>For teams seeking coordinated professionalism under vaguely alarming conditions.</p>
       </article>
     </section>
   </main>
