@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A4 合併列印預覽</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ctext y=%2752%27 font-size=%2752%27%3E%F0%9F%A6%9E%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="preview-body">
+  <div class="bg-grid"></div>
+  <main class="preview-shell">
+    <header class="preview-topbar panel">
+      <div>
+        <p class="eyebrow">A4 PREVIEW</p>
+        <h1>多頁預覽</h1>
+        <p class="subtitle">縮圖預覽會盡量貼近 PDF；可切換格號與放大檢視。</p>
+      </div>
+      <div class="preview-actions">
+        <label class="inline-toggle"><input id="previewToggleCellNumbers" type="checkbox" checked> 顯示格號</label>
+        <button id="refreshPreviewBtn" class="btn">重新整理預覽</button>
+        <a class="btn" href="./index.html">回編輯頁</a>
+      </div>
+    </header>
+    <section class="panel preview-list-panel">
+      <div id="previewSummary" class="data-stats">載入中…</div>
+      <div id="previewList" class="preview-list"></div>
+    </section>
+  </main>
+  <dialog id="zoomDialog" class="zoom-dialog">
+    <button class="dialog-close" id="dialogCloseBtn">✕</button>
+    <div class="dialog-stage"><canvas id="zoomCanvas"></canvas></div>
+  </dialog>
+  <script src="./script.js"></script>
+</body>
+</html>

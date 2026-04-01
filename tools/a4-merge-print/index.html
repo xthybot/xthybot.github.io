@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>阿蝦 A4 合併列印工具</title>
+  <meta name="description" content="在瀏覽器中完成單格底圖排版、批次套字、多頁 A4 預覽與 PDF 匯出。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ctext y=%2752%27 font-size=%2752%27%3E%F0%9F%A6%9E%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <a class="back" href="/">← 回首頁</a>
+      <span class="badge">A4 MERGE PRINT</span>
+    </header>
+
+    <section class="hero panel">
+      <p class="eyebrow">阿蝦工具頁</p>
+      <h1>A4 合併列印工具</h1>
+      <p class="subtitle">上傳單格底圖、設定 A4 欄列、編輯最多 4 個文字框、貼上批次資料，直接在瀏覽器中預覽與匯出 PDF。</p>
+      <div class="chips">
+        <span>純前端</span>
+        <span>多頁預覽</span>
+        <span>批次套字</span>
+        <span>空白模板匯出</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="panel controls sticky">
+        <h2>1. 專案設定</h2>
+        <label class="file-picker">
+          <span>單格底圖</span>
+          <input type="file" id="templateImage" accept="image/png,image/jpeg,image/webp,image/gif" />
+        </label>
+        <div class="two-col">
+          <label><span>A4 欄數</span><input id="cols" type="number" min="1" max="12" value="2" /></label>
+          <label><span>A4 列數</span><input id="rows" type="number" min="1" max="12" value="4" /></label>
+        </div>
+        <div class="two-col">
+          <label><span>頁邊安全距離 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
+          <label><span>預覽縮放 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></label>
+        </div>
+        <div class="inline-toggle-row">
+          <label class="inline-toggle"><input id="showCellNumbers" type="checkbox" checked> 顯示格號</label>
+          <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示安全區</label>
+        </div>
+        <div class="hint" id="imageInfo">尚未上傳底圖</div>
+
+        <h2>2. 文字框設定</h2>
+        <div class="hint">最多 4 個文字框。欄位會依第一個非空白資料列自動決定數量。</div>
+        <div id="textBoxEditor" class="box-editor"></div>
+
+        <h2>3. 字體</h2>
+        <label class="file-picker">
+          <span>上傳字體（TTF / OTF）</span>
+          <input type="file" id="fontUpload" accept=".ttf,.otf,font/ttf,font/otf" />
+        </label>
+        <label>
+          <span>預設字體</span>
+          <select id="fontFamily"></select>
+        </label>
+        <div class="hint" id="fontInfo">可使用系統字體或本次頁面上傳字體，不會永久保存。</div>
+
+        <h2>4. 操作</h2>
+        <div class="actions">
+          <button class="btn primary" id="previewBtn">在新分頁預覽</button>
+          <button class="btn" id="exportPdfBtn">匯出 PDF</button>
+          <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
+          <button class="btn danger" id="resetBtn">重設目前設定</button>
+        </div>
+        <div class="status" id="statusBox">等待資料中。</div>
+      </div>
+
+      <div class="main-column">
+        <section class="panel editor-panel">
+          <div class="section-head">
+            <div>
+              <h2>5. 批次資料</h2>
+              <p>每行一格，欄位用 <code>/</code> 分隔；若要輸入真正的斜線，請寫成 <code>\/</code>。</p>
+            </div>
+            <button class="mini-btn" id="demoDataBtn">貼入範例</button>
+          </div>
+          <textarea id="batchData" placeholder="例如：&#10;王小明/0912-345-678/白金會員/台北店&#10;李小華/0987-654-321/體驗券/新竹店"></textarea>
+          <div class="data-stats" id="dataStats">尚未解析資料</div>
+        </section>
+
+        <section class="panel stage-panel">
+          <div class="section-head">
+            <div>
+              <h2>6. 單格版面編輯</h2>
+              <p>拖拉文字框移動位置；右側設定字級、顏色、粗細、對齊與旋轉。預覽不做溢出修正，超出由你自行調整。</p>
+            </div>
+          </div>
+          <div class="stage-layout">
+            <div class="stage-wrap">
+              <div class="single-stage" id="singleStage"></div>
+            </div>
+            <aside class="side-inspector panel-sub">
+              <h3>目前選取</h3>
+              <div id="selectedBoxInfo" class="hint">點一下任一文字框即可編輯。</div>
+              <div class="inspector-grid">
+                <label><span>內容預覽</span><input id="sampleText" type="text" value="欄位示意文字" /></label>
+                <label><span>X (%)</span><input id="boxX" type="number" min="0" max="100" step="0.1" /></label>
+                <label><span>Y (%)</span><input id="boxY" type="number" min="0" max="100" step="0.1" /></label>
+                <label><span>寬 (%)</span><input id="boxW" type="number" min="1" max="100" step="0.1" /></label>
+                <label><span>高 (%)</span><input id="boxH" type="number" min="1" max="100" step="0.1" /></label>
+                <label><span>字級 (pt)</span><input id="boxFontSize" type="number" min="6" max="120" step="0.5" /></label>
+                <label><span>字重</span>
+                  <select id="boxFontWeight">
+                    <option value="400">400 正常</option>
+                    <option value="500">500</option>
+                    <option value="700">700 粗體</option>
+                    <option value="800">800</option>
+                  </select>
+                </label>
+                <label><span>對齊</span>
+                  <select id="boxAlign">
+                    <option value="left">靠左</option>
+                    <option value="center">置中</option>
+                    <option value="right">靠右</option>
+                  </select>
+                </label>
+                <label><span>行高</span><input id="boxLineHeight" type="number" min="0.8" max="3" step="0.05" /></label>
+                <label><span>字距 (px)</span><input id="boxLetterSpacing" type="number" min="-5" max="20" step="0.1" /></label>
+                <label><span>旋轉 (deg)</span><input id="boxRotate" type="number" min="-180" max="180" step="1" /></label>
+                <label><span>顏色</span><input id="boxColor" type="color" /></label>
+                <label class="checkbox-label"><input id="boxVertical" type="checkbox" /> 直書模式</label>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
