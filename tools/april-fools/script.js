@@ -1,120 +1,94 @@
-const signalRate = document.getElementById('signalRate');
-const momentumRate = document.getElementById('momentumRate');
+const relationSelect = document.getElementById('relationSelect');
+const delayInput = document.getElementById('delayInput');
+const delayLabel = document.getElementById('delayLabel');
+const reasonSelect = document.getElementById('reasonSelect');
 const analyzeBtn = document.getElementById('analyzeBtn');
-const sampleBtn = document.getElementById('sampleBtn');
-const nameInput = document.getElementById('nameInput');
-const consoleBody = document.getElementById('consoleBody');
-const resultPanel = document.getElementById('resultPanel');
+const randomBtn = document.getElementById('randomBtn');
+const meterFill = document.getElementById('meterFill');
+const scoreLabel = document.getElementById('scoreLabel');
 const resultTitle = document.getElementById('resultTitle');
-const resultScore = document.getElementById('resultScore');
 const resultText = document.getElementById('resultText');
 const chipRow = document.getElementById('chipRow');
-const metaNote = document.getElementById('metaNote');
+const replyBox = document.getElementById('replyBox');
 
-const profiles = [
-  {
-    max: 28,
-    title: 'Low-friction operator',
-    score: 'External coherence: 91 / 100',
-    text: 'Observers are likely to describe this person as steady, measured, and quietly on top of things. Internally, however, there is a non-trivial chance they are simply excellent at compressing mild panic into clean sentence structure.',
-    chips: ['credible pacing', 'clean updates', 'dangerously composed'],
-    note: 'System note: unusually high stability often indicates either maturity or advanced concealment.'
-  },
-  {
-    max: 54,
-    title: 'Structurally convincing professional',
-    score: 'External coherence: 74 / 100',
-    text: 'This profile sustains a reliable surface layer even when energy is fragmented. Most people will assume they have a process. There may, in fact, be no process—only formatting, timing, and one heroic calendar habit.',
-    chips: ['looks organized', 'operationally believable', 'running on language'],
-    note: 'System note: confidence appears to be assembled from reusable fragments.'
-  },
-  {
-    max: 79,
-    title: 'High-output survival mode',
-    score: 'External coherence: 46 / 100',
-    text: 'Professional credibility is still present, but held together by obligation, caffeine, and a rapidly thinning layer of social polish. To outside viewers, this reads as intensity. To the person living it, this is mostly weather.',
-    chips: ['technically functioning', 'slightly haunted', 'reply latency increasing'],
-    note: 'System note: recommend fewer meetings and one emotionally neutral afternoon.'
-  },
-  {
-    max: Infinity,
-    title: 'Narratively stable, spiritually buffering',
-    score: 'External coherence: 18 / 100',
-    text: 'At first glance this person appears to be participating in modern professional life. On closer inspection, the entire structure is being maintained by posture, browser tabs, and the phrase “I am aligning a few moving pieces.” Honestly? It is working more than it should.',
-    chips: ['held together by tone', 'extremely human', 'still weirdly impressive'],
-    note: 'System note: not broken. Just operating under cinematic levels of strain.'
-  }
-];
+const relationWeight = { friend: 8, crush: 28, coworker: 14, boss: 22, family: 10 };
+const reasonWeight = { busy: 4, forgot: 16, anxious: 12, avoiding: 26, dramatic: 21 };
 
-function randomRange(min, max) {
-  return (Math.random() * (max - min) + min).toFixed(1);
+const replySuggestions = {
+  friend: '抱歉我剛剛真的在忙，現在才看到。你剛剛那個是怎樣？',
+  crush: '抱歉我晚點才回，不是故意晾你，剛剛有點卡住。你剛剛說的那個後來怎麼樣？',
+  coworker: '抱歉剛剛在處理別的事情，現在補回。你這邊目前還需要我協助哪一段？',
+  boss: '抱歉剛才在處理手上項目，現在看到。這件事我接下來會先這樣處理：',
+  family: '剛剛沒注意到訊息，現在看到啦。你那邊還好嗎？'
+};
+
+function updateDelayLabel() {
+  const h = Number(delayInput.value);
+  delayLabel.textContent = h === 1 ? '1 hour' : `${h} hours`;
 }
 
-setInterval(() => {
-  signalRate.textContent = `${randomRange(89, 98)}%`;
-  momentumRate.textContent = `${randomRange(72, 91)}%`;
-}, 2400);
+function analyze() {
+  const relation = relationSelect.value;
+  const delay = Number(delayInput.value);
+  const reason = reasonSelect.value;
 
-function typeLines(lines, done) {
-  consoleBody.innerHTML = '';
-  let index = 0;
+  let score = Math.min(100, relationWeight[relation] + reasonWeight[reason] + delay * 0.9);
+  score = Math.round(score);
 
-  function next() {
-    if (index >= lines.length) {
-      done?.();
-      return;
-    }
-    const p = document.createElement('p');
-    p.innerHTML = lines[index];
-    consoleBody.appendChild(p);
-    consoleBody.scrollTop = consoleBody.scrollHeight;
-    index += 1;
-    setTimeout(next, 520);
+  meterFill.style.width = `${score}%`;
+  scoreLabel.textContent = `${score} / 100`;
+
+  let title = '';
+  let text = '';
+  let chips = [];
+
+  if (score < 30) {
+    title = 'Low signal distortion';
+    text = 'This delay still reads as normal human timing. Most people will interpret it as life happening, not emotional theater.';
+    chips = ['recoverable', 'still believable', 'socially normal'];
+  } else if (score < 55) {
+    title = 'Noticeable but manageable';
+    text = 'The delay has started to acquire meaning. You are no longer just replying late; you are lightly curating a vibe whether you intended to or not.';
+    chips = ['slightly weird', 'needs warmth', 'don\'t over-explain'];
+  } else if (score < 80) {
+    title = 'Interpretation risk increasing';
+    text = 'At this point, the silence is beginning to look shaped. Depending on the person, this may read as avoidance, calculation, or mysterious emotional weather.';
+    chips = ['awkward energy', 'human but suspicious', 'send clean sentence now'];
+  } else {
+    title = 'Severe narrative formation';
+    text = 'The delay is no longer a delay. It is now a story. The other person has almost certainly assigned meaning to it, and unfortunately some of that meaning may be correct.';
+    chips = ['you made lore', 'reply immediately', 'maybe be honest for once'];
   }
 
-  next();
-}
-
-function hashName(name) {
-  return [...name].reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
-}
-
-function runAudit(inputName) {
-  const name = (inputName || 'Anonymous Profile').trim() || 'Anonymous Profile';
-  const score = (hashName(name) % 93) + 7;
-  const profile = profiles.find(item => score <= item.max);
-
-  const lines = [
-    '&gt; Booting presence model...',
-    `&gt; Loading subject: <span class="muted">${name}</span>`,
-    '&gt; Mapping behavioral residue across chat, meetings, and delayed replies...',
-    '&gt; Detecting continuity signals, emotional leakage, and synthetic professionalism...',
-    '&gt; <span class="warn">Minor anomaly:</span> observer confidence exceeds actual internal certainty.',
-    '&gt; <span class="hot">Interpretation layer active.</span> Converting strain into something colleagues will probably call “solid energy.”'
-  ];
-
-  typeLines(lines, () => {
-    resultTitle.textContent = `${name} · audit summary`;
-    resultScore.textContent = profile.score;
-    resultText.textContent = profile.text;
-    chipRow.innerHTML = '';
-    profile.chips.forEach((chip) => {
-      const span = document.createElement('span');
-      span.textContent = chip;
-      chipRow.appendChild(span);
-    });
-    metaNote.textContent = profile.note;
-    resultPanel.hidden = false;
-    resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  resultTitle.textContent = title;
+  resultText.textContent = text;
+  chipRow.innerHTML = '';
+  chips.forEach((chip) => {
+    const span = document.createElement('span');
+    span.textContent = chip;
+    chipRow.appendChild(span);
   });
+  replyBox.textContent = `Suggested recovery line: ${replySuggestions[relation]}`;
 }
 
-analyzeBtn.addEventListener('click', () => runAudit(nameInput.value));
-sampleBtn.addEventListener('click', () => {
-  const sample = ['Alex Chen', 'Cathy', 'Product Ops', 'People who said they are fine'][Math.floor(Math.random() * 4)];
-  nameInput.value = sample;
-  runAudit(sample);
-});
-nameInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') runAudit(nameInput.value);
-});
+function loadRandomSample() {
+  const samples = [
+    ['crush', 19, 'anxious'],
+    ['boss', 11, 'busy'],
+    ['friend', 27, 'forgot'],
+    ['coworker', 8, 'avoiding']
+  ];
+  const [relation, delay, reason] = samples[Math.floor(Math.random() * samples.length)];
+  relationSelect.value = relation;
+  delayInput.value = delay;
+  reasonSelect.value = reason;
+  updateDelayLabel();
+  analyze();
+}
+
+delayInput.addEventListener('input', updateDelayLabel);
+analyzeBtn.addEventListener('click', analyze);
+randomBtn.addEventListener('click', loadRandomSample);
+
+updateDelayLabel();
+analyze();

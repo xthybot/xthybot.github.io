@@ -3,160 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pulseboard｜Personal Presence Infrastructure</title>
-  <meta name="description" content="A presence infrastructure layer for modern professionals. Coordinate signals, consistency, and visible momentum across distributed work." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='8' y='8' width='48' height='48' rx='14' fill='%23091020'/%3E%3Cpath d='M20 38c6-14 10-18 14-18 5 0 7 7 10 7 2 0 4-2 6-5' stroke='%238bb6ff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>ReplyDelay Analyzer｜Message Response Calibration Tool</title>
+  <meta name="description" content="Analyze likely social interpretation from message reply timing patterns." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='8' y='8' width='48' height='48' rx='12' fill='%230a1224'/%3E%3Cpath d='M20 22h24M20 32h18M20 42h10' stroke='%238ab6ff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="bg-glow glow-a"></div>
-  <div class="bg-glow glow-b"></div>
-
-  <header class="site-header">
-    <div class="brand">Pulseboard</div>
-    <nav class="nav">
-      <a href="#platform">Platform</a>
-      <a href="#signals">Signals</a>
-      <a href="#simulator">Simulator</a>
-      <a href="#plans">Plans</a>
+  <div class="bg"></div>
+  <header class="topbar">
+    <div class="brand">ReplyDelay Analyzer</div>
+    <nav>
+      <a href="#tool">Tool</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#faq">FAQ</a>
     </nav>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-copy panel">
-        <p class="eyebrow">PERSONAL PRESENCE INFRASTRUCTURE</p>
-        <h1>Stay visible.<br>Even when you're barely holding it together.</h1>
-        <p class="lede">
-          Pulseboard helps knowledge workers maintain coherent external momentum across chat, meetings, async updates, and ambient professional presence.
-          Build a more stable impression layer without increasing actual energy expenditure.
-        </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#simulator">Open simulator</a>
-          <a class="btn secondary" href="#platform">Explore platform</a>
-        </div>
-        <div class="hero-proof">
-          <span>Trusted by teams that are technically functioning.</span>
-          <strong>4,200+</strong>
-        </div>
-      </div>
-
-      <aside class="hero-stats panel">
-        <div class="stat-card">
-          <span>Signal continuity</span>
-          <strong id="signalRate">94.2%</strong>
-          <p>Maintains an externally believable rhythm across fragmented attention cycles.</p>
-        </div>
-        <div class="stat-card">
-          <span>Perceived momentum</span>
-          <strong id="momentumRate">81.7%</strong>
-          <p>Creates a durable impression that things are moving forward in a measured way.</p>
-        </div>
-      </aside>
-    </section>
-
-    <section id="platform" class="platform-grid">
-      <article class="panel feature-card">
-        <span class="feature-tag">Layer 01</span>
-        <h2>Status shaping</h2>
-        <p>Transform low-energy output into legible professional activity with calibrated tone, pacing, and timing cues.</p>
-      </article>
-      <article class="panel feature-card">
-        <span class="feature-tag">Layer 02</span>
-        <h2>Expectation buffering</h2>
-        <p>Reduce inbound urgency by projecting controlled movement, partial clarity, and responsible ambiguity.</p>
-      </article>
-      <article class="panel feature-card">
-        <span class="feature-tag">Layer 03</span>
-        <h2>Reputation smoothing</h2>
-        <p>Bridge the gap between internal chaos and external consistency without sounding robotic or alarmed.</p>
-      </article>
-    </section>
-
-    <section id="signals" class="signals panel">
-      <div>
-        <p class="eyebrow">SIGNALS ENGINE</p>
-        <h2>Designed for high-noise, low-battery work lives.</h2>
-      </div>
-      <div class="signal-list">
-        <div class="signal-item">
-          <strong>Async plausibility</strong>
-          <p>Converts "I haven't touched this" into a socially acceptable progress contour.</p>
-        </div>
-        <div class="signal-item">
-          <strong>Meeting residue</strong>
-          <p>Generates subtle traces suggesting you emerged from something operationally important.</p>
-        </div>
-        <div class="signal-item">
-          <strong>Controlled responsiveness</strong>
-          <p>Prevents both suspicious silence and emotionally revealing over-replying.</p>
-        </div>
+  <main class="page">
+    <section class="hero panel">
+      <p class="eyebrow">Message Response Calibration Tool</p>
+      <h1>How bad does your reply delay <br>actually look?</h1>
+      <p class="lede">
+        Estimate how a delayed reply may be interpreted in social or semi-professional contexts.
+        Built for people who want to sound normal, busy, thoughtful, and emotionally stable at the same time.
+      </p>
+      <div class="hero-meta">
+        <span>Realtime interpretation model</span>
+        <span>Last updated: today</span>
       </div>
     </section>
 
-    <section id="simulator" class="simulator panel">
-      <div class="sim-copy">
-        <p class="eyebrow">LIVE PRESENCE SIMULATOR</p>
-        <h2>Run a personal signal audit</h2>
-        <p>
-          Enter a name to simulate external professional coherence under current emotional and operational load.
-          The system will assess visible steadiness, perceived control, and likely observer interpretation.
-        </p>
-      </div>
-
-      <div class="sim-ui">
-        <label class="input-wrap">
-          <span>Name</span>
-          <input id="nameInput" type="text" maxlength="24" placeholder="e.g. Alex, Cathy, Product Team Lead" />
+    <section id="tool" class="tool-grid">
+      <div class="panel form-panel">
+        <p class="section-label">INPUT</p>
+        <label>
+          <span>Who are you replying to?</span>
+          <select id="relationSelect">
+            <option value="friend">Friend</option>
+            <option value="crush">Someone you care too much about</option>
+            <option value="coworker">Coworker</option>
+            <option value="boss">Boss / supervisor</option>
+            <option value="family">Family</option>
+          </select>
         </label>
-        <div class="button-row">
-          <button id="analyzeBtn" class="btn primary" type="button">Run audit</button>
-          <button id="sampleBtn" class="btn secondary" type="button">Load sample profile</button>
+        <label>
+          <span>How long did you wait before replying?</span>
+          <input id="delayInput" type="range" min="1" max="72" value="6" />
+          <strong id="delayLabel">6 hours</strong>
+        </label>
+        <label>
+          <span>What was your actual reason?</span>
+          <select id="reasonSelect">
+            <option value="busy">Actually busy</option>
+            <option value="forgot">Saw it and forgot</option>
+            <option value="anxious">Wanted to reply well, got anxious</option>
+            <option value="avoiding">Actively avoiding it</option>
+            <option value="dramatic">Wanted to seem mysterious for no reason</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button id="analyzeBtn" class="btn primary">Analyze perception</button>
+          <button id="randomBtn" class="btn ghost" type="button">Load suspiciously realistic sample</button>
         </div>
+      </div>
 
-        <div class="console">
-          <div class="console-head">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <strong>Presence Audit Console</strong>
+      <div class="panel result-panel">
+        <p class="section-label">OUTPUT</p>
+        <div class="meter-wrap">
+          <div class="meter-bar"><div id="meterFill" class="meter-fill"></div></div>
+          <div class="meter-meta">
+            <span>Perceived weirdness</span>
+            <strong id="scoreLabel">42 / 100</strong>
           </div>
-          <div class="console-body" id="consoleBody">
-            <p>> Waiting for profile input.</p>
-            <p class="muted">> No anomalies detected yet.</p>
-          </div>
+        </div>
+        <h2 id="resultTitle">Mildly concerning, still recoverable</h2>
+        <p id="resultText" class="result-text">
+          Your delay currently reads as slightly awkward but still explainable. A clean sentence and one sign of basic warmth should stabilize interpretation.
+        </p>
+        <div class="chips" id="chipRow"></div>
+        <div class="reply-box" id="replyBox">
+          Suggested recovery line will appear here.
         </div>
       </div>
     </section>
 
-    <section id="resultPanel" class="result panel" hidden>
-      <p class="eyebrow">AUDIT OUTPUT</p>
-      <h2 id="resultTitle">Profile ready</h2>
-      <p class="result-score" id="resultScore"></p>
-      <p class="result-text" id="resultText"></p>
-      <div class="chip-row" id="chipRow"></div>
-      <div class="meta-note" id="metaNote"></div>
+    <section id="methodology" class="panel info-panel">
+      <p class="section-label">METHODOLOGY</p>
+      <h3>Interpretation model</h3>
+      <p>
+        Scores are derived from delay length, relationship sensitivity, and whether your excuse sounds human or suspiciously curated.
+        Outputs are optimized for plausible self-deception and light emotional damage control.
+      </p>
     </section>
 
-    <section id="plans" class="plans-grid">
-      <article class="panel plan-card">
-        <span>Starter</span>
-        <h3>Quietly competent</h3>
-        <p>For individuals who only need a little structure between fatigue and public perception.</p>
+    <section id="faq" class="faq-grid">
+      <article class="panel faq-item">
+        <h3>Is this scientifically validated?</h3>
+        <p>Not in a way that would survive peer review, but emotionally it feels correct.</p>
       </article>
-      <article class="panel plan-card featured">
-        <span>Pro</span>
-        <h3>Operationally reassuring</h3>
-        <p>For people who want to sound like they have a framework, not a survival tactic.</p>
+      <article class="panel faq-item">
+        <h3>Can this save a conversation?</h3>
+        <p>Sometimes. Other times the problem is not the delay but your whole interpersonal strategy.</p>
       </article>
-      <article class="panel plan-card">
-        <span>Scale</span>
-        <h3>Strategically composed</h3>
-        <p>For teams seeking coordinated professionalism under vaguely alarming conditions.</p>
+      <article class="panel faq-item">
+        <h3>Who is this for?</h3>
+        <p>Anyone who has ever stared at a message, overthought it, and accidentally created a new problem.</p>
       </article>
     </section>
   </main>
