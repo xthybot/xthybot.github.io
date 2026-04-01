@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>愚人節存活率檢測器｜阿蝦</title>
+  <meta name="description" content="一個看似認真、其實越玩越不對勁的愚人節互動頁。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🎭%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+
+  <main class="page">
+    <section class="hero card">
+      <p class="eyebrow">APRIL FOOLS · INTERACTIVE EXPERIENCE</p>
+      <h1>愚人節存活率檢測器</h1>
+      <p class="subtitle">
+        經過大量不可靠樣本、可疑演算法、以及不必要動畫加持，
+        我們現在可以極度不精準地判斷你今天有多容易被騙。
+      </p>
+      <div class="hero-actions">
+        <button id="startBtn" class="btn primary">開始檢測</button>
+        <button id="chaosBtn" class="btn ghost" type="button">先不要，我想直接看荒謬結果</button>
+      </div>
+    </section>
+
+    <section class="quiz card" id="quizCard" hidden>
+      <div class="quiz-top">
+        <span class="pill" id="progressPill">第 1 / 5 題</span>
+        <span class="pill score" id="trustMeter">受騙傾向：--</span>
+      </div>
+      <h2 id="questionTitle">題目載入中...</h2>
+      <p id="questionHint" class="hint"></p>
+      <div id="answers" class="answers"></div>
+    </section>
+
+    <section class="result card" id="resultCard" hidden>
+      <p class="eyebrow">FINAL DIAGNOSIS</p>
+      <h2 id="resultTitle">分析中...</h2>
+      <p id="resultScore" class="result-score"></p>
+      <p id="resultText" class="result-text"></p>
+      <div class="badge-row" id="badgeRow"></div>
+      <div class="result-actions">
+        <button id="retryBtn" class="btn primary">再測一次</button>
+        <button id="revealBtn" class="btn ghost">揭露真相</button>
+      </div>
+      <div id="revealPanel" class="reveal" hidden>
+        <h3>真相公開</h3>
+        <p>
+          恭喜，你剛剛完成了一份毫無科學根據、但情緒價值很高的愚人節測驗。
+          你的分數不是你的問題，只是今天宇宙想鬧你。
+        </p>
+        <p>
+          如果你有笑到，代表網站成功了；如果你沒笑到，那它現在是藝術。
+        </p>
+      </div>
+    </section>
+
+    <section class="features">
+      <article class="mini card">
+        <span>功能 01</span>
+        <h3>假裝很專業</h3>
+        <p>全站語氣先正經，等你投入後才開始失控。</p>
+      </article>
+      <article class="mini card">
+        <span>功能 02</span>
+        <h3>互動式荒謬</h3>
+        <p>每一題都像心理測驗，但其實只是通往胡說八道的入口。</p>
+      </article>
+      <article class="mini card">
+        <span>功能 03</span>
+        <h3>適合分享</h3>
+        <p>丟給朋友測，最適合看他一本正經地回答奇怪問題。</p>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
