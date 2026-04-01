@@ -3,80 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>愚人節存活率檢測器｜阿蝦</title>
-  <meta name="description" content="一個看似認真、其實越玩越不對勁的愚人節互動頁。" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🎭%3C/text%3E%3C/svg%3E">
+  <title>Slipstream™｜人生效率升級發表會</title>
+  <meta name="description" content="一個看起來很像真的產品發表頁，但越看越不對勁的愚人節網站。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E🫠%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="noise"></div>
-  <div class="glow glow-a"></div>
-  <div class="glow glow-b"></div>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
 
-  <main class="page">
+  <header class="topbar">
+    <div class="brand">Slipstream<span>™</span></div>
+    <nav>
+      <a href="#features">功能</a>
+      <a href="#demo">即時體驗</a>
+      <a href="#pricing">方案</a>
+    </nav>
+  </header>
+
+  <main class="shell">
     <section class="hero card">
-      <p class="eyebrow">APRIL FOOLS · INTERACTIVE EXPERIENCE</p>
-      <h1>愚人節存活率檢測器</h1>
-      <p class="subtitle">
-        經過大量不可靠樣本、可疑演算法、以及不必要動畫加持，
-        我們現在可以極度不精準地判斷你今天有多容易被騙。
-      </p>
-      <div class="hero-actions">
-        <button id="startBtn" class="btn primary">開始檢測</button>
-        <button id="chaosBtn" class="btn ghost" type="button">先不要，我想直接看荒謬結果</button>
+      <div class="hero-copy">
+        <p class="eyebrow">APRIL 1 · KEYNOTE ANNOUNCEMENT</p>
+        <h1>讓 AI 幫你維持<br>「看起來有在努力」</h1>
+        <p class="lede">
+          Slipstream™ 是新一代人生效率增幅平台，專為「其實很累、但還是想維持體面」的人設計。
+          它能自動生成忙碌感、專業感，以及一點點你自己都不太相信的進步幻覺。
+        </p>
+        <div class="hero-actions">
+          <button class="btn primary" id="launchDemo">立即體驗</button>
+          <a class="btn ghost" href="#features">先看功能</a>
+        </div>
+        <div class="signal-row">
+          <span>97.4% 使用者表示：<strong>別人真的以為我最近很上軌道</strong></span>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="metric-card">
+          <p>即時人格同步率</p>
+          <strong id="syncRate">71%</strong>
+          <span>系統判定你目前處於「還想撐一下」模式</span>
+        </div>
+        <div class="metric-card muted">
+          <p>今日自我感覺良好指數</p>
+          <strong id="copingRate">42%</strong>
+          <span>仍可透過科技營造未來可期的錯覺</span>
+        </div>
       </div>
     </section>
 
-    <section class="quiz card" id="quizCard" hidden>
-      <div class="quiz-top">
-        <span class="pill" id="progressPill">第 1 / 5 題</span>
-        <span class="pill score" id="trustMeter">受騙傾向：--</span>
-      </div>
-      <h2 id="questionTitle">題目載入中...</h2>
-      <p id="questionHint" class="hint"></p>
-      <div id="answers" class="answers"></div>
+    <section id="features" class="feature-grid">
+      <article class="card feature">
+        <span>Feature 01</span>
+        <h2>自動產生忙碌痕跡</h2>
+        <p>幫你模擬深夜上線、快速切換視窗、以及「剛剛在整理」的微妙可信感。</p>
+      </article>
+      <article class="card feature">
+        <span>Feature 02</span>
+        <h2>智慧敷衍生成器</h2>
+        <p>把「我還沒開始」包裝成「我正在整體評估方向」，文明又不失逃生空間。</p>
+      </article>
+      <article class="card feature">
+        <span>Feature 03</span>
+        <h2>延後焦慮排程</h2>
+        <p>不是解決問題，只是把問題排到你今天心情比較好的時候再面對。</p>
+      </article>
     </section>
 
-    <section class="result card" id="resultCard" hidden>
-      <p class="eyebrow">FINAL DIAGNOSIS</p>
-      <h2 id="resultTitle">分析中...</h2>
-      <p id="resultScore" class="result-score"></p>
-      <p id="resultText" class="result-text"></p>
-      <div class="badge-row" id="badgeRow"></div>
+    <section id="demo" class="card demo">
+      <div class="demo-copy">
+        <p class="eyebrow">LIVE DEMO</p>
+        <h2>測試你的「體面續航力」</h2>
+        <p>
+          輸入你的名字，系統會根據極度可疑的先進模型，分析你今天到底是穩定前進，還是單靠意志力在拖著靈魂移動。
+        </p>
+      </div>
+
+      <div class="demo-console">
+        <label class="input-wrap">
+          <span>你的名字</span>
+          <input id="nameInput" type="text" maxlength="18" placeholder="例如：阿明、Kevin、今天很想下班的人" />
+        </label>
+        <div class="action-row">
+          <button class="btn primary" id="analyzeBtn">開始分析</button>
+          <button class="btn ghost" id="luckyBtn" type="button">我懶得打，直接亂算</button>
+        </div>
+
+        <div class="terminal" id="terminal" aria-live="polite">
+          <div class="terminal-head">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <strong>Slipstream Live Diagnostics</strong>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <p>> 系統待命中，準備分析你的社會生存狀態。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card reveal" id="resultCard" hidden>
+      <p class="eyebrow">RESULT</p>
+      <h2 id="resultTitle">分析完成</h2>
+      <p class="score" id="resultScore"></p>
+      <p class="result-text" id="resultText"></p>
+      <div class="chips" id="chipRow"></div>
       <div class="result-actions">
-        <button id="retryBtn" class="btn primary">再測一次</button>
-        <button id="revealBtn" class="btn ghost">揭露真相</button>
+        <button class="btn primary" id="rerunBtn">再分析一次</button>
+        <button class="btn ghost" id="truthBtn">揭露真相</button>
       </div>
-      <div id="revealPanel" class="reveal" hidden>
-        <h3>真相公開</h3>
+      <div class="truth-panel" id="truthPanel" hidden>
         <p>
-          恭喜，你剛剛完成了一份毫無科學根據、但情緒價值很高的愚人節測驗。
-          你的分數不是你的問題，只是今天宇宙想鬧你。
-        </p>
-        <p>
-          如果你有笑到，代表網站成功了；如果你沒笑到，那它現在是藝術。
+          真相很簡單：這不是什麼效率平台，這是一個愚人節頁面。
+          但說真的，能撐到現在的你，多少還是值得一個升級版本的人生介面。
         </p>
       </div>
     </section>
 
-    <section class="features">
-      <article class="mini card">
-        <span>功能 01</span>
-        <h3>假裝很專業</h3>
-        <p>全站語氣先正經，等你投入後才開始失控。</p>
+    <section id="pricing" class="pricing-grid">
+      <article class="card plan">
+        <span>Starter</span>
+        <h3>看起來還行版</h3>
+        <p>適合偶爾需要在人群中維持「最近有在調整自己」形象的人。</p>
       </article>
-      <article class="mini card">
-        <span>功能 02</span>
-        <h3>互動式荒謬</h3>
-        <p>每一題都像心理測驗，但其實只是通往胡說八道的入口。</p>
+      <article class="card plan featured">
+        <span>Pro</span>
+        <h3>彷彿真的很自律版</h3>
+        <p>附贈高級語氣包：<br>「我最近在重新校準節奏。」</p>
       </article>
-      <article class="mini card">
-        <span>功能 03</span>
-        <h3>適合分享</h3>
-        <p>丟給朋友測，最適合看他一本正經地回答奇怪問題。</p>
+      <article class="card plan">
+        <span>Enterprise</span>
+        <h3>整個人像有計畫版</h3>
+        <p>適合需要讓全世界相信你一切都在掌控中的高壓族群。</p>
       </article>
     </section>
   </main>

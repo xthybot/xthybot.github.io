@@ -1,170 +1,126 @@
-const questions = [
-  {
-    title: "朋友突然傳訊息說：『我剛接到外星人電話。』你第一反應是？",
-    hint: "請誠實作答，我們需要正確評估你的社交防禦系統。",
-    answers: [
-      ["先問是哪一顆星球打來的", 25],
-      ["懷疑今天是不是 4/1", 5],
-      ["叫他開擴音，我想加入", 30],
-      ["回：你先把錄音檔傳來", 10]
-    ]
-  },
-  {
-    title: "看到『免費送 iPhone，只要填身分證與銀行帳號』，你會？",
-    hint: "這題理論上不難，但我們尊重每一種冒險精神。",
-    answers: [
-      ["先截圖傳朋友說這也太假", 3],
-      ["差點想填，最後又關掉", 15],
-      ["我會認真研究是不是官方活動", 18],
-      ["免費？先衝再說", 35]
-    ]
-  },
-  {
-    title: "如果網站跳出『AI 已分析你今天適合翹班』，你會？",
-    hint: "本題不構成任何法律、職涯或道德建議。",
-    answers: [
-      ["信一半，開始找理由", 22],
-      ["不信，但想收藏這網站", 12],
-      ["反問 AI 它憑什麼", 8],
-      ["立刻傳給同事一起墮落", 28]
-    ]
-  },
-  {
-    title: "你覺得最可疑、卻又最容易讓人中招的是哪種句子？",
-    hint: "選出最符合你人生經驗的一項。",
-    answers: [
-      ["這個只要三分鐘", 24],
-      ["完全免費，不會推銷", 21],
-      ["我現在人在附近，出來一下", 19],
-      ["這次真的不會有 bug", 26]
-    ]
-  },
-  {
-    title: "如果最後結果說你是『高風險被騙體質』，你會？",
-    hint: "恭喜，這題其實已經接近終局。",
-    answers: [
-      ["不可能，這測驗一定有問題", 8],
-      ["有點不爽，但想再測一次", 17],
-      ["接受命運，今天先少相信人", 12],
-      ["立刻分享給朋友看他多慘", 20]
-    ]
-  }
-];
-
-const resultProfiles = [
-  {
-    max: 35,
-    title: "A 級：反詐兼反套路型",
-    scoreText: "你今天的愚人節存活率高達 91%",
-    text: "你不是不會被騙，你只是連快樂都會先驗證來源。你適合去拆朋友的玩笑，也適合當群組裡那個第一個說『先等等，這不對勁』的人。",
-    badges: ["懷疑論大師", "朋友眼中的氣氛終結者", "很難整到你"]
-  },
-  {
-    max: 70,
-    title: "B 級：理性與好奇心拉扯型",
-    scoreText: "你今天的愚人節存活率約 67%",
-    text: "你的理智在線，但好奇心偶爾會偷偷下線。你知道很多東西不太對，卻還是會想點開看看。這很人性，也很容易成為朋友的目標。",
-    badges: ["差一點就信了", "容易被標題吸引", "仍有自救空間"]
-  },
-  {
-    max: 95,
-    title: "C 級：高互動高風險型",
-    scoreText: "你今天的愚人節存活率約 41%",
-    text: "你不是笨，你只是太願意參與這個世界。任何看起來有趣的東西都可能讓你靠近一步，而那一步，往往就是愚人節最愛的位置。",
-    badges: ["社交型中招者", "看到新奇就想按", "今天建議保守"]
-  },
-  {
-    max: Infinity,
-    title: "S 級：宇宙級可愛受害者",
-    scoreText: "你今天的愚人節存活率僅剩 12%",
-    text: "如果今天有人說電冰箱會自己回訊息，你可能不會全信，但你一定會想知道怎麼設定。你值得被保護，也值得遠離所有『限時免費』和『內部消息』。",
-    badges: ["極易被套路", "請暫停衝動點擊", "建議交由監護人陪同上網"]
-  }
-];
-
-const startBtn = document.getElementById('startBtn');
-const chaosBtn = document.getElementById('chaosBtn');
-const retryBtn = document.getElementById('retryBtn');
-const revealBtn = document.getElementById('revealBtn');
-const quizCard = document.getElementById('quizCard');
+const syncRate = document.getElementById('syncRate');
+const copingRate = document.getElementById('copingRate');
+const launchDemo = document.getElementById('launchDemo');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const luckyBtn = document.getElementById('luckyBtn');
+const rerunBtn = document.getElementById('rerunBtn');
+const truthBtn = document.getElementById('truthBtn');
+const truthPanel = document.getElementById('truthPanel');
 const resultCard = document.getElementById('resultCard');
-const revealPanel = document.getElementById('revealPanel');
-const questionTitle = document.getElementById('questionTitle');
-const questionHint = document.getElementById('questionHint');
-const answersWrap = document.getElementById('answers');
-const progressPill = document.getElementById('progressPill');
-const trustMeter = document.getElementById('trustMeter');
 const resultTitle = document.getElementById('resultTitle');
 const resultScore = document.getElementById('resultScore');
 const resultText = document.getElementById('resultText');
-const badgeRow = document.getElementById('badgeRow');
+const chipRow = document.getElementById('chipRow');
+const terminalBody = document.getElementById('terminalBody');
+const nameInput = document.getElementById('nameInput');
 
-let currentIndex = 0;
-let totalScore = 0;
-
-function resetQuiz() {
-  currentIndex = 0;
-  totalScore = 0;
-  revealPanel.hidden = true;
-  resultCard.hidden = true;
-  quizCard.hidden = false;
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const q = questions[currentIndex];
-  progressPill.textContent = `第 ${currentIndex + 1} / ${questions.length} 題`;
-  trustMeter.textContent = `受騙傾向：${Math.min(totalScore, 99)} / 100`;
-  questionTitle.textContent = q.title;
-  questionHint.textContent = q.hint;
-  answersWrap.innerHTML = '';
-
-  q.answers.forEach(([label, score], idx) => {
-    const button = document.createElement('button');
-    button.className = 'answer btn';
-    button.type = 'button';
-    button.innerHTML = `${label}<small>選項 ${String.fromCharCode(65 + idx)} · 風險值 +${score}</small>`;
-    button.addEventListener('click', () => selectAnswer(score));
-    answersWrap.appendChild(button);
-  });
-}
-
-function selectAnswer(score) {
-  totalScore += score;
-  currentIndex += 1;
-
-  if (currentIndex >= questions.length) {
-    showResult(totalScore);
-    return;
+const profiles = [
+  {
+    max: 34,
+    title: '穩定型假成熟人格',
+    score: '體面續航力 88 / 100',
+    text: '你不是完全沒問題，你只是很會把問題收進桌面資料夾，命名成「晚點處理_最終版_v3」。旁人會以為你很穩，其實你只是很會撐。',
+    chips: ['外表冷靜', '內心有很多分頁', '今天還撐得住']
+  },
+  {
+    max: 59,
+    title: '努力感投影型人格',
+    score: '體面續航力 61 / 100',
+    text: '你擅長讓世界相信你正在步入正軌，但實際上你只是很會整理句子。你的人生不是失控，只是常常靠排版維持秩序。',
+    chips: ['很會講得像有規劃', '需要一杯咖啡續命', '體面主要靠意志']
+  },
+  {
+    max: 84,
+    title: '高壓下正常運作型人格',
+    score: '體面續航力 43 / 100',
+    text: '你的狀態像筆電低電量模式：還能跑，但亮度已經偷偷調低。最近的你不是不努力，是靠責任感在拖著靈魂往前走。',
+    chips: ['請補眠', '別再說沒事', '笑得出來已經很厲害']
+  },
+  {
+    max: Infinity,
+    title: '人設全靠最後一口氣型人格',
+    score: '體面續航力 12 / 100',
+    text: '恭喜你成功把生活過成一場安靜的特技表演。你不是在管理人生，你是在用殘存尊嚴把所有事情排成看起來還行的樣子。老實說，這也算是一種才華。',
+    chips: ['今天不宜開會', '適合被溫柔對待', '還能笑就是 MVP']
   }
+];
 
-  renderQuestion();
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function showResult(score) {
-  quizCard.hidden = true;
-  resultCard.hidden = false;
-  const profile = resultProfiles.find(item => score <= item.max);
-  resultTitle.textContent = profile.title;
-  resultScore.textContent = `${profile.scoreText} · 累積風險值 ${score}`;
-  resultText.textContent = profile.text;
-  badgeRow.innerHTML = '';
-  profile.badges.forEach((badge) => {
-    const el = document.createElement('span');
-    el.className = 'badge';
-    el.textContent = badge;
-    badgeRow.appendChild(el);
+setInterval(() => {
+  syncRate.textContent = `${randomBetween(68, 96)}%`;
+  copingRate.textContent = `${randomBetween(31, 84)}%`;
+}, 2200);
+
+function printLines(lines, done) {
+  terminalBody.innerHTML = '';
+  let i = 0;
+  const tick = () => {
+    if (i >= lines.length) {
+      done?.();
+      return;
+    }
+    const p = document.createElement('p');
+    p.innerHTML = lines[i];
+    terminalBody.appendChild(p);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+    i += 1;
+    setTimeout(tick, 520);
+  };
+  tick();
+}
+
+function analyze(name) {
+  const safeName = (name || '匿名使用者').trim() || '匿名使用者';
+  const base = safeName.split('').reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  const score = (base % 92) + 8;
+  const profile = profiles.find(item => score <= item.max);
+
+  const lines = [
+    `&gt; 初始化人格掃描模組...`,
+    `&gt; 載入使用者：<span class="soft">${safeName}</span>`,
+    `&gt; 分析最近 7 天的語氣、拖延、硬撐與微妙逞強紀錄...`,
+    `&gt; 偵測到 <span class="warn">3 次『我等等弄』</span>、<span class="warn">5 次『差不多了』</span>、<span class="warn">1 次靈魂短暫離線</span>`,
+    `&gt; 正在計算你的社會生存偽裝指數...`,
+    `&gt; <span class="hot">系統判定：你其實不是沒在努力，你只是很需要放假。</span>`
+  ];
+
+  printLines(lines, () => {
+    resultTitle.textContent = `${safeName} 的分析結果`;
+    resultScore.textContent = profile.score;
+    resultText.textContent = profile.text;
+    chipRow.innerHTML = '';
+    profile.chips.forEach(chip => {
+      const span = document.createElement('span');
+      span.textContent = chip;
+      chipRow.appendChild(span);
+    });
+    resultCard.hidden = false;
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-startBtn.addEventListener('click', resetQuiz);
-retryBtn.addEventListener('click', resetQuiz);
-revealBtn.addEventListener('click', () => {
-  revealPanel.hidden = !revealPanel.hidden;
-  if (!revealPanel.hidden) revealPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function runRandom() {
+  const names = ['今天很想下班的人', '壓力管理大師', '看起來還行有限公司', '本月靠意志力存活者'];
+  const pick = names[randomBetween(0, names.length - 1)];
+  nameInput.value = pick;
+  analyze(pick);
+}
+
+launchDemo.addEventListener('click', () => {
+  document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  nameInput.focus();
 });
-chaosBtn.addEventListener('click', () => {
-  const randomScore = 30 + Math.floor(Math.random() * 90);
-  showResult(randomScore);
+
+analyzeBtn.addEventListener('click', () => analyze(nameInput.value));
+luckyBtn.addEventListener('click', runRandom);
+rerunBtn.addEventListener('click', () => analyze(nameInput.value || '匿名使用者'));
+truthBtn.addEventListener('click', () => {
+  truthPanel.hidden = !truthPanel.hidden;
+});
+
+nameInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') analyze(nameInput.value);
 });
