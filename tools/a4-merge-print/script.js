@@ -663,8 +663,6 @@ async function renderSingleCellCanvas(scale = 1) {
     const img = await loadSharedImage(config.image);
     drawFittedImage(ctx, img, 0, 0, cellW, cellH, config);
   }
-  drawCellText(ctx, { x: 0, y: 0, w: cellW, h: cellH }, getFirstSampleRow(), config);
-  if (config.showCellNumbers) drawCellNumber(ctx, { x: 0, y: 0, w: cellW, h: cellH }, 1, config);
   return canvas;
 }
 
