@@ -265,8 +265,11 @@ function bindEvents() {
   ui.clearUploadedFontsBtn.addEventListener('click', clearUploadedFonts);
   ui.fontFamily.addEventListener('change', () => { state.fontFamily = ui.fontFamily.value; saveState(); refreshAll(); });
 
-  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize].forEach((input) => {
+  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize, ui.imageFitModeInput, ui.cellNumberColorInput].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
+  });
+  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.showGuideLinesInput, ui.showPageNumbersInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
+    input.addEventListener('change', syncGeneralSettingsFromUi);
   });
 
   ui.batchData.addEventListener('input', () => {
@@ -309,15 +312,18 @@ function syncGeneralSettingsFromUi() {
   state.imageScale = clampNumber(Number(ui.imageScaleInput.value), 10, 300);
   state.imageOffsetX = clampNumber(Number(ui.imageOffsetXInput.value), -100, 100);
   state.imageOffsetY = clampNumber(Number(ui.imageOffsetYInput.value), -100, 100);
+  state.imageFitMode = ui.imageFitModeInput.value;
   state.cellGapMm = clampNumber(Number(ui.cellGapMmInput.value), 0, 20);
   state.showCellNumbers = ui.showCellNumbersInput.checked;
   state.showSafeZone = ui.showSafeZoneInput.checked;
   state.showGuideLines = ui.showGuideLinesInput.checked;
+  state.showPageNumbers = ui.showPageNumbersInput.checked;
   state.cellNumberCorner = ui.cellNumberCorner.value;
   state.cellNumberFormat = ui.cellNumberFormat.value;
   state.cellNumberOffsetX = clampNumber(Number(ui.cellNumberOffsetX.value), 0, 30);
   state.cellNumberOffsetY = clampNumber(Number(ui.cellNumberOffsetY.value), 0, 30);
   state.cellNumberFontSize = clampNumber(Number(ui.cellNumberFontSize.value), 6, 72);
+  state.cellNumberColor = ui.cellNumberColorInput.value;
   saveState();
   refreshAll();
 }
