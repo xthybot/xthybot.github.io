@@ -422,8 +422,24 @@ function getPageLayout() {
     gapX: gapXPercent,
     gapY: gapYPercent,
     cellWidth: (safeWidth - totalGapX) / state.cols,
-    cellHeight: (safeHeight - totalGapY) / state.rows
+    cellHeight: (safeHeight - totalGapY) / state.rows,
   };
+}
+
+function getSingleStageMetrics() {
+  const layout = getPageLayout();
+  return {
+    widthPercent: layout.cellWidth,
+    heightPercent: layout.cellHeight,
+    aspectRatio: layout.cellWidth / layout.cellHeight,
+  };
+}
+
+function placeStageNumberMarker(marker) {
+  const stageRect = ui.singleStage.getBoundingClientRect();
+  const pos = getCellNumberPosition({ x: 0, y: 0, w: stageRect.width || 250, h: stageRect.height || 180 }, 1, true);
+  marker.style.left = `${pos.left}px`;
+  marker.style.top = `${pos.top}px`;
 }
 
 async function refreshStage() {
@@ -435,7 +451,7 @@ async function refreshStage() {
   if (state.previewMode === 'a4') {
     const canvas = await renderPageCanvas(0, {
       scale: Math.max(0.45, state.previewScale / 100),
-      showGuideLines: state.showGuideLines
+      showGuideLines: state.showGuideLines,
     });
     const ctx = ui.a4PreviewCanvas.getContext('2d');
     ui.a4PreviewCanvas.width = canvas.width;
@@ -445,24 +461,19 @@ async function refreshStage() {
     return;
   }
 
-  const layout = getPageLayout();
-  ui.pageStageSafe.style.display = state.showSafeZone ? 'block' : 'none';
-  ui.pageStageSafe.style.left = `0`;
-  ui.pageStageSafe.style.top = `0`;
-  ui.pageStageSafe.style.width = `100%`;
-  ui.pageStageSafe.style.height = `100%`;
-
-  ui.singleStage.style.left = `0`;
-  ui.singleStage.style.top = `0`;
-  ui.singleStage.style.width = `100%`;
-  ui.singleStage.style.height = `auto`;
-  ui.singleStage.style.aspectRatio = `${layout.cellWidth} / ${layout.cellHeight}`;
+  const metrics = getSingleStageMetrics();
+  ui.pageStage.classList.add('safe-hidden');
+  ui.pageStageSafe.style.display = 'none';
+  ui.singleStage.classList.add('single-focus');
+  ui.singleStage.style.left = 'auto';
+  ui.singleStage.style.top = 'auto';
+  ui.singleStage.style.width = 'min(100%, 640px)';
+  ui.singleStage.style.height = 'auto';
+  ui.singleStage.style.aspectRatio = `${metrics.aspectRatio}`;
   ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
   ui.singleStage.style.backgroundSize = `${state.imageScale}% auto`;
   ui.singleStage.style.backgroundPosition = `${50 + state.imageOffsetX}% ${50 + state.imageOffsetY}%`;
   ui.singleStage.innerHTML = '';
-
-  Array.from(ui.pageStage.querySelectorAll('.stage-cell-number')).forEach((el) => el.remove());
 
   state.textBoxes.forEach((box, index) => {
     const el = document.createElement('div');
@@ -479,10 +490,12 @@ async function refreshStage() {
     ui.singleStage.appendChild(el);
   });
 
-  if (state.showCellNumbers) renderStageCellNumber(layout);
+  const oldMarker = ui.singleStage.querySelector('.stage-cell-number');
+  if (oldMarker) oldMarker.remove();
+  if (state.showCellNumbers) renderStageCellNumber();
 }
 
-function renderStageCellNumber(layout) {
+function renderStageCellNumber() {
   const marker = document.createElement('div');
   marker.className = 'text-box stage-cell-number';
   marker.style.pointerEvents = 'none';
@@ -491,16 +504,14 @@ function renderStageCellNumber(layout) {
   marker.style.borderColor = 'rgba(255, 128, 0, 0.55)';
   marker.style.background = 'rgba(255, 255, 255, 0.55)';
   marker.style.color = '#111';
-  marker.style.fontSize = '12px';
+  marker.style.fontSize = `${state.cellNumberFontSize}px`;
   marker.style.fontWeight = '700';
   marker.style.padding = '2px 6px';
   marker.style.width = 'auto';
   marker.style.height = 'auto';
-  const pos = getCellNumberPosition({ x: 0, y: 0, w: ui.singleStage.clientWidth || 250, h: ui.singleStage.clientHeight || 180 }, 1, true);
-  marker.style.left = `${(layout.safeLeft + (pos.left / (ui.pageStage.clientWidth || 1)) * 100)}%`;
-  marker.style.top = `${(layout.safeTop + (pos.top / (ui.pageStage.clientHeight || 1)) * 100)}%`;
   marker.textContent = formatCellNumber(1, state.cellNumberFormat);
-  ui.pageStage.appendChild(marker);
+  ui.singleStage.appendChild(marker);
+  placeStageNumberMarker(marker);
 }
 
 function applyBoxStyle(el, box) {
@@ -604,9 +615,11 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
   const pageHeight = PREVIEW_BASE_HEIGHT;
   const marginX = mmToPx(config.marginMm, pageWidth / PAGE_MM.width);
   const marginY = mmToPx(config.marginMm, pageHeight / PAGE_MM.height);
+  const gapX = mmToPx(config.cellGapMm || 0, pageWidth / PAGE_MM.width);
+  const gapY = mmToPx(config.cellGapMm || 0, pageHeight / PAGE_MM.height);
   const safeZone = { x: marginX, y: marginY, w: pageWidth - marginX * 2, h: pageHeight - marginY * 2 };
-  const cellW = safeZone.w / config.cols;
-  const cellH = safeZone.h / config.rows;
+  const cellW = (safeZone.w - gapX * Math.max(0, config.cols - 1)) / config.cols;
+  const cellH = (safeZone.h - gapY * Math.max(0, config.rows - 1)) / config.rows;
   const rows = config.pages[pageIndex] || [];
 
   ctx.fillStyle = '#fff';
