@@ -472,6 +472,10 @@ async function refreshStage() {
   ui.pageStage.hidden = state.previewMode !== 'single';
 
   if (state.previewMode === 'a4') {
+    ui.pageStage.classList.remove('safe-hidden');
+    ui.pageStage.style.width = 'min(100%, 720px)';
+    ui.pageStage.style.aspectRatio = '210 / 297';
+    ui.singleStagePreviewWrap.hidden = true;
     const canvas = await renderPageCanvas(0, {
       scale: Math.max(0.45, state.previewScale / 100),
       showGuideLines: state.showGuideLines,
@@ -487,17 +491,23 @@ async function refreshStage() {
     ui.a4PreviewCanvas.height = canvas.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(canvas, 0, 0);
+    ui.singleStage.innerHTML = '';
     return;
   }
 
   const metrics = getSingleStageMetrics();
   ui.pageStage.classList.add('safe-hidden');
+  ui.pageStage.style.width = 'min(100%, 640px)';
+  ui.pageStage.style.aspectRatio = `${metrics.aspectRatio}`;
   ui.pageStageSafe.style.display = 'none';
+  ui.singleStagePreviewWrap.hidden = false;
   ui.singleStagePreviewWrap.style.aspectRatio = `${metrics.aspectRatio}`;
   const singleCanvas = await renderSingleCellCanvas(Math.max(0.8, state.previewScale / 100));
   ui.singleStagePreviewCanvas.width = singleCanvas.width;
   ui.singleStagePreviewCanvas.height = singleCanvas.height;
-  ui.singleStagePreviewCanvas.getContext('2d').drawImage(singleCanvas, 0, 0);
+  const singleCtx = ui.singleStagePreviewCanvas.getContext('2d');
+  singleCtx.clearRect(0, 0, singleCanvas.width, singleCanvas.height);
+  singleCtx.drawImage(singleCanvas, 0, 0);
   ui.singleStage.classList.add('single-focus');
   ui.singleStage.style.left = '0';
   ui.singleStage.style.top = '0';
