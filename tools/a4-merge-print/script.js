@@ -231,6 +231,10 @@ function bindMainPage() {
   ui.previewScaleInput.value = state.previewScale;
   ui.showCellNumbersInput.checked = state.showCellNumbers;
   ui.showSafeZoneInput.checked = state.showSafeZone;
+  ui.imageScaleInput.value = state.imageScale;
+  ui.imageOffsetXInput.value = state.imageOffsetX;
+  ui.imageOffsetYInput.value = state.imageOffsetY;
+  ui.cellGapMmInput.value = state.cellGapMm;
   ui.cellNumberCorner.value = state.cellNumberCorner;
   ui.cellNumberFormat.value = state.cellNumberFormat;
   ui.cellNumberOffsetX.value = state.cellNumberOffsetX;
