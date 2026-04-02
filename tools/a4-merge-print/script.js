@@ -228,6 +228,17 @@ async function registerFont(fontName, dataUrl) {
   const face = new FontFace(fontName, `url(${dataUrl}) format('truetype')`);
   await face.load();
   document.fonts.add(face);
+  try {
+    await document.fonts.load(`16px "${fontName}"`);
+  } catch {}
+}
+
+async function ensureActiveFontReady(fontName = state.fontFamily) {
+  if (!fontName) return;
+  try {
+    await document.fonts.load(`16px ${resolveFontCss(fontName)}`);
+    await document.fonts.ready;
+  } catch {}
 }
 
 async function restoreCustomFonts() {
