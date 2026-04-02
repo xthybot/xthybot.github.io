@@ -473,6 +473,12 @@ async function refreshStage() {
     const canvas = await renderPageCanvas(0, {
       scale: Math.max(0.45, state.previewScale / 100),
       showGuideLines: state.showGuideLines,
+      stateOverrides: {
+        imageFitMode: state.imageFitMode,
+        cellNumberColor: state.cellNumberColor,
+        showPageNumbers: state.showPageNumbers,
+        cellNumberFontSize: state.cellNumberFontSize,
+      }
     });
     const ctx = ui.a4PreviewCanvas.getContext('2d');
     ui.a4PreviewCanvas.width = canvas.width;
@@ -688,17 +694,26 @@ async function loadSharedImage(src) {
 
 function drawFittedImage(ctx, img, x, y, w, h, config) {
   const scale = (config.imageScale || 100) / 100;
-  const drawW = w * scale;
-  const drawH = h * scale;
   const offsetX = ((config.imageOffsetX || 0) / 100) * w;
   const offsetY = ((config.imageOffsetY || 0) / 100) * h;
-  const drawX = x + (w - drawW) / 2 + offsetX;
-  const drawY = y + (h - drawH) / 2 + offsetY;
   ctx.save();
   ctx.beginPath();
   ctx.rect(x, y, w, h);
   ctx.clip();
-  ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  if (config.imageFitMode === 'stretch') {
+    const drawW = w * scale;
+    const drawH = h * scale;
+    const drawX = x + (w - drawW) / 2 + offsetX;
+    const drawY = y + (h - drawH) / 2 + offsetY;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  } else {
+    const baseScale = Math.max(w / img.width, h / img.height);
+    const drawW = img.width * baseScale * scale;
+    const drawH = img.height * baseScale * scale;
+    const drawX = x + (w - drawW) / 2 + offsetX;
+    const drawY = y + (h - drawH) / 2 + offsetY;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  }
   ctx.restore();
 }
 
