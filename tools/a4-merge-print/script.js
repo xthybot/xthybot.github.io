@@ -149,6 +149,7 @@ function ensureUiReferences() {
       imageScaleInput: document.getElementById('imageScale'),
       imageOffsetXInput: document.getElementById('imageOffsetX'),
       imageOffsetYInput: document.getElementById('imageOffsetY'),
+      imageFitModeInput: document.getElementById('imageFitMode'),
       cellGapMmInput: document.getElementById('cellGapMm'),
       showCellNumbersInput: document.getElementById('showCellNumbers'),
       showSafeZoneInput: document.getElementById('showSafeZone'),
