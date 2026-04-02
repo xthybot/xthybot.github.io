@@ -71,7 +71,16 @@ function loadState() {
 }
 
 function saveState() {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  const serializable = {
+    ...state,
+    customFonts: (state.customFonts || []).map(({ name, originalName }) => ({ name, originalName })),
+  };
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+  } catch {
+    const fallback = { ...serializable, customFonts: [], lastUploadedFontName: '' };
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fallback));
+  }
 }
 
 function mergeBoxes(boxes) {
@@ -395,6 +404,7 @@ function applyLatestUploadedFont() {
 
 function clearUploadedFonts() {
   state.customFonts = [];
+  runtimeFontData.clear();
   state.lastUploadedFontName = '';
   if (!FONT_OPTIONS.some((font) => font.name === state.fontFamily)) state.fontFamily = FONT_OPTIONS[0].name;
   populateFontOptions();
@@ -929,4 +939,5 @@ async function init() {
   else await initPreviewPage();
 }
 
+init();
 init();
