@@ -433,7 +433,10 @@ async function refreshStage() {
   ui.pageStage.hidden = state.previewMode !== 'single';
 
   if (state.previewMode === 'a4') {
-    const canvas = await renderPageCanvas(0, { scale: Math.max(0.45, state.previewScale / 100) });
+    const canvas = await renderPageCanvas(0, {
+      scale: Math.max(0.45, state.previewScale / 100),
+      showGuideLines: state.showGuideLines
+    });
     const ctx = ui.a4PreviewCanvas.getContext('2d');
     ui.a4PreviewCanvas.width = canvas.width;
     ui.a4PreviewCanvas.height = canvas.height;
@@ -444,16 +447,19 @@ async function refreshStage() {
 
   const layout = getPageLayout();
   ui.pageStageSafe.style.display = state.showSafeZone ? 'block' : 'none';
-  ui.pageStageSafe.style.left = `${layout.safeLeft}%`;
-  ui.pageStageSafe.style.top = `${layout.safeTop}%`;
-  ui.pageStageSafe.style.width = `${layout.safeWidth}%`;
-  ui.pageStageSafe.style.height = `${layout.safeHeight}%`;
+  ui.pageStageSafe.style.left = `0`;
+  ui.pageStageSafe.style.top = `0`;
+  ui.pageStageSafe.style.width = `100%`;
+  ui.pageStageSafe.style.height = `100%`;
 
   ui.singleStage.style.left = `0`;
   ui.singleStage.style.top = `0`;
   ui.singleStage.style.width = `100%`;
-  ui.singleStage.style.height = `100%`;
+  ui.singleStage.style.height = `auto`;
+  ui.singleStage.style.aspectRatio = `${layout.cellWidth} / ${layout.cellHeight}`;
   ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
+  ui.singleStage.style.backgroundSize = `${state.imageScale}% auto`;
+  ui.singleStage.style.backgroundPosition = `${50 + state.imageOffsetX}% ${50 + state.imageOffsetY}%`;
   ui.singleStage.innerHTML = '';
 
   Array.from(ui.pageStage.querySelectorAll('.stage-cell-number')).forEach((el) => el.remove());
