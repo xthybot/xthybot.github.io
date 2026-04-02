@@ -753,7 +753,7 @@ function drawCellNumber(ctx, cellRect, number) {
   const pos = getCellNumberPosition(cellRect, number, false);
   ctx.save();
   ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
-  ctx.font = '12px Inter, sans-serif';
+  ctx.font = `${state.cellNumberFontSize}px Inter, sans-serif`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.fillText(label, pos.left, pos.top);
