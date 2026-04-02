@@ -151,7 +151,6 @@ function ensureUiReferences() {
       clearUploadedFontsBtn: document.getElementById('clearUploadedFontsBtn'),
       fontFamily: document.getElementById('fontFamily'),
       fontInfo: document.getElementById('fontInfo'),
-      previewBtn: document.getElementById('previewBtn'),
       exportPdfBtn: document.getElementById('exportPdfBtn'),
       exportBlankPdfBtn: document.getElementById('exportBlankPdfBtn'),
       resetBtn: document.getElementById('resetBtn'),
