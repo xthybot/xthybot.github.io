@@ -229,6 +229,8 @@ function bindMainPage() {
   ui.cellNumberFormat.value = state.cellNumberFormat;
   ui.cellNumberOffsetX.value = state.cellNumberOffsetX;
   ui.cellNumberOffsetY.value = state.cellNumberOffsetY;
+  ui.cellNumberFontSize.value = state.cellNumberFontSize;
+  ui.showGuideLinesInput.checked = state.showGuideLines;
   ui.batchData.value = state.batchData;
   populateFontOptions();
   bindStageInspector();
@@ -244,10 +246,10 @@ function bindEvents() {
   ui.clearUploadedFontsBtn.addEventListener('click', clearUploadedFonts);
   ui.fontFamily.addEventListener('change', () => { state.fontFamily = ui.fontFamily.value; saveState(); refreshAll(); });
 
-  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY].forEach((input) => {
+  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
   });
-  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
+  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.cellNumberCorner, ui.cellNumberFormat, ui.showGuideLinesInput].forEach((input) => {
     input.addEventListener('change', syncGeneralSettingsFromUi);
   });
 
@@ -588,7 +590,7 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
   ctx.strokeStyle = '#111827';
   ctx.lineWidth = 2;
   ctx.strokeRect(1, 1, pageWidth - 2, pageHeight - 2);
-  if (config.showSafeZone) {
+  if (config.showSafeZone && (options.showGuideLines ?? config.showGuideLines)) {
     ctx.strokeStyle = 'rgba(234, 88, 12, 0.85)';
     ctx.setLineDash([10, 8]);
     ctx.strokeRect(safeZone.x, safeZone.y, safeZone.w, safeZone.h);
@@ -730,7 +732,7 @@ async function exportPdf({ blank }) {
   const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
   setStatus(blank ? '正在產生空白模板 PDF…' : '正在產生 PDF…');
   for (let i = 0; i < config.pages.length; i += 1) {
-    const canvas = await renderPageCanvas(i, { scale: 2.48, blank });
+    const canvas = await renderPageCanvas(i, { scale: 2.48, blank, showGuideLines: state.showGuideLines });
     const imageData = canvas.toDataURL('image/jpeg', 0.95);
     if (i > 0) pdf.addPage();
     pdf.addImage(imageData, 'JPEG', 0, 0, PAGE_MM.width, PAGE_MM.height, undefined, 'FAST');
