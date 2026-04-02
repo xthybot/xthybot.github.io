@@ -525,9 +525,9 @@ function refreshMeta() {
   ui.fontInfo.textContent = `目前字體：${fontLabel} ｜ 上傳字體只保留在本次頁面。`;
 }
 
-function refreshAll() {
+async function refreshAll() {
   refreshInspector();
-  refreshStage();
+  await refreshStage();
   refreshDataStats();
   refreshMeta();
 }
