@@ -78,8 +78,12 @@ function saveState() {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
   } catch {
-    const fallback = { ...serializable, customFonts: [], lastUploadedFontName: '' };
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fallback));
+    try {
+      const fallback = { ...serializable, customFonts: [], lastUploadedFontName: '' };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(fallback));
+    } catch {
+      sessionStorage.removeItem(STORAGE_KEY);
+    }
   }
 }
 
@@ -374,8 +378,9 @@ async function handleFontUpload(event) {
   const safeName = file.name.replace(/\.[^.]+$/, '').replace(/[^\w\u4e00-\u9fff-]+/g, '_') || 'UploadedFont';
   const fontName = `${safeName}_${Date.now().toString(36)}`;
   try {
+    runtimeFontData.set(fontName, dataUrl);
     await registerFont(fontName, dataUrl);
-    state.customFonts.push({ name: fontName, dataUrl, originalName: file.name });
+    state.customFonts.push({ name: fontName, originalName: file.name });
     state.lastUploadedFontName = fontName;
     state.fontFamily = fontName;
     saveState();
@@ -939,5 +944,4 @@ async function init() {
   else await initPreviewPage();
 }
 
-init();
 init();
