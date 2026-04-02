@@ -581,6 +581,11 @@ function resolveVerticalJustify(vAlign) {
   if (vAlign === 'bottom') return 'flex-end';
   return 'flex-start';
 }
+function resolveHorizontalJustify(align) {
+  if (align === 'center') return 'center';
+  if (align === 'right') return 'flex-end';
+  return 'flex-start';
+}
 
 function startDrag(event, boxId) {
   const stageRect = ui.singleStage.getBoundingClientRect();
