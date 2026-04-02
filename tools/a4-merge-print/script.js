@@ -642,6 +642,32 @@ async function renderPageCanvas(pageIndex, options = {}) {
   return canvas;
 }
 
+async function renderSingleCellCanvas(scale = 1) {
+  const config = getRenderContext();
+  const marginX = mmToPx(config.marginMm, PREVIEW_BASE_WIDTH / PAGE_MM.width);
+  const marginY = mmToPx(config.marginMm, PREVIEW_BASE_HEIGHT / PAGE_MM.height);
+  const gapX = mmToPx(config.cellGapMm || 0, PREVIEW_BASE_WIDTH / PAGE_MM.width);
+  const gapY = mmToPx(config.cellGapMm || 0, PREVIEW_BASE_HEIGHT / PAGE_MM.height);
+  const safeW = PREVIEW_BASE_WIDTH - marginX * 2;
+  const safeH = PREVIEW_BASE_HEIGHT - marginY * 2;
+  const cellW = (safeW - gapX * Math.max(0, config.cols - 1)) / config.cols;
+  const cellH = (safeH - gapY * Math.max(0, config.rows - 1)) / config.rows;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(cellW * scale);
+  canvas.height = Math.round(cellH * scale);
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, cellW, cellH);
+  if (config.image) {
+    const img = await loadSharedImage(config.image);
+    drawFittedImage(ctx, img, 0, 0, cellW, cellH, config);
+  }
+  drawCellText(ctx, { x: 0, y: 0, w: cellW, h: cellH }, getFirstSampleRow(), config);
+  if (config.showCellNumbers) drawCellNumber(ctx, { x: 0, y: 0, w: cellW, h: cellH }, 1, config);
+  return canvas;
+}
+
 async function drawPage(ctx, config, pageIndex, options = {}) {
   const pageWidth = PREVIEW_BASE_WIDTH;
   const pageHeight = PREVIEW_BASE_HEIGHT;
