@@ -673,10 +673,12 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
     }
   }
 
-  ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
-  ctx.font = '14px Inter, sans-serif';
-  ctx.textAlign = 'right';
-  ctx.fillText(`Page ${pageIndex + 1} / ${config.pages.length}`, pageWidth - 20, pageHeight - 18);
+  if (config.showPageNumbers) {
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+    ctx.font = '14px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(`Page ${pageIndex + 1} / ${config.pages.length}`, pageWidth - 20, pageHeight - 18);
+  }
 }
 
 async function loadSharedImage(src) {
