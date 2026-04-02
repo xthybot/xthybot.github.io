@@ -22,6 +22,7 @@ const DEFAULT_STATE = {
   rows: 4,
   marginMm: 5,
   previewScale: 45,
+  previewMode: 'single',
   showCellNumbers: true,
   showSafeZone: true,
   cellNumberCorner: 'top-left',
@@ -267,7 +268,8 @@ function bindEvents() {
     refreshAll();
   });
 
-  ui.previewBtn.addEventListener('click', () => { saveState(); window.open('./preview.html', '_blank', 'noopener'); setStatus('已在新分頁開啟預覽。'); });
+  ui.previewModeA4Btn.addEventListener('click', () => { state.previewMode = 'a4'; saveState(); refreshAll(); });
+  ui.previewModeSingleBtn.addEventListener('click', () => { state.previewMode = 'single'; saveState(); refreshAll(); });
   ui.exportPdfBtn.addEventListener('click', () => exportPdf({ blank: false }));
   ui.exportBlankPdfBtn.addEventListener('click', () => exportPdf({ blank: true }));
   ui.resetBtn.addEventListener('click', () => {
@@ -739,7 +741,10 @@ async function initPreviewPage() {
       button.textContent = '放大查看';
       button.addEventListener('click', async () => {
         const zoom = await renderPageCanvas(i, { scale: 1.2 });
-        ui.zoomCanvas.width = zoom.width; ui.zoomCanvas.height = zoom.height; ui.zoomCanvas.getContext('2d').drawImage(zoom, 0, 0); ui.zoomDialog.showModal();
+        ui.zoomCanvas.width = zoom.width;
+        ui.zoomCanvas.height = zoom.height;
+        ui.zoomCanvas.getContext('2d').drawImage(zoom, 0, 0);
+        ui.zoomDialog.showModal();
       });
       card.appendChild(button);
       ui.previewList.appendChild(card);

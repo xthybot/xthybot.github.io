@@ -122,12 +122,19 @@
         <section class="panel stage-panel">
           <div class="section-head">
             <div>
-              <h2>6. 單格版面編輯</h2>
-              <p>拖拉文字框移動位置；右側可調整字級、顏色、粗細、左右與上下對齊、旋轉。預覽不做溢出修正，超出由你自行調整。</p>
+              <h2>6. 版面預覽與單格編輯</h2>
+              <p>可切換預覽整張 A4 或單格編輯。拖拉文字框移動位置；右側可調整字級、顏色、粗細、左右與上下對齊、旋轉。</p>
+            </div>
+            <div class="inline-actions compact-actions">
+              <button class="mini-btn" id="previewModeA4Btn" type="button">預覽整張 A4</button>
+              <button class="mini-btn" id="previewModeSingleBtn" type="button">預覽單格</button>
             </div>
           </div>
           <div class="stage-layout">
             <div class="stage-wrap">
+              <div class="a4-preview-embed panel-sub" id="a4PreviewEmbed" hidden>
+                <canvas id="a4PreviewCanvas"></canvas>
+              </div>
               <div class="page-stage" id="pageStage">
                 <div class="page-stage-safe" id="pageStageSafe"></div>
                 <div class="single-stage" id="singleStage"></div>
