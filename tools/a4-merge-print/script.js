@@ -501,7 +501,6 @@ async function refreshStage() {
   ui.pageStage.style.aspectRatio = `${metrics.aspectRatio}`;
   ui.pageStageSafe.style.display = 'none';
   ui.singleStagePreviewWrap.hidden = false;
-  ui.singleStagePreviewWrap.style.aspectRatio = `${metrics.aspectRatio}`;
   const singleCanvas = await renderSingleCellCanvas(Math.max(0.8, state.previewScale / 100));
   ui.singleStagePreviewCanvas.width = singleCanvas.width;
   ui.singleStagePreviewCanvas.height = singleCanvas.height;
