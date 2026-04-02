@@ -498,8 +498,7 @@ async function refreshStage() {
   ui.singleStage.style.height = 'auto';
   ui.singleStage.style.aspectRatio = `${metrics.aspectRatio}`;
   ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
-  ui.singleStage.style.backgroundSize = `${state.imageScale}% auto`;
-  ui.singleStage.style.backgroundPosition = `${50 + state.imageOffsetX}% ${50 + state.imageOffsetY}%`;
+  applySingleStageImageStyle(ui.singleStage, state);
   ui.singleStage.innerHTML = '';
 
   state.textBoxes.forEach((box, index) => {
