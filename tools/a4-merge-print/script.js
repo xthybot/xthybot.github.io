@@ -312,10 +312,12 @@ function syncGeneralSettingsFromUi() {
   state.cellGapMm = clampNumber(Number(ui.cellGapMmInput.value), 0, 20);
   state.showCellNumbers = ui.showCellNumbersInput.checked;
   state.showSafeZone = ui.showSafeZoneInput.checked;
+  state.showGuideLines = ui.showGuideLinesInput.checked;
   state.cellNumberCorner = ui.cellNumberCorner.value;
   state.cellNumberFormat = ui.cellNumberFormat.value;
   state.cellNumberOffsetX = clampNumber(Number(ui.cellNumberOffsetX.value), 0, 30);
   state.cellNumberOffsetY = clampNumber(Number(ui.cellNumberOffsetY.value), 0, 30);
+  state.cellNumberFontSize = clampNumber(Number(ui.cellNumberFontSize.value), 6, 72);
   saveState();
   refreshAll();
 }
