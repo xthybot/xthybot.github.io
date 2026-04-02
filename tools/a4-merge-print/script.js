@@ -491,14 +491,18 @@ async function refreshStage() {
   const metrics = getSingleStageMetrics();
   ui.pageStage.classList.add('safe-hidden');
   ui.pageStageSafe.style.display = 'none';
+  ui.singleStagePreviewWrap.style.aspectRatio = `${metrics.aspectRatio}`;
+  const singleCanvas = await renderSingleCellCanvas(Math.max(0.8, state.previewScale / 100));
+  ui.singleStagePreviewCanvas.width = singleCanvas.width;
+  ui.singleStagePreviewCanvas.height = singleCanvas.height;
+  ui.singleStagePreviewCanvas.getContext('2d').drawImage(singleCanvas, 0, 0);
   ui.singleStage.classList.add('single-focus');
-  ui.singleStage.style.left = 'auto';
-  ui.singleStage.style.top = 'auto';
-  ui.singleStage.style.width = 'min(100%, 640px)';
-  ui.singleStage.style.height = 'auto';
+  ui.singleStage.style.left = '0';
+  ui.singleStage.style.top = '0';
+  ui.singleStage.style.width = '100%';
+  ui.singleStage.style.height = '100%';
   ui.singleStage.style.aspectRatio = `${metrics.aspectRatio}`;
-  ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
-  applySingleStageImageStyle(ui.singleStage, state);
+  ui.singleStage.style.backgroundImage = 'none';
   ui.singleStage.innerHTML = '';
 
   state.textBoxes.forEach((box, index) => {
