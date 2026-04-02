@@ -523,8 +523,9 @@ async function refreshStage() {
     const content = document.createElement('div');
     content.className = 'content';
     content.textContent = getSampleTextForBox(index);
+    content.style.textAlign = box.align;
     content.style.alignItems = resolveAlignItems(box.vAlign, box.vertical);
-    content.style.justifyContent = box.vertical ? resolveVerticalJustify(box.vAlign) : 'flex-start';
+    content.style.justifyContent = box.vertical ? resolveVerticalJustify(box.vAlign) : resolveHorizontalJustify(box.align);
     el.appendChild(content);
     el.addEventListener('pointerdown', (event) => startDrag(event, box.id));
     el.addEventListener('click', () => { state.selectedBoxId = box.id; saveState(); refreshAll(); });
