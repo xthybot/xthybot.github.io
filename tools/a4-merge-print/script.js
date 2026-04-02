@@ -268,7 +268,7 @@ function bindEvents() {
   ui.fontUpload.addEventListener('change', handleFontUpload);
   ui.applyUploadedFontBtn.addEventListener('click', applyLatestUploadedFont);
   ui.clearUploadedFontsBtn.addEventListener('click', clearUploadedFonts);
-  ui.fontFamily.addEventListener('change', () => { state.fontFamily = ui.fontFamily.value; saveState(); refreshAll(); });
+  ui.fontFamily.addEventListener('change', async () => { state.fontFamily = ui.fontFamily.value; saveState(); await ensureActiveFontReady(state.fontFamily); await refreshAll(); });
 
   [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize, ui.imageFitModeInput, ui.cellNumberColorInput].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
@@ -625,6 +625,7 @@ function refreshMeta() {
 }
 
 async function refreshAll() {
+  await ensureActiveFontReady(state.fontFamily);
   refreshInspector();
   await refreshStage();
   refreshDataStats();
