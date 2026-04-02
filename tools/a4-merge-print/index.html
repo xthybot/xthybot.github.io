@@ -25,7 +25,7 @@
     <section class="hero panel">
       <p class="eyebrow">阿蝦工具頁</p>
       <h1>A4 合併列印工具</h1>
-      <p class="subtitle">上傳單格底圖、設定 A4 欄列、編輯最多 4 個文字框、貼上批次資料，直接在瀏覽器中預覽與匯出 PDF。</p>
+      <p class="subtitle">上傳單格底圖、設定 A4 欄列、編輯文字框、貼上批次資料，直接在瀏覽器中預覽與匯出 PDF。</p>
       <div class="chips">
         <span>純前端</span>
         <span>多頁預覽</span>
@@ -46,26 +46,52 @@
           <label><span>A4 列數</span><input id="rows" type="number" min="1" max="12" value="4" /></label>
         </div>
         <div class="two-col">
-          <label><span>頁邊安全距離 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
+          <label><span>整張紙安全距離 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
           <label><span>預覽縮放 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></label>
         </div>
         <div class="inline-toggle-row">
-          <label class="inline-toggle"><input id="showCellNumbers" type="checkbox" checked> 顯示格號</label>
-          <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示安全區</label>
+          <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示整張紙安全區</label>
         </div>
         <div class="hint" id="imageInfo">尚未上傳底圖</div>
 
-        <h2>2. 文字框設定</h2>
-        <div class="hint">最多 4 個文字框。欄位會依第一個非空白資料列自動決定數量。</div>
-        <div id="textBoxEditor" class="box-editor"></div>
+        <h2>2. 格號設定</h2>
+        <div class="inline-toggle-row">
+          <label class="inline-toggle"><input id="showCellNumbers" type="checkbox" checked> 顯示格號</label>
+        </div>
+        <div class="two-col">
+          <label><span>位置角落</span>
+            <select id="cellNumberCorner">
+              <option value="top-left">左上</option>
+              <option value="top-right">右上</option>
+              <option value="bottom-left">左下</option>
+              <option value="bottom-right">右下</option>
+            </select>
+          </label>
+          <label><span>編號格式</span>
+            <select id="cellNumberFormat">
+              <option value="hash">#1</option>
+              <option value="001">001</option>
+              <option value="01">01</option>
+              <option value="1">1</option>
+            </select>
+          </label>
+        </div>
+        <div class="two-col">
+          <label><span>離左 / 右邊距 (mm)</span><input id="cellNumberOffsetX" type="number" min="0" max="30" value="2" step="0.5" /></label>
+          <label><span>離上 / 下邊距 (mm)</span><input id="cellNumberOffsetY" type="number" min="0" max="30" value="2" step="0.5" /></label>
+        </div>
 
         <h2>3. 字體</h2>
         <label class="file-picker">
           <span>上傳字體（TTF / OTF）</span>
           <input type="file" id="fontUpload" accept=".ttf,.otf,font/ttf,font/otf" />
         </label>
+        <div class="inline-actions compact-actions">
+          <button class="mini-btn" id="applyUploadedFontBtn" type="button">套用最新上傳字體</button>
+          <button class="mini-btn" id="clearUploadedFontsBtn" type="button">清空上傳字體</button>
+        </div>
         <label>
-          <span>預設字體</span>
+          <span>目前字體</span>
           <select id="fontFamily"></select>
         </label>
         <div class="hint" id="fontInfo">可使用系統字體或本次頁面上傳字體，不會永久保存。</div>
@@ -97,18 +123,21 @@
           <div class="section-head">
             <div>
               <h2>6. 單格版面編輯</h2>
-              <p>拖拉文字框移動位置；右側設定字級、顏色、粗細、對齊與旋轉。預覽不做溢出修正，超出由你自行調整。</p>
+              <p>拖拉文字框移動位置；右側可調整字級、顏色、粗細、左右與上下對齊、旋轉。預覽不做溢出修正，超出由你自行調整。</p>
             </div>
           </div>
           <div class="stage-layout">
             <div class="stage-wrap">
-              <div class="single-stage" id="singleStage"></div>
+              <div class="page-stage" id="pageStage">
+                <div class="page-stage-safe" id="pageStageSafe"></div>
+                <div class="single-stage" id="singleStage"></div>
+              </div>
             </div>
             <aside class="side-inspector panel-sub">
               <h3>目前選取</h3>
               <div id="selectedBoxInfo" class="hint">點一下任一文字框即可編輯。</div>
               <div class="inspector-grid">
-                <label><span>內容預覽</span><input id="sampleText" type="text" value="欄位示意文字" /></label>
+                <label><span>內容預覽</span><input id="sampleText" type="text" readonly /></label>
                 <label><span>X (%)</span><input id="boxX" type="number" min="0" max="100" step="0.1" /></label>
                 <label><span>Y (%)</span><input id="boxY" type="number" min="0" max="100" step="0.1" /></label>
                 <label><span>寬 (%)</span><input id="boxW" type="number" min="1" max="100" step="0.1" /></label>
@@ -122,11 +151,18 @@
                     <option value="800">800</option>
                   </select>
                 </label>
-                <label><span>對齊</span>
+                <label><span>左右對齊</span>
                   <select id="boxAlign">
                     <option value="left">靠左</option>
                     <option value="center">置中</option>
                     <option value="right">靠右</option>
+                  </select>
+                </label>
+                <label><span>上下對齊</span>
+                  <select id="boxVAlign">
+                    <option value="top">靠上</option>
+                    <option value="middle">置中</option>
+                    <option value="bottom">靠下</option>
                   </select>
                 </label>
                 <label><span>行高</span><input id="boxLineHeight" type="number" min="0.8" max="3" step="0.05" /></label>
