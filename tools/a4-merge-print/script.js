@@ -406,9 +406,23 @@ function getPageLayout() {
   };
 }
 
-function refreshStage() {
+async function refreshStage() {
+  ui.previewModeA4Btn.classList.toggle('active', state.previewMode === 'a4');
+  ui.previewModeSingleBtn.classList.toggle('active', state.previewMode === 'single');
+  ui.a4PreviewEmbed.hidden = state.previewMode !== 'a4';
+  ui.pageStage.hidden = state.previewMode !== 'single';
+
+  if (state.previewMode === 'a4') {
+    const canvas = await renderPageCanvas(0, { scale: Math.max(0.45, state.previewScale / 100) });
+    const ctx = ui.a4PreviewCanvas.getContext('2d');
+    ui.a4PreviewCanvas.width = canvas.width;
+    ui.a4PreviewCanvas.height = canvas.height;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(canvas, 0, 0);
+    return;
+  }
+
   const layout = getPageLayout();
-  const sampleIndex = state.textBoxes.findIndex((box) => box.id === state.selectedBoxId);
   ui.pageStageSafe.style.display = state.showSafeZone ? 'block' : 'none';
   ui.pageStageSafe.style.left = `${layout.safeLeft}%`;
   ui.pageStageSafe.style.top = `${layout.safeTop}%`;
@@ -421,6 +435,8 @@ function refreshStage() {
   ui.singleStage.style.height = `${layout.cellHeight}%`;
   ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
   ui.singleStage.innerHTML = '';
+
+  Array.from(ui.pageStage.querySelectorAll('.stage-cell-number')).forEach((el) => el.remove());
 
   state.textBoxes.forEach((box, index) => {
     const el = document.createElement('div');
@@ -437,7 +453,7 @@ function refreshStage() {
     ui.singleStage.appendChild(el);
   });
 
-  if (state.showCellNumbers) renderStageCellNumber(layout, sampleIndex);
+  if (state.showCellNumbers) renderStageCellNumber(layout);
 }
 
 function renderStageCellNumber(layout) {
