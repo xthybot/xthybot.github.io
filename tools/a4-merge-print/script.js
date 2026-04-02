@@ -139,6 +139,10 @@ function ensureUiReferences() {
       rowsInput: document.getElementById('rows'),
       marginInput: document.getElementById('marginMm'),
       previewScaleInput: document.getElementById('previewScale'),
+      imageScaleInput: document.getElementById('imageScale'),
+      imageOffsetXInput: document.getElementById('imageOffsetX'),
+      imageOffsetYInput: document.getElementById('imageOffsetY'),
+      cellGapMmInput: document.getElementById('cellGapMm'),
       showCellNumbersInput: document.getElementById('showCellNumbers'),
       showSafeZoneInput: document.getElementById('showSafeZone'),
       cellNumberCorner: document.getElementById('cellNumberCorner'),
@@ -246,7 +250,7 @@ function bindEvents() {
   ui.clearUploadedFontsBtn.addEventListener('click', clearUploadedFonts);
   ui.fontFamily.addEventListener('change', () => { state.fontFamily = ui.fontFamily.value; saveState(); refreshAll(); });
 
-  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize].forEach((input) => {
+  [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
   });
   [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.cellNumberCorner, ui.cellNumberFormat, ui.showGuideLinesInput].forEach((input) => {
@@ -290,6 +294,10 @@ function syncGeneralSettingsFromUi() {
   state.rows = clampNumber(Number(ui.rowsInput.value), 1, 12);
   state.marginMm = clampNumber(Number(ui.marginInput.value), 0, 20);
   state.previewScale = clampNumber(Number(ui.previewScaleInput.value), 20, 100);
+  state.imageScale = clampNumber(Number(ui.imageScaleInput.value), 10, 300);
+  state.imageOffsetX = clampNumber(Number(ui.imageOffsetXInput.value), -100, 100);
+  state.imageOffsetY = clampNumber(Number(ui.imageOffsetYInput.value), -100, 100);
+  state.cellGapMm = clampNumber(Number(ui.cellGapMmInput.value), 0, 20);
   state.showCellNumbers = ui.showCellNumbersInput.checked;
   state.showSafeZone = ui.showSafeZoneInput.checked;
   state.cellNumberCorner = ui.cellNumberCorner.value;
@@ -431,10 +439,10 @@ async function refreshStage() {
   ui.pageStageSafe.style.width = `${layout.safeWidth}%`;
   ui.pageStageSafe.style.height = `${layout.safeHeight}%`;
 
-  ui.singleStage.style.left = `${layout.safeLeft}%`;
-  ui.singleStage.style.top = `${layout.safeTop}%`;
-  ui.singleStage.style.width = `${layout.cellWidth}%`;
-  ui.singleStage.style.height = `${layout.cellHeight}%`;
+  ui.singleStage.style.left = `0`;
+  ui.singleStage.style.top = `0`;
+  ui.singleStage.style.width = `100%`;
+  ui.singleStage.style.height = `100%`;
   ui.singleStage.style.backgroundImage = state.image ? `url(${state.image})` : 'none';
   ui.singleStage.innerHTML = '';
 
@@ -608,7 +616,7 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
       ctx.strokeRect(x, y, cellW, cellH);
       if (config.image) {
         const img = await loadSharedImage(config.image);
-        ctx.drawImage(img, x, y, cellW, cellH);
+        drawFittedImage(ctx, img, x, y, cellW, cellH, config);
       }
       if (!options.blank) drawCellText(ctx, cellRect, rows[cellIndex] || [], config);
       if (config.showCellNumbers) drawCellNumber(ctx, cellRect, pageIndex * config.cellsPerPage + cellIndex + 1, config);
@@ -624,6 +632,22 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
 async function loadSharedImage(src) {
   if (!sharedImageCache.has(src)) sharedImageCache.set(src, loadImage(src));
   return sharedImageCache.get(src);
+}
+
+function drawFittedImage(ctx, img, x, y, w, h, config) {
+  const scale = (config.imageScale || 100) / 100;
+  const drawW = w * scale;
+  const drawH = h * scale;
+  const offsetX = ((config.imageOffsetX || 0) / 100) * w;
+  const offsetY = ((config.imageOffsetY || 0) / 100) * h;
+  const drawX = x + (w - drawW) / 2 + offsetX;
+  const drawY = y + (h - drawH) / 2 + offsetY;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  ctx.restore();
 }
 
 function drawCellText(ctx, cellRect, rowData, config) {
