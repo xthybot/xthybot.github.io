@@ -459,7 +459,6 @@ function renderStageCellNumber(layout) {
   marker.style.top = `${(layout.safeTop + (pos.top / (ui.pageStage.clientHeight || 1)) * 100)}%`;
   marker.textContent = formatCellNumber(1, state.cellNumberFormat);
   ui.pageStage.appendChild(marker);
-  setTimeout(() => marker.remove(), 0);
 }
 
 function applyBoxStyle(el, box) {
