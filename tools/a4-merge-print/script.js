@@ -458,7 +458,7 @@ function getSingleStageMetrics() {
 
 function placeStageNumberMarker(marker) {
   const stageRect = ui.singleStage.getBoundingClientRect();
-  const pos = getCellNumberPosition({ x: 0, y: 0, w: stageRect.width || 250, h: stageRect.height || 180 }, 1, true);
+  const pos = getCellNumberPosition({ x: 0, y: 0, w: stageRect.width || 250, h: stageRect.height || 180 }, 1, true, state);
   marker.style.left = `${pos.left}px`;
   marker.style.top = `${pos.top}px`;
 }
@@ -790,27 +790,27 @@ function formatCellNumber(number, format) {
   return String(number);
 }
 
-function getCellNumberPosition(cellRect, number, forStage = false) {
-  const pxPerMmX = forStage ? (ui.singleStage.clientWidth / (PAGE_MM.width - state.marginMm * 2) / state.cols) : (PREVIEW_BASE_WIDTH / PAGE_MM.width);
-  const pxPerMmY = forStage ? (ui.singleStage.clientHeight / (PAGE_MM.height - state.marginMm * 2) / state.rows) : (PREVIEW_BASE_HEIGHT / PAGE_MM.height);
-  const offX = mmToPx(state.cellNumberOffsetX, pxPerMmX);
-  const offY = mmToPx(state.cellNumberOffsetY, pxPerMmY);
-  const text = formatCellNumber(number, state.cellNumberFormat);
-  const approxWidth = text.length * (forStage ? Math.max(7, state.cellNumberFontSize * 0.7) : Math.max(6, state.cellNumberFontSize * 0.62));
-  const approxHeight = forStage ? Math.max(18, state.cellNumberFontSize * 1.4) : Math.max(14, state.cellNumberFontSize * 1.2);
+function getCellNumberPosition(cellRect, number, forStage = false, config = state) {
+  const pxPerMmX = forStage ? (ui.singleStage.clientWidth / (PAGE_MM.width - config.marginMm * 2) / config.cols) : (PREVIEW_BASE_WIDTH / PAGE_MM.width);
+  const pxPerMmY = forStage ? (ui.singleStage.clientHeight / (PAGE_MM.height - config.marginMm * 2) / config.rows) : (PREVIEW_BASE_HEIGHT / PAGE_MM.height);
+  const offX = mmToPx(config.cellNumberOffsetX, pxPerMmX);
+  const offY = mmToPx(config.cellNumberOffsetY, pxPerMmY);
+  const text = formatCellNumber(number, config.cellNumberFormat);
+  const approxWidth = text.length * (forStage ? Math.max(7, config.cellNumberFontSize * 0.7) : Math.max(6, config.cellNumberFontSize * 0.62));
+  const approxHeight = forStage ? Math.max(18, config.cellNumberFontSize * 1.4) : Math.max(14, config.cellNumberFontSize * 1.2);
   let left = cellRect.x + offX;
   let top = cellRect.y + offY;
-  if (state.cellNumberCorner.includes('right')) left = cellRect.x + cellRect.w - offX - approxWidth;
-  if (state.cellNumberCorner.includes('bottom')) top = cellRect.y + cellRect.h - offY - approxHeight;
+  if (config.cellNumberCorner.includes('right')) left = cellRect.x + cellRect.w - offX - approxWidth;
+  if (config.cellNumberCorner.includes('bottom')) top = cellRect.y + cellRect.h - offY - approxHeight;
   return { left, top };
 }
 
-function drawCellNumber(ctx, cellRect, number) {
-  const label = formatCellNumber(number, state.cellNumberFormat);
-  const pos = getCellNumberPosition(cellRect, number, false);
+function drawCellNumber(ctx, cellRect, number, config = state) {
+  const label = formatCellNumber(number, config.cellNumberFormat);
+  const pos = getCellNumberPosition(cellRect, number, false, config);
   ctx.save();
-  ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
-  ctx.font = `${state.cellNumberFontSize}px Inter, sans-serif`;
+  ctx.fillStyle = config.cellNumberColor || state.cellNumberColor;
+  ctx.font = `${config.cellNumberFontSize || state.cellNumberFontSize}px Inter, sans-serif`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.fillText(label, pos.left, pos.top);
