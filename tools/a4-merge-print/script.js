@@ -149,6 +149,8 @@ function ensureUiReferences() {
       cellNumberFormat: document.getElementById('cellNumberFormat'),
       cellNumberOffsetX: document.getElementById('cellNumberOffsetX'),
       cellNumberOffsetY: document.getElementById('cellNumberOffsetY'),
+      cellNumberFontSize: document.getElementById('cellNumberFontSize'),
+      showGuideLinesInput: document.getElementById('showGuideLines'),
       imageInfo: document.getElementById('imageInfo'),
       fontUpload: document.getElementById('fontUpload'),
       applyUploadedFontBtn: document.getElementById('applyUploadedFontBtn'),
