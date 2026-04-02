@@ -35,6 +35,7 @@ const DEFAULT_STATE = {
   cellNumberOffsetX: 2,
   cellNumberOffsetY: 2,
   cellNumberFontSize: 12,
+  cellNumberColor: '#0f172a',
   batchData: '',
   image: null,
   imageName: '',
@@ -246,7 +247,9 @@ function bindMainPage() {
   ui.cellNumberOffsetX.value = state.cellNumberOffsetX;
   ui.cellNumberOffsetY.value = state.cellNumberOffsetY;
   ui.cellNumberFontSize.value = state.cellNumberFontSize;
+  ui.cellNumberColorInput.value = state.cellNumberColor;
   ui.showGuideLinesInput.checked = state.showGuideLines;
+  ui.showPageNumbersInput.checked = state.showPageNumbers;
   ui.batchData.value = state.batchData;
   populateFontOptions();
   bindStageInspector();
@@ -264,9 +267,6 @@ function bindEvents() {
 
   [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
-  });
-  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.cellNumberCorner, ui.cellNumberFormat, ui.showGuideLinesInput].forEach((input) => {
-    input.addEventListener('change', syncGeneralSettingsFromUi);
   });
 
   ui.batchData.addEventListener('input', () => {
@@ -515,7 +515,7 @@ function renderStageCellNumber() {
   marker.style.borderStyle = 'solid';
   marker.style.borderColor = 'rgba(255, 128, 0, 0.55)';
   marker.style.background = 'rgba(255, 255, 255, 0.55)';
-  marker.style.color = '#111';
+  marker.style.color = state.cellNumberColor;
   marker.style.fontSize = `${state.cellNumberFontSize}px`;
   marker.style.fontWeight = '700';
   marker.style.padding = '2px 6px';
