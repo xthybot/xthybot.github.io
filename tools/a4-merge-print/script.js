@@ -408,13 +408,21 @@ function refreshInspector() {
 function getPageLayout() {
   const marginXPercent = (state.marginMm / PAGE_MM.width) * 100;
   const marginYPercent = (state.marginMm / PAGE_MM.height) * 100;
+  const gapXPercent = (state.cellGapMm / PAGE_MM.width) * 100;
+  const gapYPercent = (state.cellGapMm / PAGE_MM.height) * 100;
+  const safeWidth = 100 - marginXPercent * 2;
+  const safeHeight = 100 - marginYPercent * 2;
+  const totalGapX = gapXPercent * Math.max(0, state.cols - 1);
+  const totalGapY = gapYPercent * Math.max(0, state.rows - 1);
   return {
     safeLeft: marginXPercent,
     safeTop: marginYPercent,
-    safeWidth: 100 - marginXPercent * 2,
-    safeHeight: 100 - marginYPercent * 2,
-    cellWidth: (100 - marginXPercent * 2) / state.cols,
-    cellHeight: (100 - marginYPercent * 2) / state.rows
+    safeWidth,
+    safeHeight,
+    gapX: gapXPercent,
+    gapY: gapYPercent,
+    cellWidth: (safeWidth - totalGapX) / state.cols,
+    cellHeight: (safeHeight - totalGapY) / state.rows
   };
 }
 
@@ -612,8 +620,8 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
   for (let row = 0; row < config.rows; row += 1) {
     for (let col = 0; col < config.cols; col += 1) {
       const cellIndex = row * config.cols + col;
-      const x = safeZone.x + col * cellW;
-      const y = safeZone.y + row * cellH;
+      const x = safeZone.x + col * (cellW + gapX);
+      const y = safeZone.y + row * (cellH + gapY);
       const cellRect = { x, y, w: cellW, h: cellH };
       ctx.strokeRect(x, y, cellW, cellH);
       if (config.image) {
