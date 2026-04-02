@@ -442,7 +442,7 @@ function refreshStage() {
 
 function renderStageCellNumber(layout) {
   const marker = document.createElement('div');
-  marker.className = 'text-box';
+  marker.className = 'text-box stage-cell-number';
   marker.style.pointerEvents = 'none';
   marker.style.cursor = 'default';
   marker.style.borderStyle = 'solid';
