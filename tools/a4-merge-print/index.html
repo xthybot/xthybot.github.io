@@ -53,6 +53,12 @@
           <label><span>圖片縮放 (%)</span><input id="imageScale" type="number" min="10" max="300" value="100" step="1" /></label>
           <label><span>方格間距 (mm)</span><input id="cellGapMm" type="number" min="0" max="20" value="0" step="0.5" /></label>
         </div>
+        <label><span>圖片填滿模式</span>
+          <select id="imageFitMode">
+            <option value="cover">裁切維持比例</option>
+            <option value="stretch">變形強制填滿</option>
+          </select>
+        </label>
         <div class="two-col">
           <label><span>圖片左右微調 (%)</span><input id="imageOffsetX" type="number" min="-100" max="100" value="0" step="0.5" /></label>
           <label><span>圖片上下微調 (%)</span><input id="imageOffsetY" type="number" min="-100" max="100" value="0" step="0.5" /></label>
