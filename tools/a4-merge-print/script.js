@@ -180,6 +180,8 @@ function ensureUiReferences() {
       demoDataBtn: document.getElementById('demoDataBtn'),
       pageStage: document.getElementById('pageStage'),
       pageStageSafe: document.getElementById('pageStageSafe'),
+      singleStagePreviewWrap: document.getElementById('singleStagePreviewWrap'),
+      singleStagePreviewCanvas: document.getElementById('singleStagePreviewCanvas'),
       singleStage: document.getElementById('singleStage'),
       selectedBoxInfo: document.getElementById('selectedBoxInfo'),
       sampleText: document.getElementById('sampleText'),
