@@ -40,12 +40,14 @@ label { display: block; margin-bottom: 14px; }
 label span { display: block; margin-bottom: 8px; color: var(--muted); font-size: 14px; }
 input[type="number"], input[type="text"], select, textarea { width: 100%; border-radius: 16px; border: 1px solid var(--line); background: rgba(4, 10, 20, 0.72); color: var(--text); padding: 12px 14px; }
 label:not(.slider-field) input[type="number"] {
-  padding-right: 12px;
+  padding-right: 16px;
+  min-height: 48px;
   color-scheme: dark;
 }
 label:not(.slider-field) input[type="number"]::-webkit-inner-spin-button,
 label:not(.slider-field) input[type="number"]::-webkit-outer-spin-button {
   opacity: 1;
+  transform: scale(1.15);
 }
 .slider-field { display: block; margin-bottom: 0; }
 .slider-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
