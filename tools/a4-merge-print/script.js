@@ -207,11 +207,12 @@ function ensureUiReferences() {
       singleStage: document.getElementById('singleStage'),
       selectedBoxInfo: document.getElementById('selectedBoxInfo'),
       sampleText: document.getElementById('sampleText'),
+      centerBoxXBtn: document.getElementById('centerBoxXBtn'),
       boxX: document.getElementById('boxX'),
       boxXRange: document.getElementById('boxXRange'),
+      centerBoxYBtn: document.getElementById('centerBoxYBtn'),
       boxY: document.getElementById('boxY'),
       boxYRange: document.getElementById('boxYRange'),
-      centerBoxBtn: document.getElementById('centerBoxBtn'),
       boxW: document.getElementById('boxW'),
       boxWRange: document.getElementById('boxWRange'),
       boxH: document.getElementById('boxH'),
@@ -382,9 +383,14 @@ function bindEvents() {
 
   ui.previewModeA4Btn.addEventListener('click', () => { state.previewMode = 'a4'; saveState(); refreshAll(); });
   ui.previewModeSingleBtn.addEventListener('click', () => { state.previewMode = 'single'; saveState(); refreshAll(); });
-  ui.centerBoxBtn.addEventListener('click', () => {
+  ui.centerBoxXBtn.addEventListener('click', () => {
     const box = getSelectedBox();
     box.x = round(clampNumber((100 - box.w) / 2, 0, 100 - box.w));
+    saveState();
+    refreshAll();
+  });
+  ui.centerBoxYBtn.addEventListener('click', () => {
+    const box = getSelectedBox();
     box.y = round(clampNumber((100 - box.h) / 2, 0, 100 - box.h));
     saveState();
     refreshAll();
