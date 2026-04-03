@@ -50,6 +50,7 @@ const DEFAULT_STATE = {
 };
 
 const sharedImageCache = new Map();
+const runtimeFontData = new Map();
 const state = loadState();
 let ui = null;
 let dragState = null;
@@ -73,7 +74,7 @@ function loadState() {
 function saveState() {
   const serializable = {
     ...state,
-    customFonts: (state.customFonts || []).map(({ name, originalName }) => ({ name, originalName })),
+    customFonts: (state.customFonts || []).map(({ name, originalName, dataUrl }) => ({ name, originalName, dataUrl })),
   };
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
@@ -437,7 +438,7 @@ async function handleFontUpload(event) {
   try {
     runtimeFontData.set(fontName, dataUrl);
     await registerFont(fontName, dataUrl);
-    state.customFonts.push({ name: fontName, originalName: file.name });
+    state.customFonts.push({ name: fontName, originalName: file.name, dataUrl });
     state.lastUploadedFontName = fontName;
     state.fontFamily = fontName;
     saveState();
