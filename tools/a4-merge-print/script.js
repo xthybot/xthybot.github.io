@@ -211,6 +211,7 @@ function ensureUiReferences() {
       boxXRange: document.getElementById('boxXRange'),
       boxY: document.getElementById('boxY'),
       boxYRange: document.getElementById('boxYRange'),
+      centerBoxBtn: document.getElementById('centerBoxBtn'),
       boxW: document.getElementById('boxW'),
       boxWRange: document.getElementById('boxWRange'),
       boxH: document.getElementById('boxH'),
@@ -381,6 +382,13 @@ function bindEvents() {
 
   ui.previewModeA4Btn.addEventListener('click', () => { state.previewMode = 'a4'; saveState(); refreshAll(); });
   ui.previewModeSingleBtn.addEventListener('click', () => { state.previewMode = 'single'; saveState(); refreshAll(); });
+  ui.centerBoxBtn.addEventListener('click', () => {
+    const box = getSelectedBox();
+    box.x = round(clampNumber((100 - box.w) / 2, 0, 100 - box.w));
+    box.y = round(clampNumber((100 - box.h) / 2, 0, 100 - box.h));
+    saveState();
+    refreshAll();
+  });
   ui.exportPdfBtn.addEventListener('click', () => exportPdf({ blank: false }));
   ui.exportBlankPdfBtn.addEventListener('click', () => exportPdf({ blank: true }));
   ui.resetBtn.addEventListener('click', () => {
