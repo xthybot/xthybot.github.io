@@ -130,22 +130,13 @@
         </label>
         <div class="hint" id="fontInfo">可使用系統字體或本次頁面上傳字體，不會永久保存。</div>
 
-        <h2>4. 操作</h2>
-        <div class="inline-toggle-row">
-          <label class="inline-toggle"><input id="showGuideLines" type="checkbox" checked> 匯出時顯示邊界虛線</label>
-          <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示 A4 頁碼</label>
-        </div>
-        <div class="actions">
-          <button class="btn danger" id="resetBtn">重設目前設定</button>
-        </div>
-        <div class="status" id="statusBox">等待資料中。</div>
       </div>
 
       <div class="main-column">
         <section class="panel editor-panel">
           <div class="section-head">
             <div>
-              <h2>5. 批次資料</h2>
+              <h2>4. 批次資料</h2>
               <p>每行一格，欄位用 <code>/</code> 分隔；若要輸入真正的斜線，請寫成 <code>\/</code>。</p>
             </div>
             <button class="mini-btn" id="demoDataBtn">貼入範例</button>
@@ -157,7 +148,7 @@
         <section class="panel stage-panel">
           <div class="section-head">
             <div>
-              <h2>6. 版面預覽與單格編輯</h2>
+              <h2>5. 版面預覽與單格編輯</h2>
               <p>可切換預覽整張 A4 或單格編輯。拖拉文字框移動位置；右側可調整字級、顏色、粗細、左右與上下對齊、旋轉。</p>
             </div>
             <div class="inline-actions compact-actions">
@@ -177,16 +168,6 @@
                   <div class="single-stage" id="singleStage"></div>
                 </div>
               </div>
-              <section class="export-bar panel-sub">
-                <div>
-                  <h3>7. 輸出</h3>
-                  <p class="export-bar-note">確認預覽沒問題後，從這裡匯出。</p>
-                </div>
-                <div class="export-actions">
-                  <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
-                  <button class="btn" id="exportPdfBtn">匯出 PDF</button>
-                </div>
-              </section>
             </div>
             <aside class="side-inspector panel-sub">
               <h3>目前選取</h3>
@@ -231,6 +212,24 @@
               </div>
             </aside>
           </div>
+          <section class="export-bar panel-sub">
+            <div class="export-bar-copy">
+              <h3>6. 輸出與操作</h3>
+              <p class="export-bar-note">確認預覽沒問題後，可調整匯出選項、重設設定，或直接輸出。</p>
+            </div>
+            <div class="export-bar-controls">
+              <div class="inline-toggle-row export-toggle-row">
+                <label class="inline-toggle"><input id="showGuideLines" type="checkbox" checked> 匯出時顯示邊界虛線</label>
+                <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示 A4 頁碼</label>
+              </div>
+              <div class="export-actions">
+                <button class="btn danger" id="resetBtn">重設目前設定</button>
+                <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
+                <button class="btn" id="exportPdfBtn">匯出 PDF</button>
+              </div>
+              <div class="status export-status" id="statusBox">等待資料中。</div>
+            </div>
+          </section>
         </section>
       </div>
     </section>

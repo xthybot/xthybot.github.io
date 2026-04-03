@@ -83,16 +83,18 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .stage-preview-column { min-width: 0; }
 .stage-wrap { min-width: 0; overflow: auto; }
 .export-bar {
-  width: min(100%, 720px);
-  margin: 18px auto 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 18px;
+  align-items: start;
 }
 .export-bar h3 { margin: 0 0 4px; }
 .export-bar-note { margin: 0; color: var(--muted); line-height: 1.6; }
-.export-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-left: auto; }
+.export-bar-controls { display: grid; gap: 14px; }
+.export-toggle-row { justify-content: flex-end; margin: 0; }
+.export-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.export-status { margin-top: 0; text-align: right; }
 .page-stage { position: relative; width: min(100%, 720px); aspect-ratio: 210 / 297; margin: 0 auto; background: #fff; border-radius: 24px; padding: 0; box-shadow: 0 24px 60px rgba(0,0,0,0.25); overflow: hidden; }
 .page-stage.safe-hidden { background: transparent; box-shadow: none; }
 .page-stage-safe { position: absolute; border: 1px dashed rgba(234, 88, 12, 0.85); pointer-events: none; z-index: 2; }
@@ -129,4 +131,4 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .dialog-stage { margin-top: 12px; overflow: auto; max-height: 78vh; }
 .dialog-stage canvas { width: 100%; height: auto; background: #fff; border-radius: 16px; }
 @media (max-width: 1120px) { .workspace, .stage-layout { grid-template-columns: 1fr; } .sticky { position: static; } }
-@media (max-width: 700px) { body, .preview-body { padding: 16px; } .hero, .controls, .editor-panel, .stage-panel, .preview-list-panel { padding: 20px; } .topbar, .preview-topbar, .section-head, .export-bar { flex-direction: column; } .two-col, .inspector-grid { grid-template-columns: 1fr; } .export-actions { width: 100%; justify-content: stretch; margin-left: 0; } .export-actions .btn { width: 100%; } }
+@media (max-width: 700px) { body, .preview-body { padding: 16px; } .hero, .controls, .editor-panel, .stage-panel, .preview-list-panel { padding: 20px; } .topbar, .preview-topbar, .section-head { flex-direction: column; } .two-col, .inspector-grid, .export-bar { grid-template-columns: 1fr; } .export-toggle-row, .export-actions { width: 100%; justify-content: stretch; } .export-status { text-align: left; } .export-actions .btn { width: 100%; } }
