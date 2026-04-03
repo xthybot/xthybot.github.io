@@ -35,8 +35,20 @@
     </section>
 
     <section class="workspace">
+      <section class="panel editor-panel workspace-batch-panel">
+        <div class="section-head">
+          <div>
+            <h2>1. 批次資料</h2>
+            <p>每行一格，欄位用 <code>/</code> 分隔；若要輸入真正的斜線，請寫成 <code>\/</code>。</p>
+          </div>
+          <button class="mini-btn" id="demoDataBtn">貼入範例</button>
+        </div>
+        <textarea id="batchData" placeholder="例如：&#10;王小明/0912-345-678/白金會員/台北店&#10;李小華/0987-654-321/體驗券/新竹店"></textarea>
+        <div class="data-stats" id="dataStats">尚未解析資料</div>
+      </section>
+
       <div class="panel controls sticky">
-        <h2>1. 專案設定</h2>
+        <h2>2. 專案設定</h2>
         <label class="file-picker">
           <span>單格底圖</span>
           <input type="file" id="templateImage" accept="image/png,image/jpeg,image/webp,image/gif" />
@@ -79,7 +91,7 @@
         </div>
         <div class="hint" id="imageInfo">尚未上傳底圖</div>
 
-        <h2>2. 格號設定</h2>
+        <h2>3. 格號設定</h2>
         <div class="inline-toggle-row">
           <label class="inline-toggle"><input id="showCellNumbers" type="checkbox" checked> 顯示格號</label>
         </div>
@@ -115,7 +127,7 @@
         </label>
         <label><span>格號顏色</span><input id="cellNumberColor" type="color" value="#0f172a" /></label>
 
-        <h2>3. 字體</h2>
+        <h2>4. 字體</h2>
         <label class="file-picker">
           <span>上傳字體（TTF / OTF）</span>
           <input type="file" id="fontUpload" accept=".ttf,.otf,font/ttf,font/otf" />
@@ -133,18 +145,6 @@
       </div>
 
       <div class="main-column">
-        <section class="panel editor-panel">
-          <div class="section-head">
-            <div>
-              <h2>4. 批次資料</h2>
-              <p>每行一格，欄位用 <code>/</code> 分隔；若要輸入真正的斜線，請寫成 <code>\/</code>。</p>
-            </div>
-            <button class="mini-btn" id="demoDataBtn">貼入範例</button>
-          </div>
-          <textarea id="batchData" placeholder="例如：&#10;王小明/0912-345-678/白金會員/台北店&#10;李小華/0987-654-321/體驗券/新竹店"></textarea>
-          <div class="data-stats" id="dataStats">尚未解析資料</div>
-        </section>
-
         <section class="panel stage-panel">
           <div class="section-head">
             <div>

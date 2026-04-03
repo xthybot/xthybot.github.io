@@ -34,6 +34,7 @@ h2, h3 { margin-top: 0; }
 .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
 .chips span { border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; color: var(--muted); }
 .workspace { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 18px; align-items: start; }
+.workspace-batch-panel { grid-column: 1 / -1; }
 .controls, .editor-panel, .stage-panel, .preview-list-panel { padding: 24px; }
 .sticky { position: sticky; top: 24px; }
 label { display: block; margin-bottom: 14px; }
