@@ -159,18 +159,26 @@ function ensureUiReferences() {
       rowsInput: document.getElementById('rows'),
       marginInput: document.getElementById('marginMm'),
       previewScaleInput: document.getElementById('previewScale'),
+      previewScaleRange: document.getElementById('previewScaleRange'),
       imageScaleInput: document.getElementById('imageScale'),
+      imageScaleRange: document.getElementById('imageScaleRange'),
       imageOffsetXInput: document.getElementById('imageOffsetX'),
+      imageOffsetXRange: document.getElementById('imageOffsetXRange'),
       imageOffsetYInput: document.getElementById('imageOffsetY'),
+      imageOffsetYRange: document.getElementById('imageOffsetYRange'),
       imageFitModeInput: document.getElementById('imageFitMode'),
       cellGapMmInput: document.getElementById('cellGapMm'),
+      cellGapMmRange: document.getElementById('cellGapMmRange'),
       showCellNumbersInput: document.getElementById('showCellNumbers'),
       showSafeZoneInput: document.getElementById('showSafeZone'),
       cellNumberCorner: document.getElementById('cellNumberCorner'),
       cellNumberFormat: document.getElementById('cellNumberFormat'),
       cellNumberOffsetX: document.getElementById('cellNumberOffsetX'),
+      cellNumberOffsetXRange: document.getElementById('cellNumberOffsetXRange'),
       cellNumberOffsetY: document.getElementById('cellNumberOffsetY'),
+      cellNumberOffsetYRange: document.getElementById('cellNumberOffsetYRange'),
       cellNumberFontSize: document.getElementById('cellNumberFontSize'),
+      cellNumberFontSizeRange: document.getElementById('cellNumberFontSizeRange'),
       cellNumberColorInput: document.getElementById('cellNumberColor'),
       showGuideLinesInput: document.getElementById('showGuideLines'),
       showPageNumbersInput: document.getElementById('showPageNumbers'),
@@ -199,16 +207,24 @@ function ensureUiReferences() {
       selectedBoxInfo: document.getElementById('selectedBoxInfo'),
       sampleText: document.getElementById('sampleText'),
       boxX: document.getElementById('boxX'),
+      boxXRange: document.getElementById('boxXRange'),
       boxY: document.getElementById('boxY'),
+      boxYRange: document.getElementById('boxYRange'),
       boxW: document.getElementById('boxW'),
+      boxWRange: document.getElementById('boxWRange'),
       boxH: document.getElementById('boxH'),
+      boxHRange: document.getElementById('boxHRange'),
       boxFontSize: document.getElementById('boxFontSize'),
+      boxFontSizeRange: document.getElementById('boxFontSizeRange'),
       boxFontWeight: document.getElementById('boxFontWeight'),
       boxAlign: document.getElementById('boxAlign'),
       boxVAlign: document.getElementById('boxVAlign'),
       boxLineHeight: document.getElementById('boxLineHeight'),
+      boxLineHeightRange: document.getElementById('boxLineHeightRange'),
       boxLetterSpacing: document.getElementById('boxLetterSpacing'),
+      boxLetterSpacingRange: document.getElementById('boxLetterSpacingRange'),
       boxRotate: document.getElementById('boxRotate'),
+      boxRotateRange: document.getElementById('boxRotateRange'),
       boxColor: document.getElementById('boxColor'),
       boxVertical: document.getElementById('boxVertical')
     };
@@ -260,27 +276,68 @@ async function restoreCustomFonts() {
   }
 }
 
+function syncNumberRangePair(numberInput, rangeInput, value) {
+  if (numberInput) numberInput.value = value;
+  if (rangeInput) rangeInput.value = value;
+}
+
+function bindSliderPairs() {
+  const pairs = [
+    ['previewScaleInput', 'previewScaleRange'],
+    ['imageScaleInput', 'imageScaleRange'],
+    ['cellGapMmInput', 'cellGapMmRange'],
+    ['imageOffsetXInput', 'imageOffsetXRange'],
+    ['imageOffsetYInput', 'imageOffsetYRange'],
+    ['cellNumberOffsetX', 'cellNumberOffsetXRange'],
+    ['cellNumberOffsetY', 'cellNumberOffsetYRange'],
+    ['cellNumberFontSize', 'cellNumberFontSizeRange'],
+    ['boxX', 'boxXRange'],
+    ['boxY', 'boxYRange'],
+    ['boxW', 'boxWRange'],
+    ['boxH', 'boxHRange'],
+    ['boxFontSize', 'boxFontSizeRange'],
+    ['boxLineHeight', 'boxLineHeightRange'],
+    ['boxLetterSpacing', 'boxLetterSpacingRange'],
+    ['boxRotate', 'boxRotateRange']
+  ];
+
+  pairs.forEach(([numberKey, rangeKey]) => {
+    const numberInput = ui[numberKey];
+    const rangeInput = ui[rangeKey];
+    if (!numberInput || !rangeInput) return;
+    rangeInput.addEventListener('input', () => {
+      numberInput.value = rangeInput.value;
+      numberInput.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    numberInput.addEventListener('input', () => {
+      if (numberInput.value === '') return;
+      rangeInput.value = numberInput.value;
+    });
+  });
+}
+
 function bindMainPage() {
   ui.colsInput.value = state.cols;
   ui.rowsInput.value = state.rows;
   ui.marginInput.value = state.marginMm;
-  ui.previewScaleInput.value = state.previewScale;
+  syncNumberRangePair(ui.previewScaleInput, ui.previewScaleRange, state.previewScale);
   ui.showCellNumbersInput.checked = state.showCellNumbers;
   ui.showSafeZoneInput.checked = state.showSafeZone;
-  ui.imageScaleInput.value = state.imageScale;
-  ui.imageOffsetXInput.value = state.imageOffsetX;
-  ui.imageOffsetYInput.value = state.imageOffsetY;
-  ui.cellGapMmInput.value = state.cellGapMm;
+  syncNumberRangePair(ui.imageScaleInput, ui.imageScaleRange, state.imageScale);
+  syncNumberRangePair(ui.imageOffsetXInput, ui.imageOffsetXRange, state.imageOffsetX);
+  syncNumberRangePair(ui.imageOffsetYInput, ui.imageOffsetYRange, state.imageOffsetY);
+  syncNumberRangePair(ui.cellGapMmInput, ui.cellGapMmRange, state.cellGapMm);
   ui.cellNumberCorner.value = state.cellNumberCorner;
   ui.cellNumberFormat.value = state.cellNumberFormat;
-  ui.cellNumberOffsetX.value = state.cellNumberOffsetX;
-  ui.cellNumberOffsetY.value = state.cellNumberOffsetY;
-  ui.cellNumberFontSize.value = state.cellNumberFontSize;
+  syncNumberRangePair(ui.cellNumberOffsetX, ui.cellNumberOffsetXRange, state.cellNumberOffsetX);
+  syncNumberRangePair(ui.cellNumberOffsetY, ui.cellNumberOffsetYRange, state.cellNumberOffsetY);
+  syncNumberRangePair(ui.cellNumberFontSize, ui.cellNumberFontSizeRange, state.cellNumberFontSize);
   ui.cellNumberColorInput.value = state.cellNumberColor;
   ui.showGuideLinesInput.checked = state.showGuideLines;
   ui.showPageNumbersInput.checked = state.showPageNumbers;
   ui.batchData.value = state.batchData;
   populateFontOptions();
+  bindSliderPairs();
   bindStageInspector();
   bindEvents();
   syncBoxCountToData();
@@ -449,9 +506,19 @@ function refreshInspector() {
   const index = state.textBoxes.findIndex((item) => item.id === box.id);
   ui.selectedBoxInfo.textContent = `${box.label} ｜ 預覽文字取自第一個非空白資料列第 ${index + 1} 欄。`;
   ui.sampleText.value = getSampleTextForBox(index);
-  ui.boxX.value = round(box.x); ui.boxY.value = round(box.y); ui.boxW.value = round(box.w); ui.boxH.value = round(box.h);
-  ui.boxFontSize.value = round(box.fontSize); ui.boxFontWeight.value = box.fontWeight; ui.boxAlign.value = box.align; ui.boxVAlign.value = box.vAlign;
-  ui.boxLineHeight.value = round(box.lineHeight, 2); ui.boxLetterSpacing.value = round(box.letterSpacing, 1); ui.boxRotate.value = round(box.rotate); ui.boxColor.value = box.color; ui.boxVertical.checked = Boolean(box.vertical);
+  syncNumberRangePair(ui.boxX, ui.boxXRange, round(box.x));
+  syncNumberRangePair(ui.boxY, ui.boxYRange, round(box.y));
+  syncNumberRangePair(ui.boxW, ui.boxWRange, round(box.w));
+  syncNumberRangePair(ui.boxH, ui.boxHRange, round(box.h));
+  syncNumberRangePair(ui.boxFontSize, ui.boxFontSizeRange, round(box.fontSize));
+  ui.boxFontWeight.value = box.fontWeight;
+  ui.boxAlign.value = box.align;
+  ui.boxVAlign.value = box.vAlign;
+  syncNumberRangePair(ui.boxLineHeight, ui.boxLineHeightRange, round(box.lineHeight, 2));
+  syncNumberRangePair(ui.boxLetterSpacing, ui.boxLetterSpacingRange, round(box.letterSpacing, 1));
+  syncNumberRangePair(ui.boxRotate, ui.boxRotateRange, round(box.rotate));
+  ui.boxColor.value = box.color;
+  ui.boxVertical.checked = Boolean(box.vertical);
 }
 
 function getPageLayout() {

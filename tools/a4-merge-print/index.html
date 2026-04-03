@@ -47,22 +47,33 @@
         </div>
         <div class="two-col">
           <label><span>整張紙安全距離 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
-          <label><span>預覽縮放 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></label>
         </div>
-        <div class="two-col">
-          <label><span>圖片縮放 (%)</span><input id="imageScale" type="number" min="10" max="300" value="100" step="1" /></label>
-          <label><span>方格間距 (mm)</span><input id="cellGapMm" type="number" min="0" max="20" value="0" step="0.5" /></label>
-        </div>
+        <label class="slider-field">
+          <div class="slider-head"><span>預覽縮放 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></div>
+          <input id="previewScaleRange" type="range" min="20" max="100" value="45" step="5" />
+        </label>
+        <label class="slider-field">
+          <div class="slider-head"><span>圖片縮放 (%)</span><input id="imageScale" type="number" min="10" max="300" value="100" step="1" /></div>
+          <input id="imageScaleRange" type="range" min="10" max="300" value="100" step="1" />
+        </label>
+        <label class="slider-field">
+          <div class="slider-head"><span>方格間距 (mm)</span><input id="cellGapMm" type="number" min="0" max="20" value="0" step="0.5" /></div>
+          <input id="cellGapMmRange" type="range" min="0" max="20" value="0" step="0.5" />
+        </label>
         <label><span>圖片填滿模式</span>
           <select id="imageFitMode">
             <option value="cover">裁切維持比例</option>
             <option value="stretch">變形強制填滿</option>
           </select>
         </label>
-        <div class="two-col">
-          <label><span>圖片左右微調 (%)</span><input id="imageOffsetX" type="number" min="-100" max="100" value="0" step="0.5" /></label>
-          <label><span>圖片上下微調 (%)</span><input id="imageOffsetY" type="number" min="-100" max="100" value="0" step="0.5" /></label>
-        </div>
+        <label class="slider-field">
+          <div class="slider-head"><span>圖片左右微調 (%)</span><input id="imageOffsetX" type="number" min="-100" max="100" value="0" step="0.5" /></div>
+          <input id="imageOffsetXRange" type="range" min="-100" max="100" value="0" step="0.5" />
+        </label>
+        <label class="slider-field">
+          <div class="slider-head"><span>圖片上下微調 (%)</span><input id="imageOffsetY" type="number" min="-100" max="100" value="0" step="0.5" /></div>
+          <input id="imageOffsetYRange" type="range" min="-100" max="100" value="0" step="0.5" />
+        </label>
         <div class="inline-toggle-row">
           <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示整張紙安全區</label>
         </div>
@@ -90,11 +101,18 @@
             </select>
           </label>
         </div>
-        <div class="two-col">
-          <label><span>離左 / 右邊距 (mm)</span><input id="cellNumberOffsetX" type="number" min="0" max="30" value="2" step="0.5" /></label>
-          <label><span>離上 / 下邊距 (mm)</span><input id="cellNumberOffsetY" type="number" min="0" max="30" value="2" step="0.5" /></label>
-        </div>
-        <label><span>格號字級 (pt)</span><input id="cellNumberFontSize" type="number" min="6" max="72" value="12" step="0.5" /></label>
+        <label class="slider-field">
+          <div class="slider-head"><span>離左 / 右邊距 (mm)</span><input id="cellNumberOffsetX" type="number" min="0" max="30" value="2" step="0.5" /></div>
+          <input id="cellNumberOffsetXRange" type="range" min="0" max="30" value="2" step="0.5" />
+        </label>
+        <label class="slider-field">
+          <div class="slider-head"><span>離上 / 下邊距 (mm)</span><input id="cellNumberOffsetY" type="number" min="0" max="30" value="2" step="0.5" /></div>
+          <input id="cellNumberOffsetYRange" type="range" min="0" max="30" value="2" step="0.5" />
+        </label>
+        <label class="slider-field">
+          <div class="slider-head"><span>格號字級 (pt)</span><input id="cellNumberFontSize" type="number" min="6" max="72" value="12" step="0.5" /></div>
+          <input id="cellNumberFontSizeRange" type="range" min="6" max="72" value="12" step="0.5" />
+        </label>
         <label><span>格號顏色</span><input id="cellNumberColor" type="color" value="#0f172a" /></label>
 
         <h2>3. 字體</h2>
@@ -165,11 +183,11 @@
               <div id="selectedBoxInfo" class="hint">點一下任一文字框即可編輯。</div>
               <div class="inspector-grid">
                 <label><span>內容預覽</span><input id="sampleText" type="text" readonly /></label>
-                <label><span>X (%)</span><input id="boxX" type="number" min="0" max="100" step="0.1" /></label>
-                <label><span>Y (%)</span><input id="boxY" type="number" min="0" max="100" step="0.1" /></label>
-                <label><span>寬 (%)</span><input id="boxW" type="number" min="1" max="100" step="0.1" /></label>
-                <label><span>高 (%)</span><input id="boxH" type="number" min="1" max="100" step="0.1" /></label>
-                <label><span>字級 (pt)</span><input id="boxFontSize" type="number" min="6" max="120" step="0.5" /></label>
+                <label class="slider-field"><div class="slider-head"><span>X (%)</span><input id="boxX" type="number" min="0" max="100" step="0.1" /></div><input id="boxXRange" type="range" min="0" max="100" step="0.1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>Y (%)</span><input id="boxY" type="number" min="0" max="100" step="0.1" /></div><input id="boxYRange" type="range" min="0" max="100" step="0.1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>寬 (%)</span><input id="boxW" type="number" min="1" max="100" step="0.1" /></div><input id="boxWRange" type="range" min="1" max="100" step="0.1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>高 (%)</span><input id="boxH" type="number" min="1" max="100" step="0.1" /></div><input id="boxHRange" type="range" min="1" max="100" step="0.1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>字級 (pt)</span><input id="boxFontSize" type="number" min="6" max="120" step="0.5" /></div><input id="boxFontSizeRange" type="range" min="6" max="120" step="0.5" /></label>
                 <label><span>字重</span>
                   <select id="boxFontWeight">
                     <option value="400">400 正常</option>
@@ -192,9 +210,9 @@
                     <option value="bottom">靠下</option>
                   </select>
                 </label>
-                <label><span>行高</span><input id="boxLineHeight" type="number" min="0.8" max="3" step="0.05" /></label>
-                <label><span>字距 (px)</span><input id="boxLetterSpacing" type="number" min="-5" max="20" step="0.1" /></label>
-                <label><span>旋轉 (deg)</span><input id="boxRotate" type="number" min="-180" max="180" step="1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>行高</span><input id="boxLineHeight" type="number" min="0.8" max="3" step="0.05" /></div><input id="boxLineHeightRange" type="range" min="0.8" max="3" step="0.05" /></label>
+                <label class="slider-field"><div class="slider-head"><span>字距 (px)</span><input id="boxLetterSpacing" type="number" min="-5" max="20" step="0.1" /></div><input id="boxLetterSpacingRange" type="range" min="-5" max="20" step="0.1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>旋轉 (deg)</span><input id="boxRotate" type="number" min="-180" max="180" step="1" /></div><input id="boxRotateRange" type="range" min="-180" max="180" step="1" /></label>
                 <label><span>顏色</span><input id="boxColor" type="color" /></label>
                 <label class="checkbox-label"><input id="boxVertical" type="checkbox" /> 直書模式</label>
               </div>
@@ -206,6 +224,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="./script.js?v=20260402f"></script>
+  <script src="./script.js?v=20260403a"></script>
 </body>
 </html>

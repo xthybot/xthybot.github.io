@@ -39,6 +39,15 @@ h2, h3 { margin-top: 0; }
 label { display: block; margin-bottom: 14px; }
 label span { display: block; margin-bottom: 8px; color: var(--muted); font-size: 14px; }
 input[type="number"], input[type="text"], select, textarea { width: 100%; border-radius: 16px; border: 1px solid var(--line); background: rgba(4, 10, 20, 0.72); color: var(--text); padding: 12px 14px; }
+.slider-field { display: block; margin-bottom: 16px; }
+.slider-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.slider-head span { margin-bottom: 0; }
+.slider-head input[type="number"] { width: 96px; text-align: right; padding: 10px 12px; border-radius: 14px; }
+.slider-field input[type="range"] { width: 100%; margin: 0; accent-color: var(--accent); background: transparent; }
+.slider-field input[type="range"]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.12); }
+.slider-field input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; margin-top: -5px; box-shadow: 0 0 0 4px rgba(115,224,255,0.16); }
+.slider-field input[type="range"]::-moz-range-track { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.12); border: none; }
+.slider-field input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: none; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 4px rgba(115,224,255,0.16); }
 input[type="file"] { width: 100%; }
 textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .file-picker { padding: 14px; border: 1px dashed rgba(115,224,255,0.28); border-radius: 18px; background: rgba(255,255,255,0.02); }
@@ -71,7 +80,7 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .text-box.active { outline: 2px solid rgba(124,140,255,0.8); }
 .text-box .content { width: 100%; height: 100%; white-space: pre-wrap; overflow: hidden; display: flex; }
 .text-box.vertical .content { writing-mode: vertical-rl; text-orientation: mixed; }
-.inspector-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.inspector-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
 .inspector-grid label { margin: 0; }
 .checkbox-label { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; color: var(--muted); }
 .a4-preview-embed { padding: 14px; }
