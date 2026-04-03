@@ -136,8 +136,6 @@
           <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示 A4 頁碼</label>
         </div>
         <div class="actions">
-          <button class="btn" id="exportPdfBtn">匯出 PDF</button>
-          <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
           <button class="btn danger" id="resetBtn">重設目前設定</button>
         </div>
         <div class="status" id="statusBox">等待資料中。</div>
@@ -168,15 +166,27 @@
             </div>
           </div>
           <div class="stage-layout">
-            <div class="stage-wrap">
-              <div class="a4-preview-embed panel-sub" id="a4PreviewEmbed" hidden>
-                <canvas id="a4PreviewCanvas"></canvas>
+            <div class="stage-preview-column">
+              <div class="stage-wrap">
+                <div class="a4-preview-embed panel-sub" id="a4PreviewEmbed" hidden>
+                  <canvas id="a4PreviewCanvas"></canvas>
+                </div>
+                <div class="page-stage" id="pageStage">
+                  <div class="page-stage-safe" id="pageStageSafe"></div>
+                  <div class="single-stage-preview" id="singleStagePreviewWrap"><canvas id="singleStagePreviewCanvas"></canvas></div>
+                  <div class="single-stage" id="singleStage"></div>
+                </div>
               </div>
-              <div class="page-stage" id="pageStage">
-                <div class="page-stage-safe" id="pageStageSafe"></div>
-                <div class="single-stage-preview" id="singleStagePreviewWrap"><canvas id="singleStagePreviewCanvas"></canvas></div>
-                <div class="single-stage" id="singleStage"></div>
-              </div>
+              <section class="export-bar panel-sub">
+                <div>
+                  <h3>7. 輸出</h3>
+                  <p class="export-bar-note">確認預覽沒問題後，從這裡匯出。</p>
+                </div>
+                <div class="export-actions">
+                  <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
+                  <button class="btn" id="exportPdfBtn">匯出 PDF</button>
+                </div>
+              </section>
             </div>
             <aside class="side-inspector panel-sub">
               <h3>目前選取</h3>
