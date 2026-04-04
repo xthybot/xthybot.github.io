@@ -28,6 +28,7 @@ const DEFAULT_STATE = {
   cellGapMm: 0,
   previewMode: 'single',
   showCellNumbers: true,
+  showCellBorders: true,
   showSafeZone: true,
   cellNumberCorner: 'top-left',
   cellNumberFormat: 'hash',
@@ -170,6 +171,7 @@ function ensureUiReferences() {
       cellGapMmInput: document.getElementById('cellGapMm'),
       cellGapMmRange: document.getElementById('cellGapMmRange'),
       showCellNumbersInput: document.getElementById('showCellNumbers'),
+      showCellBordersInput: document.getElementById('showCellBorders'),
       showSafeZoneInput: document.getElementById('showSafeZone'),
       cellNumberCorner: document.getElementById('cellNumberCorner'),
       cellNumberFormat: document.getElementById('cellNumberFormat'),
@@ -323,6 +325,7 @@ function bindMainPage() {
   ui.marginInput.value = state.marginMm;
   syncNumberRangePair(ui.previewScaleInput, ui.previewScaleRange, state.previewScale);
   ui.showCellNumbersInput.checked = state.showCellNumbers;
+  ui.showCellBordersInput.checked = state.showCellBorders;
   ui.showSafeZoneInput.checked = state.showSafeZone;
   syncNumberRangePair(ui.imageScaleInput, ui.imageScaleRange, state.imageScale);
   syncNumberRangePair(ui.imageOffsetXInput, ui.imageOffsetXRange, state.imageOffsetX);
@@ -354,7 +357,7 @@ function bindEvents() {
   [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize, ui.imageFitModeInput, ui.cellNumberColorInput].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
   });
-  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.showPageNumbersInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
+  [ui.showCellNumbersInput, ui.showCellBordersInput, ui.showSafeZoneInput, ui.showPageNumbersInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
     input.addEventListener('change', syncGeneralSettingsFromUi);
   });
 
@@ -413,6 +416,7 @@ function syncGeneralSettingsFromUi() {
   state.imageFitMode = ui.imageFitModeInput.value;
   state.cellGapMm = clampNumber(Number(ui.cellGapMmInput.value), 0, 20);
   state.showCellNumbers = ui.showCellNumbersInput.checked;
+  state.showCellBorders = ui.showCellBordersInput.checked;
   state.showSafeZone = ui.showSafeZoneInput.checked;
   state.showPageNumbers = ui.showPageNumbersInput.checked;
   state.cellNumberCorner = ui.cellNumberCorner.value;
@@ -817,7 +821,7 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
       const x = safeZone.x + col * (cellW + gapX);
       const y = safeZone.y + row * (cellH + gapY);
       const cellRect = { x, y, w: cellW, h: cellH };
-      ctx.strokeRect(x, y, cellW, cellH);
+      if (config.showCellBorders) ctx.strokeRect(x, y, cellW, cellH);
       if (config.image) {
         const img = await loadSharedImage(config.image);
         drawFittedImage(ctx, img, x, y, cellW, cellH, config);
