@@ -807,7 +807,7 @@ async function drawPage(ctx, config, pageIndex, options = {}) {
   ctx.strokeStyle = '#111827';
   ctx.lineWidth = 2;
   ctx.strokeRect(1, 1, pageWidth - 2, pageHeight - 2);
-  if (config.showSafeZone && (options.showGuideLines ?? config.showGuideLines)) {
+  if (config.showSafeZone) {
     ctx.strokeStyle = 'rgba(234, 88, 12, 0.85)';
     ctx.setLineDash([10, 8]);
     ctx.strokeRect(safeZone.x, safeZone.y, safeZone.w, safeZone.h);
