@@ -48,21 +48,21 @@
       </section>
 
       <div class="panel controls sticky">
-        <h2>2. 專案設定</h2>
+        <h2>2. 底圖設定</h2>
         <label class="file-picker">
           <span>單格底圖</span>
           <input type="file" id="templateImage" accept="image/png,image/jpeg,image/webp,image/gif" />
           <small class="hint" id="imageInfo">尚未上傳底圖</small>
         </label>
         <div class="two-col">
-          <label><span>A4 欄數</span><input id="cols" type="number" min="1" max="12" value="2" /></label>
-          <label><span>A4 列數</span><input id="rows" type="number" min="1" max="12" value="4" /></label>
+          <label><span>欄數</span><input id="cols" type="number" min="1" max="12" value="2" /></label>
+          <label><span>列數</span><input id="rows" type="number" min="1" max="12" value="4" /></label>
         </div>
         <div class="two-col">
-          <label><span>整張紙安全距離 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
+          <label><span>印刷安全區 (mm)</span><input id="marginMm" type="number" min="0" max="20" value="5" step="0.5" /></label>
         </div>
         <label class="slider-field">
-          <div class="slider-head"><span>預覽縮放 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></div>
+          <div class="slider-head"><span>預覽畫質 (%)</span><input id="previewScale" type="number" min="20" max="100" value="45" step="5" /></div>
           <input id="previewScaleRange" type="range" min="20" max="100" value="45" step="5" />
         </label>
         <label class="slider-field">
@@ -93,7 +93,7 @@
           <label class="inline-toggle"><input id="showCellNumbers" type="checkbox" checked> 顯示格號</label>
         </div>
         <div class="two-col">
-          <label><span>位置角落</span>
+          <label><span>位置</span>
             <select id="cellNumberCorner">
               <option value="top-left">左上</option>
               <option value="top-right">右上</option>
@@ -119,7 +119,7 @@
           <input id="cellNumberOffsetYRange" type="range" min="0" max="30" value="2" step="0.5" />
         </label>
         <label class="slider-field">
-          <div class="slider-head"><span>格號字級 (pt)</span><input id="cellNumberFontSize" type="number" min="6" max="72" value="12" step="0.5" /></div>
+          <div class="slider-head"><span>字型大小 (pt)</span><input id="cellNumberFontSize" type="number" min="6" max="72" value="12" step="0.5" /></div>
           <input id="cellNumberFontSizeRange" type="range" min="6" max="72" value="12" step="0.5" />
         </label>
         <label><span>格號顏色</span><input id="cellNumberColor" type="color" value="#0f172a" /></label>
@@ -201,7 +201,7 @@
                 </label>
                 <label class="slider-field"><div class="slider-head"><span>行高</span><input id="boxLineHeight" type="number" min="0.8" max="3" step="0.05" /></div><input id="boxLineHeightRange" type="range" min="0.8" max="3" step="0.05" /></label>
                 <label class="slider-field"><div class="slider-head"><span>字距 (px)</span><input id="boxLetterSpacing" type="number" min="-5" max="20" step="0.1" /></div><input id="boxLetterSpacingRange" type="range" min="-5" max="20" step="0.1" /></label>
-                <label class="slider-field"><div class="slider-head"><span>旋轉 (deg)</span><input id="boxRotate" type="number" min="-180" max="180" step="1" /></div><input id="boxRotateRange" type="range" min="-180" max="180" step="1" /></label>
+                <label class="slider-field"><div class="slider-head"><span>旋轉</span><input id="boxRotate" type="number" min="-180" max="180" step="1" /></div><input id="boxRotateRange" type="range" min="-180" max="180" step="1" /></label>
                 <label><span>顏色</span><input id="boxColor" type="color" /></label>
                 <label class="checkbox-label"><input id="boxVertical" type="checkbox" /> 直書模式</label>
               </div>
@@ -215,8 +215,8 @@
             <div class="export-bar-controls">
               <div class="inline-toggle-row export-toggle-row">
                 <label class="inline-toggle"><input id="showCellBorders" type="checkbox" checked> 顯示單格框線</label>
-                <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示印刷邊空安全區</label>
-                <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示 A4 頁碼</label>
+                <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示印刷安全區</label>
+                <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示頁碼</label>
               </div>
               <div class="export-actions">
                 <button class="btn danger" id="resetBtn">重設目前設定</button>
@@ -231,6 +231,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="./script.js?v=20260405a"></script>
+  <script src="./script.js?v=20260405b"></script>
 </body>
-</html>l>
+</html>
