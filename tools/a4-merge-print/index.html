@@ -153,6 +153,7 @@
               <button class="mini-btn" id="previewModeSingleBtn" type="button">預覽單格</button>
             </div>
           </div>
+          <div class="status stage-status" id="statusBox">等待資料中。</div>
           <div class="stage-layout">
             <div class="stage-preview-column">
               <div class="stage-wrap">
@@ -213,8 +214,7 @@
             </div>
             <div class="export-bar-controls">
               <div class="inline-toggle-row export-toggle-row">
-                <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示整張紙安全區</label>
-                <label class="inline-toggle"><input id="showGuideLines" type="checkbox" checked> 匯出時顯示邊界虛線</label>
+                <label class="inline-toggle"><input id="showSafeZone" type="checkbox" checked> 顯示印刷邊空安全區</label>
                 <label class="inline-toggle"><input id="showPageNumbers" type="checkbox" checked> 顯示 A4 頁碼</label>
               </div>
               <div class="export-actions">
@@ -222,7 +222,6 @@
                 <button class="btn" id="exportBlankPdfBtn">匯出空白模板 PDF</button>
                 <button class="btn" id="exportPdfBtn">匯出 PDF</button>
               </div>
-              <div class="status export-status" id="statusBox">等待資料中。</div>
             </div>
           </section>
         </section>
@@ -231,6 +230,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="./script.js?v=20260404a"></script>
+  <script src="./script.js?v=20260404b"></script>
 </body>
 </html>

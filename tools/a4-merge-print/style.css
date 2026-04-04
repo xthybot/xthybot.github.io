@@ -71,6 +71,7 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .compact-actions { margin-top: 8px; }
 .hint, .data-stats, .status { color: var(--muted); line-height: 1.7; font-size: 14px; }
 .status { margin-top: 16px; }
+.stage-status { margin: 0 0 16px; }
 .actions { display: grid; gap: 10px; margin-top: 16px; }
 .btn, .mini-btn, .dialog-close { border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); border-radius: 16px; padding: 14px 16px; cursor: pointer; transition: transform .2s ease, border-color .2s ease, opacity .2s ease; }
 .mini-btn { border-radius: 999px; padding: 10px 14px; }
@@ -95,7 +96,6 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .export-bar-controls { display: grid; gap: 14px; }
 .export-toggle-row { justify-content: flex-end; margin: 0; }
 .export-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
-.export-status { margin-top: 0; text-align: right; }
 .page-stage { position: relative; width: min(100%, 720px); aspect-ratio: 210 / 297; margin: 0 auto; background: #fff; border-radius: 24px; padding: 0; box-shadow: 0 24px 60px rgba(0,0,0,0.25); overflow: hidden; }
 .page-stage.safe-hidden { background: transparent; box-shadow: none; }
 .page-stage-safe { position: absolute; border: 1px dashed rgba(234, 88, 12, 0.85); pointer-events: none; z-index: 2; }
@@ -131,4 +131,4 @@ textarea { min-height: 230px; resize: vertical; line-height: 1.7; }
 .dialog-stage { margin-top: 12px; overflow: auto; max-height: 78vh; }
 .dialog-stage canvas { width: 100%; height: auto; background: #fff; border-radius: 16px; }
 @media (max-width: 1120px) { .workspace, .stage-layout { grid-template-columns: 1fr; } .sticky { position: static; } }
-@media (max-width: 700px) { body, .preview-body { padding: 16px; } .hero, .controls, .editor-panel, .stage-panel, .preview-list-panel { padding: 20px; } .topbar, .preview-topbar, .section-head { flex-direction: column; } .two-col, .inspector-grid, .export-bar { grid-template-columns: 1fr; } .export-toggle-row, .export-actions { width: 100%; justify-content: stretch; } .export-status { text-align: left; } .export-actions .btn { width: 100%; } }
+@media (max-width: 700px) { body, .preview-body { padding: 16px; } .hero, .controls, .editor-panel, .stage-panel, .preview-list-panel { padding: 20px; } .topbar, .preview-topbar, .section-head { flex-direction: column; } .two-col, .inspector-grid, .export-bar { grid-template-columns: 1fr; } .export-toggle-row, .export-actions { width: 100%; justify-content: stretch; } .export-actions .btn { width: 100%; } }

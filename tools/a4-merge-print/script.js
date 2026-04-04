@@ -29,7 +29,6 @@ const DEFAULT_STATE = {
   previewMode: 'single',
   showCellNumbers: true,
   showSafeZone: true,
-  showGuideLines: true,
   cellNumberCorner: 'top-left',
   cellNumberFormat: 'hash',
   cellNumberOffsetX: 2,
@@ -181,7 +180,6 @@ function ensureUiReferences() {
       cellNumberFontSize: document.getElementById('cellNumberFontSize'),
       cellNumberFontSizeRange: document.getElementById('cellNumberFontSizeRange'),
       cellNumberColorInput: document.getElementById('cellNumberColor'),
-      showGuideLinesInput: document.getElementById('showGuideLines'),
       showPageNumbersInput: document.getElementById('showPageNumbers'),
       imageInfo: document.getElementById('imageInfo'),
       fontUpload: document.getElementById('fontUpload'),
@@ -336,7 +334,6 @@ function bindMainPage() {
   syncNumberRangePair(ui.cellNumberOffsetY, ui.cellNumberOffsetYRange, state.cellNumberOffsetY);
   syncNumberRangePair(ui.cellNumberFontSize, ui.cellNumberFontSizeRange, state.cellNumberFontSize);
   ui.cellNumberColorInput.value = state.cellNumberColor;
-  ui.showGuideLinesInput.checked = state.showGuideLines;
   ui.showPageNumbersInput.checked = state.showPageNumbers;
   ui.batchData.value = state.batchData;
   populateFontOptions();
@@ -357,7 +354,7 @@ function bindEvents() {
   [ui.colsInput, ui.rowsInput, ui.marginInput, ui.previewScaleInput, ui.imageScaleInput, ui.imageOffsetXInput, ui.imageOffsetYInput, ui.cellGapMmInput, ui.cellNumberOffsetX, ui.cellNumberOffsetY, ui.cellNumberFontSize, ui.imageFitModeInput, ui.cellNumberColorInput].forEach((input) => {
     input.addEventListener('input', syncGeneralSettingsFromUi);
   });
-  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.showGuideLinesInput, ui.showPageNumbersInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
+  [ui.showCellNumbersInput, ui.showSafeZoneInput, ui.showPageNumbersInput, ui.cellNumberCorner, ui.cellNumberFormat].forEach((input) => {
     input.addEventListener('change', syncGeneralSettingsFromUi);
   });
 
@@ -417,7 +414,6 @@ function syncGeneralSettingsFromUi() {
   state.cellGapMm = clampNumber(Number(ui.cellGapMmInput.value), 0, 20);
   state.showCellNumbers = ui.showCellNumbersInput.checked;
   state.showSafeZone = ui.showSafeZoneInput.checked;
-  state.showGuideLines = ui.showGuideLinesInput.checked;
   state.showPageNumbers = ui.showPageNumbersInput.checked;
   state.cellNumberCorner = ui.cellNumberCorner.value;
   state.cellNumberFormat = ui.cellNumberFormat.value;
@@ -586,7 +582,6 @@ async function refreshStage() {
     ui.singleStagePreviewWrap.hidden = true;
     const canvas = await renderPageCanvas(0, {
       scale: Math.max(0.45, state.previewScale / 100),
-      showGuideLines: state.showGuideLines,
       stateOverrides: {
         imageFitMode: state.imageFitMode,
         cellNumberColor: state.cellNumberColor,
@@ -976,7 +971,7 @@ async function exportPdf({ blank }) {
   const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
   setStatus(blank ? '正在產生空白模板 PDF…' : '正在產生 PDF…');
   for (let i = 0; i < config.pages.length; i += 1) {
-    const canvas = await renderPageCanvas(i, { scale: 2.48, blank, showGuideLines: state.showGuideLines });
+    const canvas = await renderPageCanvas(i, { scale: 2.48, blank });
     const imageData = canvas.toDataURL('image/jpeg', 0.95);
     if (i > 0) pdf.addPage();
     pdf.addImage(imageData, 'JPEG', 0, 0, PAGE_MM.width, PAGE_MM.height, undefined, 'FAST');
