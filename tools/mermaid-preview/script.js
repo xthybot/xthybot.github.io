@@ -1,4 +1,5 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+import { toBlob } from 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/+esm';
 import { Canvg } from 'https://cdn.jsdelivr.net/npm/canvg@4.0.2/+esm';
 
 const codeInput = document.getElementById('codeInput');
@@ -174,6 +175,36 @@ function syncPreviewSurface() {
   preview.style.background = backgroundColor.value;
 }
 
+function paintRenderedDiagram() {
+  const svg = preview.querySelector('svg');
+  if (!svg) return;
+
+  const labelBg = themeMode.value === 'default' ? '#ffffff' : '#0f1726';
+  const clusterBg = themeMode.value === 'default' ? '#edf3ff' : '#10192a';
+
+  svg.querySelectorAll('.node rect, .node circle, .node ellipse, .node polygon, .node path').forEach(el => {
+    if (!el.closest('.arrowMarkerPath')) {
+      el.style.fill = primaryColor.value;
+      el.style.stroke = lineColor.value;
+    }
+  });
+
+  svg.querySelectorAll('.cluster rect').forEach(el => {
+    el.style.fill = clusterBg;
+    el.style.stroke = lineColor.value;
+  });
+
+  svg.querySelectorAll('.edgeLabel rect, .labelBkg').forEach(el => {
+    el.style.fill = labelBg;
+    el.style.stroke = lineColor.value;
+  });
+
+  svg.querySelectorAll('text, tspan, foreignObject, foreignObject div, foreignObject span, .nodeLabel, .edgeLabel').forEach(el => {
+    el.style.fill = textColor.value;
+    el.style.color = textColor.value;
+  });
+}
+
 function syncPageTheme(mode) {
   const palette = pageTheme[mode] || pageTheme.dark;
   Object.entries(palette).forEach(([key, value]) => {
@@ -217,6 +248,7 @@ async function renderDiagram() {
     latestSvg = svg;
     preview.innerHTML = svg;
     syncPreviewSurface();
+    paintRenderedDiagram();
     setStatus('已更新預覽');
   } catch (error) {
     latestSvg = '';
@@ -301,6 +333,22 @@ async function downloadPng() {
   }
 
   try {
+    paintRenderedDiagram();
+
+    const target = preview.querySelector('svg') || preview;
+    const pngBlob = await toBlob(target, {
+      cacheBust: true,
+      pixelRatio: 2,
+      backgroundColor: backgroundColor.value,
+      skipFonts: true
+    });
+
+    if (pngBlob) {
+      downloadBlob(pngBlob, 'mermaid-diagram.png');
+      setStatus('已下載 PNG');
+      return;
+    }
+
     const exportCode = latestCode || codeInput.value.trim();
     if (!exportCode) {
       setStatus('目前沒有可下載的圖');
@@ -325,44 +373,21 @@ async function downloadPng() {
     ctx.fillStyle = backgroundColor.value;
     ctx.fillRect(0, 0, width, height);
 
-    let rendered = false;
+    const renderer = Canvg.fromString(ctx, safeSvg, {
+      ignoreMouse: true,
+      ignoreAnimation: true,
+      ignoreDimensions: true
+    });
+    await renderer.render();
 
-    try {
-      const renderer = Canvg.fromString(ctx, safeSvg, {
-        ignoreMouse: true,
-        ignoreAnimation: true,
-        ignoreDimensions: true
-      });
-      await renderer.render();
-      rendered = true;
-    } catch (canvgError) {
-      console.warn('Canvg fallback engaged:', canvgError);
-    }
-
-    if (!rendered) {
-      const svgBlob = new Blob([safeSvg], { type: 'image/svg+xml;charset=utf-8' });
-      const objectUrl = URL.createObjectURL(svgBlob);
-      try {
-        const img = await renderSvgToImage(objectUrl);
-        ctx.drawImage(img, 0, 0, width, height);
-        rendered = true;
-      } finally {
-        URL.revokeObjectURL(objectUrl);
-      }
-    }
-
-    if (!rendered) {
-      throw new Error('SVG 無法轉成 PNG');
-    }
-
-    const pngBlob = await new Promise((resolve, reject) => {
+    const fallbackBlob = await new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (blob) resolve(blob);
         else reject(new Error('Canvas 無法輸出 PNG'));
       }, 'image/png');
     });
 
-    downloadBlob(pngBlob, 'mermaid-diagram.png');
+    downloadBlob(fallbackBlob, 'mermaid-diagram.png');
     setStatus('已下載 PNG');
   } catch (error) {
     console.error('PNG export failed:', error);
