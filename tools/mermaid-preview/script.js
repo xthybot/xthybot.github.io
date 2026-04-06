@@ -53,7 +53,11 @@ const pageTheme = {
     '--muted': '#92a4bf',
     '--line': 'rgba(146, 164, 191, 0.16)',
     '--accent': '#73e0ff',
-    '--accent-2': '#7c8cff'
+    '--accent-2': '#7c8cff',
+    '--surface': 'rgba(4, 10, 20, 0.72)',
+    '--surface-soft': 'rgba(255,255,255,0.03)',
+    '--surface-softer': 'rgba(255,255,255,0.02)',
+    '--placeholder': '#7890b1'
   },
   default: {
     '--bg': '#eef4ff',
@@ -221,8 +225,14 @@ function paintRenderedDiagram() {
 
 function syncPageTheme(mode) {
   const palette = pageTheme[mode] || pageTheme.dark;
-  Object.entries(palette).forEach(([key, value]) => {
-    document.documentElement.style.setProperty(key, value);
+  const root = document.documentElement;
+  const allKeys = new Set([
+    ...Object.keys(pageTheme.dark),
+    ...Object.keys(pageTheme.default)
+  ]);
+
+  allKeys.forEach(key => {
+    root.style.setProperty(key, palette[key] ?? pageTheme.dark[key] ?? '');
   });
 }
 
@@ -351,21 +361,37 @@ async function downloadPng() {
 
     const target = preview.querySelector('svg') || preview;
     const dims = getExportDimensions();
-    const pngBlob = await toBlob(target, {
-      cacheBust: true,
-      pixelRatio: 2,
-      backgroundColor: backgroundColor.value,
-      skipFonts: true,
-      canvasWidth: dims.width,
-      canvasHeight: dims.height,
-      style: {
-        overflow: 'visible',
-        transform: `translate(${dims.offsetX}px, ${dims.offsetY}px)`
-      }
-    });
+    const exportWrap = document.createElement('div');
+    exportWrap.style.position = 'fixed';
+    exportWrap.style.left = '-99999px';
+    exportWrap.style.top = '0';
+    exportWrap.style.padding = `${dims.offsetY}px ${dims.offsetX}px`;
+    exportWrap.style.background = backgroundColor.value;
+    exportWrap.style.display = 'inline-block';
+    exportWrap.style.overflow = 'visible';
 
-    if (target instanceof SVGElement) {
-      target.style.transform = '';
+    const clonedTarget = target.cloneNode(true);
+    if (clonedTarget instanceof Element) {
+      clonedTarget.style.transform = 'none';
+      clonedTarget.style.overflow = 'visible';
+      clonedTarget.style.display = 'block';
+    }
+
+    exportWrap.appendChild(clonedTarget);
+    document.body.appendChild(exportWrap);
+
+    let pngBlob;
+    try {
+      pngBlob = await toBlob(exportWrap, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: backgroundColor.value,
+        skipFonts: true,
+        canvasWidth: dims.width,
+        canvasHeight: dims.height
+      });
+    } finally {
+      exportWrap.remove();
     }
 
     if (pngBlob) {
