@@ -62,7 +62,11 @@ const pageTheme = {
     '--muted': '#5c6b80',
     '--line': 'rgba(66, 84, 102, 0.16)',
     '--accent': '#4f7cff',
-    '--accent-2': '#6d5efc'
+    '--accent-2': '#6d5efc',
+    '--surface': '#ffffff',
+    '--surface-soft': '#f6f8fc',
+    '--surface-softer': '#f8faff',
+    '--placeholder': '#8191a6'
   }
 };
 
@@ -75,11 +79,21 @@ let renderCount = 0;
 
 function getExportDimensions() {
   const svgEl = preview.querySelector('svg');
-  const rawWidth = svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || svgEl?.getBoundingClientRect().width || 1200;
-  const rawHeight = svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || svgEl?.getBoundingClientRect().height || 800;
+  const content = svgEl || preview;
+  const bbox = typeof svgEl?.getBBox === 'function' ? svgEl.getBBox() : null;
+  const rect = content.getBoundingClientRect();
+  const padding = 32;
+
+  const rawWidth = bbox?.width || svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || rect.width || 1200;
+  const rawHeight = bbox?.height || svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || rect.height || 800;
+  const offsetX = bbox ? Math.min(0, bbox.x) : 0;
+  const offsetY = bbox ? Math.min(0, bbox.y) : 0;
+
   return {
-    width: Math.max(Math.ceil(rawWidth), 400),
-    height: Math.max(Math.ceil(rawHeight), 300)
+    width: Math.max(Math.ceil(rawWidth + padding * 2), 400),
+    height: Math.max(Math.ceil(rawHeight + padding * 2), 300),
+    offsetX: Math.abs(Math.floor(offsetX)) + padding,
+    offsetY: Math.abs(Math.floor(offsetY)) + padding
   };
 }
 
@@ -336,12 +350,23 @@ async function downloadPng() {
     paintRenderedDiagram();
 
     const target = preview.querySelector('svg') || preview;
+    const { width, height, offsetX, offsetY } = getExportDimensions();
     const pngBlob = await toBlob(target, {
       cacheBust: true,
       pixelRatio: 2,
       backgroundColor: backgroundColor.value,
-      skipFonts: true
+      skipFonts: true,
+      canvasWidth: width,
+      canvasHeight: height,
+      style: {
+        overflow: 'visible',
+        transform: `translate(${offsetX}px, ${offsetY}px)`
+      }
     });
+
+    if (target instanceof SVGElement) {
+      target.style.transform = '';
+    }
 
     if (pngBlob) {
       downloadBlob(pngBlob, 'mermaid-diagram.png');
@@ -355,7 +380,7 @@ async function downloadPng() {
       return;
     }
 
-    const { width, height } = getExportDimensions();
+    const { width, height, offsetX, offsetY } = getExportDimensions();
     const exportSvg = await renderExportSvg(exportCode);
     const safeSvg = sanitizeSvgForExport(exportSvg, width, height);
 
@@ -372,6 +397,7 @@ async function downloadPng() {
     ctx.scale(scale, scale);
     ctx.fillStyle = backgroundColor.value;
     ctx.fillRect(0, 0, width, height);
+    ctx.translate(offsetX, offsetY);
 
     const renderer = Canvg.fromString(ctx, safeSvg, {
       ignoreMouse: true,

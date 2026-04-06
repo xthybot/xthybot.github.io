@@ -8,6 +8,10 @@
   --accent-2: #7c8cff;
   --danger: #ff8ca1;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --surface: rgba(4, 10, 20, 0.72);
+  --surface-soft: rgba(255,255,255,0.03);
+  --surface-softer: rgba(255,255,255,0.02);
+  --placeholder: #7890b1;
 }
 * { box-sizing: border-box; }
 html, body {
@@ -68,7 +72,7 @@ textarea, button, select, input { font: inherit; }
 }
 .back, .badge {
   border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03);
+  background: var(--surface-soft);
   border-radius: 999px;
   padding: 10px 14px;
 }
@@ -145,7 +149,7 @@ h1 {
 }
 .mini-btn {
   border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03);
+  background: var(--surface-soft);
   color: var(--text);
   border-radius: 999px;
   padding: 8px 12px;
@@ -161,7 +165,7 @@ textarea {
   resize: vertical;
   border-radius: 20px;
   border: 1px solid var(--line);
-  background: rgba(4, 10, 20, 0.72);
+  background: var(--surface);
   color: var(--text);
   padding: 18px;
   line-height: 1.7;
@@ -169,7 +173,7 @@ textarea {
   font-size: 14px;
 }
 textarea::placeholder {
-  color: #7890b1;
+  color: var(--placeholder);
 }
 .status-row {
   display: flex;
@@ -184,7 +188,7 @@ textarea::placeholder {
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 14px;
-  background: rgba(255,255,255,0.02);
+  background: var(--surface-softer);
 }
 .theme-head {
   display: flex;
@@ -211,7 +215,7 @@ select, input[type="color"] {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(4, 10, 20, 0.72);
+  background: var(--surface);
   color: var(--text);
   min-height: 42px;
   padding: 8px 10px;
@@ -233,7 +237,7 @@ input[type="color"] {
   min-height: 620px;
   border-radius: 20px;
   border: 1px solid var(--line);
-  background: rgba(4, 10, 20, 0.72);
+  background: var(--surface);
   padding: 18px;
   overflow: auto;
 }
