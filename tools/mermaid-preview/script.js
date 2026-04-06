@@ -303,18 +303,60 @@ function downloadBlob(blob, fileName) {
   URL.revokeObjectURL(url);
 }
 
-async function downloadSvg() {
-  const exportCode = latestCode || codeInput.value.trim();
-  if (!exportCode) {
-    setStatus('目前沒有可下載的圖');
-    return;
-  }
+function buildInlineExportSvg() {
+  const svgEl = preview.querySelector('svg');
+  if (!svgEl) return '';
 
+  paintRenderedDiagram();
+
+  const clone = svgEl.cloneNode(true);
+  const dims = getExportDimensions();
+
+  if (!(clone instanceof SVGElement)) return '';
+
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.setAttribute('width', String(dims.width));
+  clone.setAttribute('height', String(dims.height));
+  clone.setAttribute('viewBox', `0 0 ${dims.width} ${dims.height}`);
+  clone.style.background = backgroundColor.value;
+
+  clone.querySelectorAll('*').forEach(node => {
+    if (!(node instanceof Element)) return;
+
+    const computed = window.getComputedStyle(node);
+    const inlineRules = [
+      ['fill', computed.fill],
+      ['stroke', computed.stroke],
+      ['color', computed.color],
+      ['stroke-width', computed.strokeWidth],
+      ['font-family', computed.fontFamily],
+      ['font-size', computed.fontSize],
+      ['font-weight', computed.fontWeight],
+      ['font-style', computed.fontStyle],
+      ['opacity', computed.opacity]
+    ];
+
+    inlineRules.forEach(([key, value]) => {
+      if (value && value !== 'none' && value !== 'normal' && value !== 'rgba(0, 0, 0, 0)') {
+        node.setAttribute(key, value);
+      }
+    });
+  });
+
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(clone);
+  return wrapper.innerHTML;
+}
+
+async function downloadSvg() {
   try {
-    const dims = getExportDimensions();
-    const exportSvg = await renderExportSvg(exportCode);
-    const safeSvg = sanitizeSvgForExport(exportSvg, dims.width, dims.height);
-    const blob = new Blob([safeSvg], { type: 'image/svg+xml;charset=utf-8' });
+    const inlineSvg = buildInlineExportSvg();
+    if (!inlineSvg) {
+      setStatus('目前沒有可下載的圖');
+      return;
+    }
+
+    const blob = new Blob([inlineSvg], { type: 'image/svg+xml;charset=utf-8' });
     downloadBlob(blob, 'mermaid-diagram.svg');
     setStatus('已下載 SVG');
   } catch (error) {
