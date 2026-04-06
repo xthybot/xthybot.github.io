@@ -303,15 +303,24 @@ function downloadBlob(blob, fileName) {
   URL.revokeObjectURL(url);
 }
 
-function downloadSvg() {
-  if (!latestSvg) {
+async function downloadSvg() {
+  const exportCode = latestCode || codeInput.value.trim();
+  if (!exportCode) {
     setStatus('目前沒有可下載的圖');
     return;
   }
 
-  const blob = new Blob([latestSvg], { type: 'image/svg+xml;charset=utf-8' });
-  downloadBlob(blob, 'mermaid-diagram.svg');
-  setStatus('已下載 SVG');
+  try {
+    const dims = getExportDimensions();
+    const exportSvg = await renderExportSvg(exportCode);
+    const safeSvg = sanitizeSvgForExport(exportSvg, dims.width, dims.height);
+    const blob = new Blob([safeSvg], { type: 'image/svg+xml;charset=utf-8' });
+    downloadBlob(blob, 'mermaid-diagram.svg');
+    setStatus('已下載 SVG');
+  } catch (error) {
+    console.error('SVG export failed:', error);
+    setStatus('SVG 匯出失敗');
+  }
 }
 
 async function renderExportSvg(code) {
@@ -474,7 +483,9 @@ copyBtn.addEventListener('click', () => {
   copyCode().catch(() => setStatus('複製失敗'));
 });
 
-downloadSvgBtn.addEventListener('click', downloadSvg);
+downloadSvgBtn.addEventListener('click', () => {
+  downloadSvg();
+});
 downloadPngBtn.addEventListener('click', downloadPng);
 applyThemeBtn.addEventListener('click', renderDiagram);
 resetThemeBtn.addEventListener('click', () => {
