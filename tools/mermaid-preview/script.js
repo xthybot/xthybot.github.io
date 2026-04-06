@@ -350,17 +350,17 @@ async function downloadPng() {
     paintRenderedDiagram();
 
     const target = preview.querySelector('svg') || preview;
-    const { width, height, offsetX, offsetY } = getExportDimensions();
+    const dims = getExportDimensions();
     const pngBlob = await toBlob(target, {
       cacheBust: true,
       pixelRatio: 2,
       backgroundColor: backgroundColor.value,
       skipFonts: true,
-      canvasWidth: width,
-      canvasHeight: height,
+      canvasWidth: dims.width,
+      canvasHeight: dims.height,
       style: {
         overflow: 'visible',
-        transform: `translate(${offsetX}px, ${offsetY}px)`
+        transform: `translate(${dims.offsetX}px, ${dims.offsetY}px)`
       }
     });
 
@@ -380,14 +380,13 @@ async function downloadPng() {
       return;
     }
 
-    const { width, height, offsetX, offsetY } = getExportDimensions();
     const exportSvg = await renderExportSvg(exportCode);
-    const safeSvg = sanitizeSvgForExport(exportSvg, width, height);
+    const safeSvg = sanitizeSvgForExport(exportSvg, dims.width, dims.height);
 
     const canvas = document.createElement('canvas');
     const scale = 2;
-    canvas.width = width * scale;
-    canvas.height = height * scale;
+    canvas.width = dims.width * scale;
+    canvas.height = dims.height * scale;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -396,8 +395,8 @@ async function downloadPng() {
 
     ctx.scale(scale, scale);
     ctx.fillStyle = backgroundColor.value;
-    ctx.fillRect(0, 0, width, height);
-    ctx.translate(offsetX, offsetY);
+    ctx.fillRect(0, 0, dims.width, dims.height);
+    ctx.translate(dims.offsetX, dims.offsetY);
 
     const renderer = Canvg.fromString(ctx, safeSvg, {
       ignoreMouse: true,
