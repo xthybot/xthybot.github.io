@@ -193,9 +193,16 @@ async function downloadPng() {
 
   try {
     const { width, height } = getExportDimensions();
-    const safeSvg = latestSvg
-      .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif')
-      .replace('<svg ', `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" `);
+    let safeSvg = latestSvg
+      .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif');
+
+    safeSvg = safeSvg.replace(/<svg\b([^>]*)>/, (match, attrs) => {
+      const hasXmlns = /\sxmlns=/.test(attrs);
+      const cleanedAttrs = attrs
+        .replace(/\swidth="[^"]*"/g, '')
+        .replace(/\sheight="[^"]*"/g, '');
+      return `<svg${hasXmlns ? '' : ' xmlns="http://www.w3.org/2000/svg"'} width="${width}" height="${height}"${cleanedAttrs}>`;
+    });
 
     const canvas = document.createElement('canvas');
     const scale = 2;
