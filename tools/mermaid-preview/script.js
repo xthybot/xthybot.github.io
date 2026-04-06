@@ -27,13 +27,24 @@ const demoCode = `flowchart TD
   C --> G[可切換主題]
 `;
 
-const defaultTheme = {
-  mode: 'dark',
-  primaryColor: '#7c8cff',
-  lineColor: '#73e0ff',
-  textColor: '#e8f0ff',
-  backgroundColor: '#0b1220'
+const themePresets = {
+  dark: {
+    mode: 'dark',
+    primaryColor: '#7c8cff',
+    lineColor: '#73e0ff',
+    textColor: '#e8f0ff',
+    backgroundColor: '#0b1220'
+  },
+  default: {
+    mode: 'default',
+    primaryColor: '#6d5efc',
+    lineColor: '#425466',
+    textColor: '#18212f',
+    backgroundColor: '#f7fafc'
+  }
 };
+
+const defaultTheme = themePresets.dark;
 
 let renderTimer = null;
 let latestSvg = '';
@@ -73,6 +84,13 @@ function buildMermaidConfig() {
     startOnLoad: false,
     securityLevel: 'loose',
     theme: theme.mode,
+    flowchart: {
+      htmlLabels: false,
+      useMaxWidth: true
+    },
+    sequence: {
+      useMaxWidth: true
+    },
     // 匯出 PNG 時，若 SVG 內引用外部字型，canvas 可能被瀏覽器判定為不可安全讀取。
     // 這裡改用系統字型，避免下載 Google Fonts 後造成匯出失敗。
     fontFamily: 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
@@ -118,6 +136,17 @@ function clearError() {
   errorBox.textContent = '';
 }
 
+function syncPreviewSurface() {
+  preview.style.background = backgroundColor.value;
+}
+
+function applyPreset(mode) {
+  const preset = themePresets[mode];
+  if (!preset) return;
+  applyInputs(preset);
+  syncPreviewSurface();
+}
+
 function updateCount() {
   charCount.textContent = `${codeInput.value.length} 字元`;
 }
@@ -129,6 +158,7 @@ async function renderDiagram() {
   if (!code) {
     preview.innerHTML = '<div class="empty-state">圖會顯示在這裡</div>';
     latestSvg = '';
+    syncPreviewSurface();
     clearError();
     setStatus('等待輸入');
     return;
@@ -143,10 +173,12 @@ async function renderDiagram() {
     const { svg } = await mermaid.render(id, code);
     latestSvg = svg;
     preview.innerHTML = svg;
+    syncPreviewSurface();
     setStatus('已更新預覽');
   } catch (error) {
     latestSvg = '';
     preview.innerHTML = '<div class="empty-state">目前無法渲染，請先修正左側 Mermaid 語法。</div>';
+    syncPreviewSurface();
     setError(error?.message || 'Mermaid 渲染失敗');
     setStatus('語法錯誤');
   }
@@ -253,15 +285,25 @@ downloadSvgBtn.addEventListener('click', downloadSvg);
 downloadPngBtn.addEventListener('click', downloadPng);
 applyThemeBtn.addEventListener('click', renderDiagram);
 resetThemeBtn.addEventListener('click', () => {
-  applyInputs(defaultTheme);
+  applyPreset(defaultTheme.mode);
   renderDiagram();
 });
 codeInput.addEventListener('input', scheduleRender);
-[themeMode, primaryColor, lineColor, textColor, backgroundColor].forEach(el => {
-  el.addEventListener('input', scheduleRender);
-  el.addEventListener('change', scheduleRender);
+themeMode.addEventListener('change', () => {
+  applyPreset(themeMode.value);
+  renderDiagram();
+});
+[primaryColor, lineColor, textColor, backgroundColor].forEach(el => {
+  el.addEventListener('input', () => {
+    syncPreviewSurface();
+    scheduleRender();
+  });
+  el.addEventListener('change', () => {
+    syncPreviewSurface();
+    scheduleRender();
+  });
 });
 
-applyInputs(defaultTheme);
+applyPreset(defaultTheme.mode);
 updateCount();
 renderDiagram();
