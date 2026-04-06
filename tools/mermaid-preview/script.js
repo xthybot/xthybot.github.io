@@ -38,6 +38,16 @@ let renderTimer = null;
 let latestSvg = '';
 let renderCount = 0;
 
+function getExportDimensions() {
+  const svgEl = preview.querySelector('svg');
+  const rawWidth = svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || svgEl?.getBoundingClientRect().width || 1200;
+  const rawHeight = svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || svgEl?.getBoundingClientRect().height || 800;
+  return {
+    width: Math.max(Math.ceil(rawWidth), 400),
+    height: Math.max(Math.ceil(rawHeight), 300)
+  };
+}
+
 function getThemeConfig() {
   return {
     mode: themeMode.value,
@@ -180,27 +190,11 @@ async function downloadPng() {
     return;
   }
 
-  let url = '';
-
   try {
-    const svgEl = preview.querySelector('svg');
-    const rawWidth = svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || svgEl?.getBoundingClientRect().width || 1200;
-    const rawHeight = svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || svgEl?.getBoundingClientRect().height || 800;
-    const width = Math.max(Math.ceil(rawWidth), 400);
-    const height = Math.max(Math.ceil(rawHeight), 300);
-
+    const { width, height } = getExportDimensions();
     const safeSvg = latestSvg
       .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif')
       .replace('<svg ', `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" `);
-
-    url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(safeSvg)}`;
-
-    const img = new Image();
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = url;
-    });
 
     const canvas = document.createElement('canvas');
     const scale = 2;
@@ -212,9 +206,27 @@ async function downloadPng() {
       throw new Error('Canvas 初始化失敗');
     }
 
+    ctx.scale(scale, scale);
     ctx.fillStyle = backgroundColor.value;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, width, height);
+
+    if (window.canvg?.Canvg) {
+      const renderer = await window.canvg.Canvg.fromString(ctx, safeSvg, {
+        ignoreMouse: true,
+        ignoreAnimation: true,
+        ignoreDimensions: true
+      });
+      await renderer.render();
+    } else {
+      const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(safeSvg)}`;
+      const img = new Image();
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = url;
+      });
+      ctx.drawImage(img, 0, 0, width, height);
+    }
 
     const pngBlob = await new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
