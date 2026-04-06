@@ -69,6 +69,7 @@ const defaultTheme = themePresets.dark;
 
 let renderTimer = null;
 let latestSvg = '';
+let latestCode = '';
 let renderCount = 0;
 
 function getExportDimensions() {
@@ -99,7 +100,7 @@ function applyInputs(config) {
   backgroundColor.value = config.backgroundColor;
 }
 
-function buildMermaidConfig() {
+function buildMermaidConfig({ forExport = false } = {}) {
   const theme = getThemeConfig();
   return {
     startOnLoad: false,
@@ -107,7 +108,8 @@ function buildMermaidConfig() {
     theme: 'base',
     flowchart: {
       htmlLabels: false,
-      useMaxWidth: true
+      useMaxWidth: true,
+      wrappingWidth: 220
     },
     sequence: {
       useMaxWidth: true
@@ -116,28 +118,39 @@ function buildMermaidConfig() {
     // 這裡改用系統字型，避免下載 Google Fonts 後造成匯出失敗。
     fontFamily: 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
     themeVariables: {
+      background: theme.backgroundColor,
       primaryColor: theme.primaryColor,
       primaryBorderColor: theme.lineColor,
+      primaryTextColor: theme.textColor,
+      secondaryColor: theme.mode === 'default' ? '#e9eef5' : '#111a2a',
+      secondaryBorderColor: theme.lineColor,
+      secondaryTextColor: theme.textColor,
+      tertiaryColor: theme.mode === 'default' ? '#f4f7fb' : '#162235',
+      tertiaryBorderColor: theme.lineColor,
+      tertiaryTextColor: theme.textColor,
       lineColor: theme.lineColor,
       textColor: theme.textColor,
-      primaryTextColor: theme.textColor,
       nodeTextColor: theme.textColor,
       mainBkg: theme.backgroundColor,
-      secondaryColor: theme.backgroundColor,
-      tertiaryColor: theme.backgroundColor,
-      clusterBkg: theme.backgroundColor,
+      nodeBkg: theme.primaryColor,
+      clusterBkg: theme.mode === 'default' ? '#edf3ff' : '#10192a',
       clusterBorder: theme.lineColor,
-      edgeLabelBackground: theme.backgroundColor,
+      defaultLinkColor: theme.lineColor,
+      titleColor: theme.textColor,
+      edgeLabelBackground: theme.mode === 'default' ? '#ffffff' : '#0f1726',
+      labelBoxBkgColor: theme.mode === 'default' ? '#ffffff' : '#0f1726',
+      labelBoxBorderColor: theme.lineColor,
+      labelTextColor: theme.textColor,
+      actorBkg: theme.primaryColor,
+      actorBorder: theme.lineColor,
       actorTextColor: theme.textColor,
       actorLineColor: theme.lineColor,
       signalColor: theme.textColor,
-      labelBoxBkgColor: theme.backgroundColor,
-      labelBoxBorderColor: theme.lineColor,
-      labelTextColor: theme.textColor,
       cScale0: theme.primaryColor,
-      cScale1: theme.backgroundColor,
+      cScale1: theme.mode === 'default' ? '#eef3ff' : '#0f1726',
       cScale2: theme.lineColor
-    }
+    },
+    ...(forExport ? { deterministicIds: true } : {})
   };
 }
 
@@ -182,6 +195,7 @@ function updateCount() {
 
 async function renderDiagram() {
   const code = codeInput.value.trim();
+  latestCode = code;
   updateCount();
 
   if (!code) {
@@ -246,6 +260,13 @@ function downloadSvg() {
   setStatus('已下載 SVG');
 }
 
+async function renderExportSvg(code) {
+  mermaid.initialize(buildMermaidConfig({ forExport: true }));
+  const id = `mermaid-export-${++renderCount}`;
+  const { svg } = await mermaid.render(id, code);
+  return svg;
+}
+
 function sanitizeSvgForExport(svg, width, height) {
   let safeSvg = svg
     .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif')
@@ -280,8 +301,15 @@ async function downloadPng() {
   }
 
   try {
+    const exportCode = latestCode || codeInput.value.trim();
+    if (!exportCode) {
+      setStatus('目前沒有可下載的圖');
+      return;
+    }
+
     const { width, height } = getExportDimensions();
-    const safeSvg = sanitizeSvgForExport(latestSvg, width, height);
+    const exportSvg = await renderExportSvg(exportCode);
+    const safeSvg = sanitizeSvgForExport(exportSvg, width, height);
 
     const canvas = document.createElement('canvas');
     const scale = 2;
