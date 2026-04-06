@@ -62,7 +62,9 @@ function buildMermaidConfig() {
     startOnLoad: false,
     securityLevel: 'loose',
     theme: theme.mode,
-    fontFamily: 'Inter, system-ui, sans-serif',
+    // 匯出 PNG 時，若 SVG 內引用外部字型，canvas 可能被瀏覽器判定為不可安全讀取。
+    // 這裡改用系統字型，避免下載 Google Fonts 後造成匯出失敗。
+    fontFamily: 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif',
     themeVariables: {
       primaryColor: theme.primaryColor,
       primaryBorderColor: theme.lineColor,
@@ -178,20 +180,27 @@ async function downloadPng() {
     return;
   }
 
-  try {
-    const svgBlob = new Blob([latestSvg], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-    const img = new Image();
+  let url = '';
 
+  try {
+    const svgEl = preview.querySelector('svg');
+    const rawWidth = svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || svgEl?.getBoundingClientRect().width || 1200;
+    const rawHeight = svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || svgEl?.getBoundingClientRect().height || 800;
+    const width = Math.max(Math.ceil(rawWidth), 400);
+    const height = Math.max(Math.ceil(rawHeight), 300);
+
+    const safeSvg = latestSvg
+      .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif')
+      .replace('<svg ', `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" `);
+
+    url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(safeSvg)}`;
+
+    const img = new Image();
     await new Promise((resolve, reject) => {
       img.onload = resolve;
       img.onerror = reject;
       img.src = url;
     });
-
-    const svgEl = preview.querySelector('svg');
-    const width = Math.max(Math.ceil(svgEl?.viewBox?.baseVal?.width || svgEl?.getBoundingClientRect().width || img.width || 1200), 400);
-    const height = Math.max(Math.ceil(svgEl?.viewBox?.baseVal?.height || svgEl?.getBoundingClientRect().height || img.height || 800), 300);
 
     const canvas = document.createElement('canvas');
     const scale = 2;
@@ -199,21 +208,25 @@ async function downloadPng() {
     canvas.height = height * scale;
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Canvas 初始化失敗');
+    }
+
     ctx.fillStyle = backgroundColor.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-    const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    URL.revokeObjectURL(url);
-
-    if (!pngBlob) {
-      setStatus('PNG 匯出失敗');
-      return;
-    }
+    const pngBlob = await new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (blob) resolve(blob);
+        else reject(new Error('Canvas 無法輸出 PNG'));
+      }, 'image/png');
+    });
 
     downloadBlob(pngBlob, 'mermaid-diagram.png');
     setStatus('已下載 PNG');
-  } catch {
+  } catch (error) {
+    console.error('PNG export failed:', error);
     setStatus('PNG 匯出失敗');
   }
 }
