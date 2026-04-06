@@ -44,6 +44,27 @@ const themePresets = {
   }
 };
 
+const pageTheme = {
+  dark: {
+    '--bg': '#07111f',
+    '--panel': 'rgba(12, 22, 39, 0.82)',
+    '--text': '#ebf3ff',
+    '--muted': '#92a4bf',
+    '--line': 'rgba(146, 164, 191, 0.16)',
+    '--accent': '#73e0ff',
+    '--accent-2': '#7c8cff'
+  },
+  default: {
+    '--bg': '#eef4ff',
+    '--panel': 'rgba(255, 255, 255, 0.9)',
+    '--text': '#18212f',
+    '--muted': '#5c6b80',
+    '--line': 'rgba(66, 84, 102, 0.16)',
+    '--accent': '#4f7cff',
+    '--accent-2': '#6d5efc'
+  }
+};
+
 const defaultTheme = themePresets.dark;
 
 let renderTimer = null;
@@ -83,7 +104,7 @@ function buildMermaidConfig() {
   return {
     startOnLoad: false,
     securityLevel: 'loose',
-    theme: theme.mode,
+    theme: 'base',
     flowchart: {
       htmlLabels: false,
       useMaxWidth: true
@@ -140,11 +161,19 @@ function syncPreviewSurface() {
   preview.style.background = backgroundColor.value;
 }
 
+function syncPageTheme(mode) {
+  const palette = pageTheme[mode] || pageTheme.dark;
+  Object.entries(palette).forEach(([key, value]) => {
+    document.documentElement.style.setProperty(key, value);
+  });
+}
+
 function applyPreset(mode) {
   const preset = themePresets[mode];
   if (!preset) return;
   applyInputs(preset);
   syncPreviewSurface();
+  syncPageTheme(mode);
 }
 
 function updateCount() {
@@ -217,6 +246,33 @@ function downloadSvg() {
   setStatus('已下載 SVG');
 }
 
+function sanitizeSvgForExport(svg, width, height) {
+  let safeSvg = svg
+    .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif')
+    .replace(/<foreignObject[\s\S]*?<\/foreignObject>/g, '')
+    .replace(/<style>[\s\S]*?<\/style>/g, styleBlock => styleBlock.replace(/@import[^;]+;/g, ''));
+
+  safeSvg = safeSvg.replace(/<svg\b([^>]*)>/, (match, attrs) => {
+    const hasXmlns = /\sxmlns=/.test(attrs);
+    const cleanedAttrs = attrs
+      .replace(/\swidth="[^"]*"/g, '')
+      .replace(/\sheight="[^"]*"/g, '');
+    return `<svg${hasXmlns ? '' : ' xmlns="http://www.w3.org/2000/svg"'} width="${width}" height="${height}"${cleanedAttrs}>`;
+  });
+
+  return safeSvg;
+}
+
+async function renderSvgToImage(url) {
+  const img = new Image();
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = url;
+  });
+  return img;
+}
+
 async function downloadPng() {
   if (!latestSvg) {
     setStatus('目前沒有可下載的圖');
@@ -225,16 +281,7 @@ async function downloadPng() {
 
   try {
     const { width, height } = getExportDimensions();
-    let safeSvg = latestSvg
-      .replace(/font-family:[^;"}]+/g, 'font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif');
-
-    safeSvg = safeSvg.replace(/<svg\b([^>]*)>/, (match, attrs) => {
-      const hasXmlns = /\sxmlns=/.test(attrs);
-      const cleanedAttrs = attrs
-        .replace(/\swidth="[^"]*"/g, '')
-        .replace(/\sheight="[^"]*"/g, '');
-      return `<svg${hasXmlns ? '' : ' xmlns="http://www.w3.org/2000/svg"'} width="${width}" height="${height}"${cleanedAttrs}>`;
-    });
+    const safeSvg = sanitizeSvgForExport(latestSvg, width, height);
 
     const canvas = document.createElement('canvas');
     const scale = 2;
@@ -250,12 +297,35 @@ async function downloadPng() {
     ctx.fillStyle = backgroundColor.value;
     ctx.fillRect(0, 0, width, height);
 
-    const renderer = Canvg.fromString(ctx, safeSvg, {
-      ignoreMouse: true,
-      ignoreAnimation: true,
-      ignoreDimensions: true
-    });
-    await renderer.render();
+    let rendered = false;
+
+    try {
+      const renderer = Canvg.fromString(ctx, safeSvg, {
+        ignoreMouse: true,
+        ignoreAnimation: true,
+        ignoreDimensions: true
+      });
+      await renderer.render();
+      rendered = true;
+    } catch (canvgError) {
+      console.warn('Canvg fallback engaged:', canvgError);
+    }
+
+    if (!rendered) {
+      const svgBlob = new Blob([safeSvg], { type: 'image/svg+xml;charset=utf-8' });
+      const objectUrl = URL.createObjectURL(svgBlob);
+      try {
+        const img = await renderSvgToImage(objectUrl);
+        ctx.drawImage(img, 0, 0, width, height);
+        rendered = true;
+      } finally {
+        URL.revokeObjectURL(objectUrl);
+      }
+    }
+
+    if (!rendered) {
+      throw new Error('SVG 無法轉成 PNG');
+    }
 
     const pngBlob = await new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
