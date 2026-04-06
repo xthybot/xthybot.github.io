@@ -1,5 +1,5 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-import { toBlob } from 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/+esm';
+import html2canvas from 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm';
 import { Canvg } from 'https://cdn.jsdelivr.net/npm/canvg@4.0.2/+esm';
 
 const codeInput = document.getElementById('codeInput');
@@ -38,8 +38,8 @@ const themePresets = {
   },
   default: {
     mode: 'default',
-    primaryColor: '#6d5efc',
-    lineColor: '#425466',
+    primaryColor: '#dbe8ff',
+    lineColor: '#5b6f8a',
     textColor: '#18212f',
     backgroundColor: '#f7fafc'
   }
@@ -83,21 +83,19 @@ let renderCount = 0;
 
 function getExportDimensions() {
   const svgEl = preview.querySelector('svg');
-  const content = svgEl || preview;
-  const bbox = typeof svgEl?.getBBox === 'function' ? svgEl.getBBox() : null;
-  const rect = content.getBoundingClientRect();
+  const previewRect = preview.getBoundingClientRect();
+  const svgRect = svgEl?.getBoundingClientRect();
   const padding = 32;
 
-  const rawWidth = bbox?.width || svgEl?.viewBox?.baseVal?.width || svgEl?.width?.baseVal?.value || rect.width || 1200;
-  const rawHeight = bbox?.height || svgEl?.viewBox?.baseVal?.height || svgEl?.height?.baseVal?.value || rect.height || 800;
-  const offsetX = bbox ? Math.min(0, bbox.x) : 0;
-  const offsetY = bbox ? Math.min(0, bbox.y) : 0;
+  const width = Math.max(Math.ceil(svgRect?.width || previewRect.width || 1200), 400);
+  const height = Math.max(Math.ceil(svgRect?.height || previewRect.height || 800), 300);
 
   return {
-    width: Math.max(Math.ceil(rawWidth + padding * 2), 400),
-    height: Math.max(Math.ceil(rawHeight + padding * 2), 300),
-    offsetX: Math.abs(Math.floor(offsetX)) + padding,
-    offsetY: Math.abs(Math.floor(offsetY)) + padding
+    width,
+    height,
+    padding,
+    canvasWidth: width + padding * 2,
+    canvasHeight: height + padding * 2
   };
 }
 
@@ -141,10 +139,10 @@ function buildMermaidConfig({ forExport = false } = {}) {
       primaryColor: theme.primaryColor,
       primaryBorderColor: theme.lineColor,
       primaryTextColor: theme.textColor,
-      secondaryColor: theme.mode === 'default' ? '#e9eef5' : '#111a2a',
+      secondaryColor: theme.mode === 'default' ? '#edf3ff' : '#111a2a',
       secondaryBorderColor: theme.lineColor,
       secondaryTextColor: theme.textColor,
-      tertiaryColor: theme.mode === 'default' ? '#f4f7fb' : '#162235',
+      tertiaryColor: theme.mode === 'default' ? '#ffffff' : '#162235',
       tertiaryBorderColor: theme.lineColor,
       tertiaryTextColor: theme.textColor,
       lineColor: theme.lineColor,
@@ -156,8 +154,8 @@ function buildMermaidConfig({ forExport = false } = {}) {
       clusterBorder: theme.lineColor,
       defaultLinkColor: theme.lineColor,
       titleColor: theme.textColor,
-      edgeLabelBackground: theme.mode === 'default' ? '#ffffff' : '#0f1726',
-      labelBoxBkgColor: theme.mode === 'default' ? '#ffffff' : '#0f1726',
+      edgeLabelBackground: theme.mode === 'default' ? '#eef4ff' : '#0f1726',
+      labelBoxBkgColor: theme.mode === 'default' ? '#eef4ff' : '#0f1726',
       labelBoxBorderColor: theme.lineColor,
       labelTextColor: theme.textColor,
       actorBkg: theme.primaryColor,
@@ -359,90 +357,111 @@ async function downloadPng() {
   try {
     paintRenderedDiagram();
 
-    const target = preview.querySelector('svg') || preview;
     const dims = getExportDimensions();
     const exportWrap = document.createElement('div');
     exportWrap.style.position = 'fixed';
     exportWrap.style.left = '-99999px';
     exportWrap.style.top = '0';
-    exportWrap.style.padding = `${dims.offsetY}px ${dims.offsetX}px`;
+    exportWrap.style.width = `${dims.canvasWidth}px`;
+    exportWrap.style.height = `${dims.canvasHeight}px`;
+    exportWrap.style.padding = `${dims.padding}px`;
     exportWrap.style.background = backgroundColor.value;
-    exportWrap.style.display = 'inline-block';
+    exportWrap.style.display = 'flex';
+    exportWrap.style.alignItems = 'flex-start';
+    exportWrap.style.justifyContent = 'flex-start';
     exportWrap.style.overflow = 'visible';
+    exportWrap.style.boxSizing = 'border-box';
 
-    const clonedTarget = target.cloneNode(true);
-    if (clonedTarget instanceof Element) {
-      clonedTarget.style.transform = 'none';
-      clonedTarget.style.overflow = 'visible';
-      clonedTarget.style.display = 'block';
+    const clonedPreview = preview.cloneNode(true);
+    if (clonedPreview instanceof HTMLElement) {
+      clonedPreview.style.width = `${dims.width}px`;
+      clonedPreview.style.minHeight = `${dims.height}px`;
+      clonedPreview.style.margin = '0';
+      clonedPreview.style.padding = '0';
+      clonedPreview.style.border = '0';
+      clonedPreview.style.overflow = 'visible';
+      clonedPreview.style.background = backgroundColor.value;
     }
 
-    exportWrap.appendChild(clonedTarget);
+    exportWrap.appendChild(clonedPreview);
     document.body.appendChild(exportWrap);
 
-    let pngBlob;
     try {
-      pngBlob = await toBlob(exportWrap, {
-        cacheBust: true,
-        pixelRatio: 2,
+      const canvas = await html2canvas(exportWrap, {
         backgroundColor: backgroundColor.value,
-        skipFonts: true,
-        canvasWidth: dims.width,
-        canvasHeight: dims.height
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: dims.canvasWidth,
+        height: dims.canvasHeight,
+        x: 0,
+        y: 0,
+        windowWidth: dims.canvasWidth,
+        windowHeight: dims.canvasHeight
       });
-    } finally {
-      exportWrap.remove();
-    }
 
-    if (pngBlob) {
+      const pngBlob = await new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob) resolve(blob);
+          else reject(new Error('Canvas 無法輸出 PNG'));
+        }, 'image/png');
+      });
+
       downloadBlob(pngBlob, 'mermaid-diagram.png');
       setStatus('已下載 PNG');
       return;
+    } finally {
+      exportWrap.remove();
     }
+  } catch (domError) {
+    console.warn('DOM PNG export failed, fallback to SVG export:', domError);
 
-    const exportCode = latestCode || codeInput.value.trim();
-    if (!exportCode) {
-      setStatus('目前沒有可下載的圖');
-      return;
+    try {
+      const exportCode = latestCode || codeInput.value.trim();
+      if (!exportCode) {
+        setStatus('目前沒有可下載的圖');
+        return;
+      }
+
+      const dims = getExportDimensions();
+      const exportSvg = await renderExportSvg(exportCode);
+      const safeSvg = sanitizeSvgForExport(exportSvg, dims.canvasWidth, dims.canvasHeight);
+
+      const canvas = document.createElement('canvas');
+      const scale = 2;
+      canvas.width = dims.canvasWidth * scale;
+      canvas.height = dims.canvasHeight * scale;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        throw new Error('Canvas 初始化失敗');
+      }
+
+      ctx.scale(scale, scale);
+      ctx.fillStyle = backgroundColor.value;
+      ctx.fillRect(0, 0, dims.canvasWidth, dims.canvasHeight);
+      ctx.translate(dims.padding, dims.padding);
+
+      const renderer = Canvg.fromString(ctx, safeSvg, {
+        ignoreMouse: true,
+        ignoreAnimation: true,
+        ignoreDimensions: true
+      });
+      await renderer.render();
+
+      const fallbackBlob = await new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob) resolve(blob);
+          else reject(new Error('Canvas 無法輸出 PNG'));
+        }, 'image/png');
+      });
+
+      downloadBlob(fallbackBlob, 'mermaid-diagram.png');
+      setStatus('已下載 PNG');
+    } catch (error) {
+      console.error('PNG export failed:', error);
+      setStatus('PNG 匯出失敗');
     }
-
-    const exportSvg = await renderExportSvg(exportCode);
-    const safeSvg = sanitizeSvgForExport(exportSvg, dims.width, dims.height);
-
-    const canvas = document.createElement('canvas');
-    const scale = 2;
-    canvas.width = dims.width * scale;
-    canvas.height = dims.height * scale;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Canvas 初始化失敗');
-    }
-
-    ctx.scale(scale, scale);
-    ctx.fillStyle = backgroundColor.value;
-    ctx.fillRect(0, 0, dims.width, dims.height);
-    ctx.translate(dims.offsetX, dims.offsetY);
-
-    const renderer = Canvg.fromString(ctx, safeSvg, {
-      ignoreMouse: true,
-      ignoreAnimation: true,
-      ignoreDimensions: true
-    });
-    await renderer.render();
-
-    const fallbackBlob = await new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (blob) resolve(blob);
-        else reject(new Error('Canvas 無法輸出 PNG'));
-      }, 'image/png');
-    });
-
-    downloadBlob(fallbackBlob, 'mermaid-diagram.png');
-    setStatus('已下載 PNG');
-  } catch (error) {
-    console.error('PNG export failed:', error);
-    setStatus('PNG 匯出失敗');
   }
 }
 
