@@ -1,4 +1,5 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+import { Canvg } from 'https://cdn.jsdelivr.net/npm/canvg@4.0.2/+esm';
 
 const codeInput = document.getElementById('codeInput');
 const preview = document.getElementById('preview');
@@ -210,23 +211,12 @@ async function downloadPng() {
     ctx.fillStyle = backgroundColor.value;
     ctx.fillRect(0, 0, width, height);
 
-    if (window.canvg?.Canvg) {
-      const renderer = await window.canvg.Canvg.fromString(ctx, safeSvg, {
-        ignoreMouse: true,
-        ignoreAnimation: true,
-        ignoreDimensions: true
-      });
-      await renderer.render();
-    } else {
-      const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(safeSvg)}`;
-      const img = new Image();
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = url;
-      });
-      ctx.drawImage(img, 0, 0, width, height);
-    }
+    const renderer = Canvg.fromString(ctx, safeSvg, {
+      ignoreMouse: true,
+      ignoreAnimation: true,
+      ignoreDimensions: true
+    });
+    await renderer.render();
 
     const pngBlob = await new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
