@@ -1,0 +1,34 @@
+[
+  {
+    "id": "a3-print-300dpi",
+    "name": "A3",
+    "width": { "value": 297, "unit": "mm" },
+    "height": { "value": 420, "unit": "mm" },
+    "resolution": { "value": 300, "unit": "DPI" },
+    "ratio": "1:1.41421356237"
+  },
+  {
+    "id": "a4-print-300dpi",
+    "name": "A4",
+    "width": { "value": 210, "unit": "mm" },
+    "height": { "value": 297, "unit": "mm" },
+    "resolution": { "value": 300, "unit": "DPI" },
+    "ratio": "1:1.41421356237"
+  },
+  {
+    "id": "photo-4x6",
+    "name": "照片 4x6",
+    "width": { "value": 4, "unit": "inch" },
+    "height": { "value": 6, "unit": "inch" },
+    "resolution": { "value": 300, "unit": "DPI" },
+    "ratio": "2:3"
+  },
+  {
+    "id": "photo-5x7",
+    "name": "照片 5x7",
+    "width": { "value": 5, "unit": "inch" },
+    "height": { "value": 7, "unit": "inch" },
+    "resolution": { "value": 300, "unit": "DPI" },
+    "ratio": "5:7"
+  }
+]
